@@ -1,0 +1,5 @@
+void setup() {
+  setupStepper();
+  setupRos();
+  
+}
