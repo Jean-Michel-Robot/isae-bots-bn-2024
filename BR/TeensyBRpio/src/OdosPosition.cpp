@@ -109,12 +109,8 @@ void OdosPosition::_loop()
     m_robotPosition.y += sin(old_positionTheta) * dx - cos(old_positionTheta) * dy;
   }
 
-#ifdef FILTRE_ANGLE // on applique un filtre passe bas sur le theta
   static FilterLowPass fil(1e-2);
   m_robotPosition.theta = fil.computeOutput(m_positionThetaOdo, micros());
-#else
-  positionTheta = positionThetaOdo;
-#endif
 
   // Logger::setFieldValue(m_robotPosition.x, Logger::positionX);
   // Logger::setFieldValue(m_robotPosition.y, Logger::positionY);
