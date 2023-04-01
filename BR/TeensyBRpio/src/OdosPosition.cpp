@@ -1,6 +1,6 @@
 #include "OdosPosition.hpp"
 
-#include "a_define.h"
+#include "defines.hpp"
 
 #define METHOD 1 // choix de la méthode d'approximation
 
@@ -10,7 +10,7 @@
 #include "../Simulation/EncoderSimu.h"
 #define ODO_HARD // we simulate hard decode odos
 #elif defined (ODO_HARD) // utilisation des decodeurs hardware de la teensy
-#include "QuadDecode.h"
+#include <QuadDecode.h>
 #elif defined(ODO_SOFT) // utilisation d'un decodage software par interruption
 #include "src/Encoder/Encoder.h" //https://www.pjrc.com/teensy/td_libs_Encoder.html
 Encoder knobLeft(32, 25);
@@ -75,7 +75,7 @@ void OdosPosition::_loop()
      //suite a calculs, sur les dimensions de la table l'erreur de mantis est faible (10e-9mm par ticks au max)
      // coucou Etienne comment va-tu :p
   */
-  if (std::abs(deltaL) + std::abs(deltaR) > 0) { // si un tick est repéré sur un odomètre
+  if (abs(deltaL) + abs(deltaR) > 0) { // si un tick est repéré sur un odomètre
     double old_positionTheta = m_positionThetaOdo;
     m_positionThetaOdo = (double(m_odoRightCount) * L_R_ODOS - double(m_odoLeftCount)) / ECARTS_ODOS + m_positionThetaOffset;
 
@@ -119,14 +119,16 @@ void OdosPosition::_loop()
 
 bool OdosPosition::isRobotBlocked(float seuil)
 { // si les odometres detectent une vitesse nulle
-  m_speedOdometerL = m_filterSpeedOdoL.computeOutput(std::abs(float(m_odoLeftCount - m_oldOdoL)) / (micros() - m_microsOfLastMesureSpeedOdometers) * 1e6, micros());
-  m_speedOdometerR = m_filterSpeedOdoR.computeOutput(std::abs(float(m_odoRightCount - m_oldOdoR)) / (micros() - m_microsOfLastMesureSpeedOdometers) * 1e6, micros());
+  // m_speedOdometerL = m_filterSpeedOdoL.computeOutput(std::abs(float(m_odoLeftCount - m_oldOdoL)) / (micros() - m_microsOfLastMesureSpeedOdometers) * 1e6, micros());
+  // m_speedOdometerR = m_filterSpeedOdoR.computeOutput(std::abs(float(m_odoRightCount - m_oldOdoR)) / (micros() - m_microsOfLastMesureSpeedOdometers) * 1e6, micros());
 
-  m_oldOdoL = m_odoLeftCount;
-  m_oldOdoR = m_odoRightCount;
-  m_microsOfLastMesureSpeedOdometers = micros();
+  // m_oldOdoL = m_odoLeftCount;
+  // m_oldOdoR = m_odoRightCount;
+  // m_microsOfLastMesureSpeedOdometers = micros();
 
-  return (m_speedOdometerL + m_speedOdometerR) < seuil ;
+  // return (m_speedOdometerL + m_speedOdometerR) < seuil ;
+
+  return false;
 }
 
 #define THETA_RECAL_EPS PI/4
