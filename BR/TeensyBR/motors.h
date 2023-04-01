@@ -26,6 +26,7 @@ typedef struct motor_contextBloc {
 
 
 // Functions
+void motors_init();
 void sendMotorCommand(int motor_number, float velCmd);
 
 #endif

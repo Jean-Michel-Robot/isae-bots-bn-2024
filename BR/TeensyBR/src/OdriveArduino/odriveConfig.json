@@ -13,15 +13,17 @@
 
             "startup_closed_loop_control": true,
 
-            "startup_encoder_index_search": false,
-            "startup_encoder_offset_calibration": false,
+            "startup_encoder_index_search": true,
+            "startup_encoder_offset_calibration": true,
             "startup_homing": false,
 
             "startup_motor_calibration": false,
 
             "step_dir_always_on": false,
             "step_gpio_pin": 1,
+
             "watchdog_timeout": 0.0,
+
             "calibration_lockin": {
                 "accel": 20.0,
                 "current": 10.0,
@@ -75,7 +77,9 @@
                 "homing_speed": 0.25,
                 "inertia": 0.0,
                 "input_filter_bandwidth": 2.0,
+
                 "input_mode": 1,
+
                 "load_encoder_axis": 0,
                 "mechanical_power_bandwidth": 20.0,
                 "mirror_ratio": 1.0,
@@ -107,9 +111,13 @@
         "encoder": {
             "config": {
                 "abs_spi_cs_gpio_pin": 1,
-                "bandwidth": 1000.0,
+
+                "bandwidth": 2000.0,
+
                 "calib_range": 0.019999999552965164,
-                "calib_scan_distance": 50.26548385620117,
+
+                "calib_scan_distance": 40.0,
+
                 "calib_scan_omega": 12.566370964050293,
                 "cpr": 20480,
                 "direction": 0,
@@ -120,9 +128,12 @@
                 "ignore_illegal_hall_state": false,
                 "index_offset": 0.0,
                 "mode": 0,
+
                 "phase_offset_float": 0.0,
-                "phase_offset": 0,
+                "phase_offset": 0.0,
+
                 "pre_calibrated": false,
+
                 "sincos_gpio_pin_cos": 4,
                 "sincos_gpio_pin_sin": 3,
                 "use_index_offset": true,
@@ -166,7 +177,7 @@
                 "acim_gain_min_flux": 10.0,
                 "bEMF_FF_enable": false,
 
-                "calibration_current": 10.0,
+                "calibration_current": 15.0,
 
                 "current_control_bandwidth": 1000.0,
                 "current_lim_margin": 8.0,
@@ -239,8 +250,8 @@
             "enable_step_dir": false,
             "enable_watchdog": false,
             "startup_closed_loop_control": true,
-            "startup_encoder_index_search": false,
-            "startup_encoder_offset_calibration": false,
+            "startup_encoder_index_search": true,
+            "startup_encoder_offset_calibration": true,
             "startup_homing": false,
             "startup_motor_calibration": false,
             "step_dir_always_on": false,
@@ -297,7 +308,7 @@
                 "homing_speed": 0.25,
                 "inertia": 0.0,
                 "input_filter_bandwidth": 2.0,
-                "input_mode": 2,
+                "input_mode": 1,
                 "load_encoder_axis": 1,
                 "mechanical_power_bandwidth": 20.0,
                 "mirror_ratio": 1.0,
@@ -327,9 +338,9 @@
         "encoder": {
             "config": {
                 "abs_spi_cs_gpio_pin": 1,
-                "bandwidth": 1000.0,
+                "bandwidth": 2000.0,
                 "calib_range": 0.019999999552965164,
-                "calib_scan_distance": 50.26548385620117,
+                "calib_scan_distance": 40.0,
                 "calib_scan_omega": 12.566370964050293,
                 "cpr": 20480,
                 "direction": -1,
@@ -340,8 +351,8 @@
                 "ignore_illegal_hall_state": false,
                 "index_offset": 0.0,
                 "mode": 0,
-                "phase_offset_float": 1.2719714641571045,
-                "phase_offset": 25883,
+                "phase_offset_float": 0.0,
+                "phase_offset": 0.0,
                 "pre_calibrated": false,
                 "sincos_gpio_pin_cos": 4,
                 "sincos_gpio_pin_sin": 3,
@@ -385,7 +396,9 @@
                 "acim_autoflux_min_Id": 10.0,
                 "acim_gain_min_flux": 10.0,
                 "bEMF_FF_enable": false,
-                "calibration_current": 10.0,
+
+                "calibration_current": 15.0,
+
                 "current_control_bandwidth": 1000.0,
                 "current_lim_margin": 8.0,
                 "current_lim": 15.0,

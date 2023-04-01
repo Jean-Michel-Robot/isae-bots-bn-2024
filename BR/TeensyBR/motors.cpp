@@ -5,7 +5,7 @@ SoftwareSerial odrive_serial(ODRIVE_RX_PIN, ODRIVE_TX_PIN);
 ODriveArduino odrive(odrive_serial);
 
 
-void init() {
+void motors_init() {
 
     odrive_serial.begin(115200);
 
@@ -17,9 +17,10 @@ void init() {
 void sendMotorCommand(int motor_number, float velCmd) {
 
     //TODO : transform velCMd into odrive command
-    float odrv_cmd = velCmd / 60.0;  // command between -255 and 255 (extreme values)
+    float odrv_cmd = 2 * velCmd / 60.0;  // command between -255 and 255 (extreme values)
 
-    odrive.SetVelocity(motor_number, odrv_cmd);
+    if (motor_number == 1) {odrive.SetVelocity(motor_number, -odrv_cmd);}
+    else {odrive.SetVelocity(motor_number, odrv_cmd);}
 
     // OR
     // float current_feedforward = 0.0;

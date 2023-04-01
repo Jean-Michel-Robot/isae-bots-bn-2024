@@ -4,6 +4,10 @@
 
 #include <Arduino.h>
 
+#include "ROS.h"
+#include "motors.h"
+#include "src/QuadDecode/QuadDecode.h"
+
 
 #include "ROS.h"
 #include "LED.h"

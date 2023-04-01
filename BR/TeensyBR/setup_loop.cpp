@@ -1,4 +1,3 @@
-#include "ROS.h"
 
 #include "setup_loop.h"
 
@@ -12,15 +11,26 @@ void setup() {
 
     pinMode(LED_BUILTIN, OUTPUT);
 
+    motors_init();
+
     ros_instance = new ROS();
 
     // led_instance = new LED();
+
+    Serial.begin(9600);
+
+    QuadDecode.resetCounter1();
+    // QuadDecode.resetCounter2();
 
     begin = millis();
 }
 
 
 bool led_on = false;
+
+// Un tour -> 8192 ticks à vue d'oeil
+int32_t odoL;
+int32_t odoR;
 
 void loop() {
 
@@ -30,15 +40,18 @@ void loop() {
 
     led_on = !led_on;
     if (led_on) {
-        // digitalWrite(LED_BUILTIN, HIGH);
+        digitalWrite(LED_BUILTIN, HIGH);
         // led_instance->color(255, 255, 255);
         }
     else {
-        // digitalWrite(LED_BUILTIN, LOW);
+        digitalWrite(LED_BUILTIN, LOW);
         // led_instance->color(0, 0, 0);
         }
 
-    while (millis() - begin < 100) {}
+    odoL = QuadDecode.getCounter1();
+    // Serial.println(odoL);
+
+    while (millis() - begin < 100) {}  // période de 10 Hz
     begin = millis();
 
 }

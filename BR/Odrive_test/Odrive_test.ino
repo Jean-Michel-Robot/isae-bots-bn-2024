@@ -58,13 +58,15 @@ void setup() {
     odrive_serial << "w axis" << axis << ".motor.config.current_lim " << 11.0f << '\n';
     // This ends up writing something like "w axis0.motor.config.current_lim 10.0\n"
   }
-
+  
 
   Serial.println("Ready!");
   Serial.println("Send the character '0' or '1' to calibrate respective motor (you must do this before you can command movement)");
   Serial.println("Send the character 's' to exectue test move");
   Serial.println("Send the character 'b' to read bus voltage");
   Serial.println("Send the character 'p' to read motor positions in a 10s loop");
+
+
 }
 
 
@@ -125,17 +127,19 @@ void loop() {
     // Test
     if (c == 't') {
 
+        odrive_serial << "w axis0.controller.config.control_mode " << CONTROL_MODE_VELOCITY_CONTROL << '\n';
         odrive_serial << "w axis1.controller.config.control_mode " << CONTROL_MODE_VELOCITY_CONTROL << '\n';
+
         delay(100);  // trouver un moyen d'attendre la reponse
         
+        odrive_serial << "w axis0.controller.config.input_mode " << INPUT_MODE_VEL_RAMP << '\n';
         odrive_serial << "w axis1.controller.config.input_mode " << INPUT_MODE_VEL_RAMP << '\n';
+
         delay(100);
 
 
-        odrive.SetVelocity(1, 1);
-        delay(5000);
-        odrive.SetVelocity(1, -2);
-        delay(5000);
+        odrive.SetVelocity(1, 2);
+        odrive.SetVelocity(0, 2);
     }
 
     // print motor positions in a 10s loop
