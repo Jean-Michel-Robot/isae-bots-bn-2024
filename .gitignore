@@ -3,3 +3,6 @@ __pycache__
 /.vscode
 
 **/software/
+
+BR/code_asserv_cytron_paul
+.gitignore

@@ -19,12 +19,14 @@ public :
     void setPositionAvecRecalage();
     Position2D getRobotPosition() const;
 
+    void loop();
+
+
     // le L impose les constantes en double precisions (pour une teensy)
     static constexpr float ECARTS_ODOS = 1035.095823L; //1036.02140234218L; //1026.58121393134L;     // (ticks.rad^(-1) ecart entre les 2 odos
     static constexpr float UNITS_ODOS = 12.74291667L; //12.756L;    // ticks.mm^(-1)
     static constexpr float L_R_ODOS = 1.000667458L; //1.00133324111081L; //0.999399650554833L ;  // rapport des rapports... (var en R et L)
 private :
-    void _loop();
 
     int32_t m_odoLeftCount = 0;
     int32_t m_odoRightCount = 0;

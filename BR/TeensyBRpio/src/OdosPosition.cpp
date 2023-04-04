@@ -45,7 +45,7 @@ void OdosPosition::setPosition(Position2D pos)
   m_positionThetaOdo = (double(m_odoRightCount) * L_R_ODOS - double(m_odoLeftCount)) / ECARTS_ODOS + m_positionThetaOffset;
 }
 
-void OdosPosition::_loop()
+void OdosPosition::loop()
 {
   int32_t deltaL, deltaR;
 

@@ -38,6 +38,7 @@ enum LogType
     FATAL = 3,
     DEBUG = 4,
 };
+#include <Position2D.h>
 
 class ROS
 {
@@ -49,7 +50,7 @@ public :
     void errorAsservNotSet(String details);
     void logPrint(LogType logtype, String msg);
     void publishFullLogs();
-    void sendCurrentPosition();
+    void sendCurrentPosition(Position2D position);
 
     void loop();
 
