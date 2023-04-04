@@ -20,7 +20,7 @@ Encoder knobRight(3, 4); //Encoder knobRight(32, 25);
 #error Odemeters method undefined
 #endif
 
-OdosPosition::OdosPosition()
+OdosPosition::OdosPosition(ROS* p_ros)
 {
 #ifdef ODO_HARD
   QuadDecode.resetCounter1();
@@ -29,6 +29,8 @@ OdosPosition::OdosPosition()
   knobLeft.write(0);
   knobRight.write(0);
 #endif
+
+  this->p_ros_instance = p_ros;
 
   m_odoLeftCount  = 0;
   m_odoRightCount = 0;
@@ -115,7 +117,18 @@ void OdosPosition::loop()
   // Logger::setFieldValue(m_robotPosition.x, Logger::positionX);
   // Logger::setFieldValue(m_robotPosition.y, Logger::positionY);
   // Logger::setFieldValue(radToDeg(modulo_pipi(m_robotPosition.theta)), Logger::positionTheta);
+  
+  if (m_timer_last_send - millis() > ODO_SEND_POSITION_TIMER) {
+    m_timer_last_send = millis();
+    this->sendRobotPosition();
+
+    char msg[50];
+    sprintf(msg, "Odos Counts L: %li R: %li", m_odoLeftCount, m_odoRightCount);
+    p_ros_instance->logPrint(DEBUG, msg);
+  }
+
 }
+
 
 bool OdosPosition::isRobotBlocked(float seuil)
 { // si les odometres detectent une vitesse nulle
@@ -160,6 +173,10 @@ void OdosPosition::setPositionAvecRecalage()
 Position2D OdosPosition::getRobotPosition() const
 {
   return m_robotPosition;
+}
+
+void OdosPosition::sendRobotPosition(){
+  p_ros_instance->sendCurrentPosition(this->getRobotPosition());
 }
 
 

@@ -3,6 +3,8 @@
 #define ODOS_METHOD 1
 #define ODO_HARD
 
+#define ODO_SEND_POSITION_TIMER 50 //ms
+
 
 // Macros
 #define sign(value) (value > 0 ? 1 : -1)

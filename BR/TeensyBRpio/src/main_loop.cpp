@@ -18,7 +18,7 @@ void setup() {
 
     // led_instance = new LED();
 
-    p_odos = new OdosPosition();
+    p_odos = new OdosPosition(ros_instance);
 
     Serial.begin(9600);
 
@@ -38,13 +38,7 @@ void loop() {
 
     ros_instance->loop();
 
-
     p_odos->loop();
-
-    if (millis() - timer_old > 200) {
-        timer_old = millis();
-        ros_instance->sendCurrentPosition(p_odos->getRobotPosition());
-    }
 
 
 
