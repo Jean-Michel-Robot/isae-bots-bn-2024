@@ -27,6 +27,18 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/String.h>
 
+// #include "SM.hpp"
+#include <Events.hpp>
+
+enum LogType
+{
+    INFO = 0,
+    WARN = 1,
+    ERROR = 2,
+    FATAL = 3,
+    DEBUG = 4,
+};
+
 class ROS
 {
 public :
@@ -35,7 +47,7 @@ public :
     void sendOkTurn();
     void errorAsserv(String details);
     void errorAsservNotSet(String details);
-    void logPrint(String msg);
+    void logPrint(LogType logtype, String msg);
     void publishFullLogs();
     void sendCurrentPosition();
 
@@ -48,6 +60,8 @@ public :
     //callback sur les subscriber ROS
     // de plus l'utilisation en callback impose de les déclarer statique
     static void s_goToCb(const geometry_msgs::Quaternion& positionMsg);
+    static void s_debug(const std_msgs::String& debugMsg);
+
     static void s_changeGainsPosition(const std_msgs::Float32MultiArray& gains);
     static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
     static void s_setSpeed(const std_msgs::Float32MultiArray& speeds);
@@ -62,14 +76,16 @@ private :
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc   {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters", s_changeAccDecRampe)};
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc2  {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters2", s_changeAccDecRampePrecise)};
 
-    geometry_msgs::Pose2D m_feedbackPosition;
-    ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
+    ros::Subscriber<std_msgs::String> subDebug {ros::Subscriber<std_msgs::String>("debug/BR", s_debug)};
 
-    std_msgs::Int16 m_feedbackOk;
-    ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};
+    // geometry_msgs::Pose2D m_feedbackPosition;
+    // ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
 
-    std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
-    ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
+    // std_msgs::Int16 m_feedbackOk;
+    // ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};
+
+    // std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
+    // ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
 
     ros::NodeHandle m_nodeHandle;
 };

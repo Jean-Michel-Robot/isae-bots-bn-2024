@@ -62,6 +62,30 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     // machineAEtatAsservInstance->manageNewOrder(Position2D(positionMsg.x,positionMsg.y,positionMsg.z),(MachineAEtatAsserv::GoalType) int(positionMsg.w));
 }
 
+void ROS::logPrint(LogType logtype, String msg)
+{
+  if (logtype == LogType::INFO) {m_nodeHandle.loginfo(msg.c_str());}
+  else if (logtype == LogType::WARN) {m_nodeHandle.logwarn(msg.c_str());}
+  else if (logtype == LogType::ERROR) {m_nodeHandle.logerror(msg.c_str());}
+  else if (logtype == LogType::FATAL) {m_nodeHandle.logfatal(msg.c_str());}
+  else if (logtype == LogType::DEBUG) {m_nodeHandle.logdebug(msg.c_str());}
+  else {m_nodeHandle.logerror("Unknown log type");}
+}
+
+
+void ROS::s_debug(const std_msgs::String& debugMsg)
+{
+  // String data = debugMsg.data;
+  // if (data == "state") {
+  //   logPrint("lol");
+  // }
+
+  // OrderEvent orderEvent;
+  // orderEvent.order = {.x = 0, .y = 0, .theta = 0, .goalType = GoalType::FINAL};
+
+  // send_event(orderEvent);
+}
+
 // void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 // { // goToCallBack
 //   if (int(positionMsg.w) >= MachineAEtatAsserv::UNVALID_GOALTYPE) // on ignore le message si l'id n'est pas valide
