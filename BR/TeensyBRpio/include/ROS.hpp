@@ -79,8 +79,8 @@ private :
 
     ros::Subscriber<std_msgs::String> subDebug {ros::Subscriber<std_msgs::String>("debug/BR", s_debug)};
 
-    // geometry_msgs::Pose2D m_feedbackPosition;
-    // ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
+    geometry_msgs::Pose2D m_feedbackPosition;
+    ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
 
     // std_msgs::Int16 m_feedbackOk;
     // ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};

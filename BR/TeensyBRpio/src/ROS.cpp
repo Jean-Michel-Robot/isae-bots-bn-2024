@@ -25,7 +25,7 @@ ROS::ROS()
     // m_nodeHandle.subscribe(m_subAcc2);
     // m_nodeHandle.subscribe(m_subSpeed);
 
-    // m_nodeHandle.advertise(m_positionFeedback);
+    m_nodeHandle.advertise(m_positionFeedback);
     // m_nodeHandle.advertise(m_okFeedback);
     // m_nodeHandle.advertise(m_logTotale);
 
