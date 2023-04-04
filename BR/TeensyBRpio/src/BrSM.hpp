@@ -1,7 +1,25 @@
 #ifndef BR_SM_H
 #define BR_SM_H
 
-#include "tinyfsm/tinyfsm.hpp"
+// #include "tinyfsm/tinyfsm.hpp"
+
+#include "Events.hpp"
+
+#include <ROS.hpp>
+
+
+// States
+enum BRState
+{
+	UNDEF = 0,
+
+	IDLE = 1,
+	INITROT = 2,
+	FORWARD = 3,
+	FINALROT = 4,
+	ARRIVED = 5,
+};
+
 
 //TODO : mettre autre part
 enum GoalType { // type d'objectif recu par le haut niveau
@@ -21,32 +39,7 @@ typedef struct AxisStates {
 	int state_ax1;
 } AxisStates;
 
-// ----------------------------------------------------------------------------
-// Event declarations
-//
-typedef struct OrderType
-{
-	float x = 0.0;
-	float y = 0.0;
-	float theta = 0.0;
-	int goalType = 0;
-} OrderType;
 
-struct OrderEvent : tinyfsm::Event
-{
-	OrderType order;
-	//NOTE : timestamp ?
-};
-
-struct GoalReachedEvent : tinyfsm::Event
-{
-	int goalType = 0;
-};
-
-struct ErrorEvent : tinyfsm::Event
-{
-	int errorCode = 0;
-};
 
 // ----------------------------------------------------------------------------
 // Elevator (FSM base class) declaration
@@ -73,7 +66,9 @@ public:
 	//   void         react(Alarm       const &);
 
 	virtual void entry(void) { };  /* entry actions in some states */
-	void         exit(void)  { };  /* no exit actions at all */
+	void         exit(void)  { };  /* if no exit actions at all */
+
+	BRState getCurrentState();
 
 protected:
 
@@ -83,6 +78,8 @@ protected:
 
 	static AxisStates axisStates;
 	static OrderType currentOrder;
+
+	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
 };
 
 #endif  // BR_SM_H

@@ -1,14 +1,14 @@
-#include "tinyfsm/tinyfsm.hpp"
+// #include "tinyfsm/tinyfsm.hpp"
 
 #include "BrSM.hpp"
-#include "fsmlist.hpp"
+// #include "fsmlist.hpp"
 
-//TODO : for debug
-#include <Arduino.h>
+// for prints (peut etre pas que)
+#include "main_loop.hpp"
 
-
-class Idle; // forward declaration
-
+// forward declarations
+class Forward;
+class FinalRot;
 
 // ----------------------------------------------------------------------------
 // Transition functions
@@ -28,6 +28,8 @@ class Arrived
 : public BrSM
 {
   void entry() override {
+    currentState = BRState::ARRIVED;
+
     // send_event(MotorStop());
 	}
 };
@@ -40,26 +42,33 @@ class Arrived
 class InitRot
 : public BrSM
 {
+  void entry() override {
+    currentState = BRState::INITROT;
+  }
+
   void react(GoalReachedEvent const & e) override {
 
     switch (e.goalType) {
 
       case GoalType::ORIENT :
       {
-        Serial.println("Transition : InitRot -> Arrived");
+        ros_instance->logPrint(LogType::INFO, "Transition : InitRot -> Arrived");
+        
         transit<Arrived>();
+        
       }
 
       case GoalType::TRANS :
       {
-        Serial.println("Transition : InitRot -> Forward");
+        ros_instance->logPrint(LogType::INFO, "Transition : InitRot -> Forward");
+
         transit<Forward>();
       }
 
       default :
       {
         // error
-        Serial.println("Wrong goal type in state InitRot");
+        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state InitRot");
       }
     }
 
@@ -74,26 +83,32 @@ class InitRot
 class Forward
 : public BrSM
 {
+  void entry() override {
+    currentState = BRState::FORWARD;
+  }
+
   void react(GoalReachedEvent const & e) override {
 
     switch (e.goalType) {
 
       case GoalType::TRANS :
       {
-        Serial.println("Transition : Forward -> Arrived");
+        ros_instance->logPrint(LogType::INFO, "Transition : Forward -> Arrived");
+
         transit<Arrived>();
       }
 
       case GoalType::FINAL :
       {
-        Serial.println("Transition : Forward -> FinalRot");
+        ros_instance->logPrint(LogType::INFO, "Transition : Forward -> FinalRot");
+
         transit<FinalRot>();
       }
 
       default :
       {
         // error
-        Serial.println("Wrong goal type in state Forward");
+        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state Forward");
       }
     }
 
@@ -107,20 +122,26 @@ class Forward
 class FinalRot
 : public BrSM
 {
+  void entry() override {
+    currentState = BRState::FINALROT;
+  }
+
+
   void react(GoalReachedEvent const & e) override {
 
     switch (e.goalType) {
 
       case GoalType::FINAL :
       {
-        Serial.println("Transition : FinalRot -> Arrived");
+        ros_instance->logPrint(LogType::INFO, "Transition : FinalRot -> Arrived");
+
         transit<Arrived>();
       }
 
       default :
       {
         // error
-        Serial.println("Wrong goal type in state FinalRot");
+        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state FinalRot");
       }
     }
 
@@ -136,16 +157,16 @@ class Idle
 : public BrSM
 {
   void entry() override {
-
+    currentState = BRState::IDLE;
   }
 
   void react(OrderEvent const & e) override {
 
     
     // store order
-    currentOrder = e.order;
+    this->currentOrder = e.order;
 
-    Serial.println("Transition : Idle -> InitRot");
+    ros_instance->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
   }
 };
 
@@ -166,11 +187,18 @@ void BrSM::react(ErrorEvent const &) {
   // std::cout << "Error event ignored" << std::endl;
 }
 
+BRState BrSM::getCurrentState() {
+  return currentState;
+}
 
 // Variable initializations
 AxisStates BrSM::axisStates = {0};
+OrderType BrSM::currentOrder = {0};
+
+// BrSM::current_state_ptr
 
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
+BRState BrSM::currentState = BRState::UNDEF;
 FSM_INITIAL_STATE(BrSM, Idle)
