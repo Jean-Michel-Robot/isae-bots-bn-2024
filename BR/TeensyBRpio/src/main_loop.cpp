@@ -3,6 +3,7 @@
 
 
 ROS* ros_instance = NULL;
+OdosPosition* p_odos = NULL;
 // LED* led_instance = NULL;
 
 unsigned long begin = 0.0;
@@ -17,6 +18,8 @@ void setup() {
 
     // led_instance = new LED();
 
+    p_odos = new OdosPosition();
+
     Serial.begin(9600);
 
 
@@ -25,10 +28,10 @@ void setup() {
 
 
 bool led_on = false;
-
+unsigned long timer_old = 0;
 // Un tour -> 8192 ticks à vue d'oeil
-int32_t odoL;
-int32_t odoR;
+// int32_t odoL;
+// int32_t odoR;
 
 void loop() {
 
@@ -36,18 +39,27 @@ void loop() {
     ros_instance->loop();
 
 
-    led_on = !led_on;
-    if (led_on) {
-        digitalWrite(LED_BUILTIN, HIGH);
-        // led_instance->color(255, 255, 255);
-        }
-    else {
-        digitalWrite(LED_BUILTIN, LOW);
-        // led_instance->color(0, 0, 0);
-        }
+    p_odos->loop();
+
+    if (millis() - timer_old > 200) {
+        timer_old = millis();
+        ros_instance->sendCurrentPosition(p_odos->getRobotPosition());
+    }
 
 
-    while (millis() - begin < 100) {}  // période de 10 Hz
-    begin = millis();
+
+    // led_on = !led_on;
+    // if (led_on) {
+    //     digitalWrite(LED_BUILTIN, HIGH);
+    //     // led_instance->color(255, 255, 255);
+    //     }
+    // else {
+    //     digitalWrite(LED_BUILTIN, LOW);
+    //     // led_instance->color(0, 0, 0);
+    //     }
+
+
+    // while (millis() - begin < 100) {}  // période de 10 Hz
+    // begin = millis();
 
 }

@@ -27,6 +27,8 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/String.h>
 
+#include <Position2D.h>
+
 class ROS
 {
 public :
@@ -37,7 +39,7 @@ public :
     void errorAsservNotSet(String details);
     void logPrint(String msg);
     void publishFullLogs();
-    void sendCurrentPosition();
+    void sendCurrentPosition(Position2D position);
 
     void loop();
 

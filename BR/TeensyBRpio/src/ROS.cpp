@@ -142,13 +142,19 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 //   m_nodeHandle.logerror(details.c_str());
 // }
 
-// void ROS::sendCurrentPosition()
-// {
+void ROS::sendCurrentPosition(Position2D position)
+{
 //   m_feedbackPosition.x = odosPositionTask->getRobotPosition().x;
 //   m_feedbackPosition.y = odosPositionTask->getRobotPosition().y;
 //   m_feedbackPosition.theta = odosPositionTask->getRobotPosition().theta;
 //   m_positionFeedback.publish( &m_feedbackPosition );
-// }
+
+    m_feedbackPosition.x = position.x;
+    m_feedbackPosition.y = position.y;
+    m_feedbackPosition.theta = position.theta;
+    m_positionFeedback.publish( &m_feedbackPosition );
+
+}
 
 // void ROS::logPrint(String msg)
 // {

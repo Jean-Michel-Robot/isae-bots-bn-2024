@@ -10,7 +10,7 @@
 
 #include "ROS.hpp"
 #include "LED.hpp"
-
+#include "OdosPosition.hpp"
 
 extern ROS* ros_instance;
 
