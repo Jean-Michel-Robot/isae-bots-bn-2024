@@ -179,7 +179,7 @@
 
                 "calibration_current": 15.0,
 
-                "current_control_bandwidth": 1000.0,
+                "current_control_bandwidth": 2000.0,
                 "current_lim_margin": 8.0,
 
                 "current_lim": 15.0,
@@ -399,7 +399,7 @@
 
                 "calibration_current": 15.0,
 
-                "current_control_bandwidth": 1000.0,
+                "current_control_bandwidth": 2000.0,
                 "current_lim_margin": 8.0,
                 "current_lim": 15.0,
                 "dc_calib_tau": 0.20000000298023224,
