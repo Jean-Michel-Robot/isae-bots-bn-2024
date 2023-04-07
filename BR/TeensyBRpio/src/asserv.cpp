@@ -4,13 +4,18 @@
 // #include "ROS.hpp"
 // #include "OdosPosition.hpp"
 
+#include <ROS.hpp>
+#include "OdosPosition.hpp"
+
+
 #include "main_loop.hpp"
 
 
 void asservPID::updatePosition() {
 
-    // robotPos = p_odos->
+    robotPos = p_odos->getRobotPosition();
 
+    p_ros->logPrint(LogType::INFO, "Robot position updated");
 }
 
 void asservPID::updateError(float errorPos[3])

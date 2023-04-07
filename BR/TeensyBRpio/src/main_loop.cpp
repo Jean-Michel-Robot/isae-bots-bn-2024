@@ -24,11 +24,12 @@ void setup() {
 
     motors_init();
 
+    // Instanciation des classes
     p_ros = new ROS();
+    p_odos = new OdosPosition();
 
     // led_instance = new LED();
 
-    p_odos = new OdosPosition();
 
     Serial.begin(9600);
 
