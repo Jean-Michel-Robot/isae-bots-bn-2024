@@ -1,6 +1,7 @@
 #ifndef ASSERV_H
 #define ASSERV_H
 
+#include <Position2D.h>
 
 
 class asservPID
@@ -19,11 +20,17 @@ public:
 
     void updateError(float errorPos[3]);
 
+
     void updateCommand();
 
 
 private:
     float Rsb[2][2];  // matrice de passage du repère monde vers le repère 
+
+    void updatePosition();
+
+    Position2D robotPos;  // x, y, theta
+
 };
 
 #endif  // ASSERV_H

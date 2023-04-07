@@ -1,8 +1,18 @@
 
 #include "main_loop.hpp"
 
+#include <Arduino.h>
 
-ROS* ros_instance = NULL;
+#include <motors.hpp>
+// #include <QuadDecode.h>
+
+
+#include "ROS.hpp"
+#include "LED.hpp"
+#include "OdosPosition.hpp"
+
+
+ROS* p_ros = NULL;
 OdosPosition* p_odos = NULL;
 // LED* led_instance = NULL;
 
@@ -14,11 +24,11 @@ void setup() {
 
     motors_init();
 
-    ros_instance = new ROS();
+    p_ros = new ROS();
 
     // led_instance = new LED();
 
-    p_odos = new OdosPosition(ros_instance);
+    p_odos = new OdosPosition();
 
     Serial.begin(9600);
 
@@ -36,7 +46,7 @@ unsigned long timer_old = 0;
 void loop() {
 
 
-    ros_instance->loop();
+    p_ros->loop();
 
     p_odos->loop();
 

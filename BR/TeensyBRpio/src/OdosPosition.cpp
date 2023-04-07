@@ -2,6 +2,9 @@
 
 #include "defines.hpp"
 
+#include "ROS.hpp"
+#include "main_loop.hpp"
+
 #define METHOD 1 // choix de la méthode d'approximation
 
 #include <cmath>
@@ -20,7 +23,7 @@ Encoder knobRight(3, 4); //Encoder knobRight(32, 25);
 #error Odemeters method undefined
 #endif
 
-OdosPosition::OdosPosition(ROS* p_ros)
+OdosPosition::OdosPosition()
 {
 #ifdef ODO_HARD
   QuadDecode.resetCounter1();
@@ -29,8 +32,6 @@ OdosPosition::OdosPosition(ROS* p_ros)
   knobLeft.write(0);
   knobRight.write(0);
 #endif
-
-  this->p_ros_instance = p_ros;
 
   m_odoLeftCount  = 0;
   m_odoRightCount = 0;
@@ -124,7 +125,7 @@ void OdosPosition::loop()
 
     char msg[50];
     sprintf(msg, "Odos Counts L: %li R: %li", m_odoLeftCount, m_odoRightCount);
-    p_ros_instance->logPrint(DEBUG, msg);
+    p_ros->logPrint(LogType::DEBUG, msg);
   }
 
 }
@@ -176,7 +177,7 @@ Position2D OdosPosition::getRobotPosition() const
 }
 
 void OdosPosition::sendRobotPosition(){
-  p_ros_instance->sendCurrentPosition(this->getRobotPosition());
+  p_ros->sendCurrentPosition(this->getRobotPosition());
 }
 
 

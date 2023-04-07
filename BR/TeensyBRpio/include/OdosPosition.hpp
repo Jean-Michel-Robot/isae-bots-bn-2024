@@ -6,14 +6,14 @@
  */
 #ifndef __H_ODOS
 #define __H_ODOS
+
 #include "Position2D.h"
 #include "FilterLowPass.h"
-#include "ROS.hpp"  
 
 class OdosPosition
 {
 public :
-    OdosPosition(ROS* p_ros);
+    OdosPosition();
 
     void setPosition(Position2D pos);
     bool isRobotBlocked(float seuil);
@@ -44,7 +44,6 @@ private :
     float m_speedOdometerL = 0;
     unsigned long m_microsOfLastMesureSpeedOdometers = 0;
 
-    ROS* p_ros_instance;
     unsigned long m_timer_last_send;
 
 

@@ -2,16 +2,11 @@
 #define _SETUP_LOOP
 
 
-#include <Arduino.h>
+// forward declarations
+class ROS;
+class OdosPosition;
 
-#include <motors.hpp>
-// #include <QuadDecode.h>
-
-
-#include "ROS.hpp"
-#include "LED.hpp"
-#include "OdosPosition.hpp"
-
-extern ROS* ros_instance;
+extern ROS* p_ros;
+extern OdosPosition* p_odos;
 
 #endif

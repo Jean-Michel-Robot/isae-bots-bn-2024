@@ -2,18 +2,21 @@
 #define __H_POSITION2D
 #ifdef __linux__
 
-#include <string>
+// #include <string>
 // include a rajouter pour compiler en C++ sur un PC
 #include <cmath>
 #ifndef __SIMU__
-#define min(A,B) std::min(A,B)
-#define sq(A) ((A)*(A))
+// #define min(A,B) std::min(A,B)
+// #define sq(A) ((A)*(A))
 #else
 #include "../../../Simulation/Arduino_defines.h"
 #endif
 #else
 #include <Arduino.h>
 #endif
+
+#include <Arduino.h>
+
 
 /*
  * Point/position 2D avec methodes de calcul géométrique
@@ -34,8 +37,10 @@ public :
     void operator/=(float factor); // idem
     void operator=(Position2D const& pos); // operateur de copie
     float norm(){return s_dist(*this,Position2D{0.0,0.0,0.0});}
+
 #if defined(ARDUINO) or defined(__SIMU__)
     String toString() const;
+    
 #else
     std::string to_string()const;
 #endif

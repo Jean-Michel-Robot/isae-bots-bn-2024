@@ -3,8 +3,12 @@
 #include "BrSM.hpp"
 // #include "fsmlist.hpp"
 
-// for prints (peut etre pas que)
+#include <ROS.hpp>
+
 #include "main_loop.hpp"
+
+
+// for prints (peut etre pas que)
 
 // forward declarations
 class Forward;
@@ -52,7 +56,7 @@ class InitRot
 
       case GoalType::ORIENT :
       {
-        ros_instance->logPrint(LogType::INFO, "Transition : InitRot -> Arrived");
+        p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Arrived");
         
         transit<Arrived>();
         
@@ -60,7 +64,7 @@ class InitRot
 
       case GoalType::TRANS :
       {
-        ros_instance->logPrint(LogType::INFO, "Transition : InitRot -> Forward");
+        p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Forward");
 
         transit<Forward>();
       }
@@ -68,7 +72,7 @@ class InitRot
       default :
       {
         // error
-        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state InitRot");
+        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state InitRot");
       }
     }
 
@@ -93,14 +97,14 @@ class Forward
 
       case GoalType::TRANS :
       {
-        ros_instance->logPrint(LogType::INFO, "Transition : Forward -> Arrived");
+        p_ros->logPrint(LogType::INFO, "Transition : Forward -> Arrived");
 
         transit<Arrived>();
       }
 
       case GoalType::FINAL :
       {
-        ros_instance->logPrint(LogType::INFO, "Transition : Forward -> FinalRot");
+        p_ros->logPrint(LogType::INFO, "Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
       }
@@ -108,7 +112,7 @@ class Forward
       default :
       {
         // error
-        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state Forward");
+        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state Forward");
       }
     }
 
@@ -133,7 +137,7 @@ class FinalRot
 
       case GoalType::FINAL :
       {
-        ros_instance->logPrint(LogType::INFO, "Transition : FinalRot -> Arrived");
+        p_ros->logPrint(LogType::INFO, "Transition : FinalRot -> Arrived");
 
         transit<Arrived>();
       }
@@ -141,7 +145,7 @@ class FinalRot
       default :
       {
         // error
-        ros_instance->logPrint(LogType::ERROR, "Wrong goal type in state FinalRot");
+        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state FinalRot");
       }
     }
 
@@ -166,7 +170,7 @@ class Idle
     // store order
     this->currentOrder = e.order;
 
-    ros_instance->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
+    p_ros->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
   }
 };
 

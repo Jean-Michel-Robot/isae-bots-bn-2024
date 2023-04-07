@@ -1,6 +1,17 @@
 
 #include "asserv.hpp"
 
+// #include "ROS.hpp"
+// #include "OdosPosition.hpp"
+
+#include "main_loop.hpp"
+
+
+void asservPID::updatePosition() {
+
+    // robotPos = p_odos->
+
+}
 
 void asservPID::updateError(float errorPos[3])
 {
@@ -10,8 +21,10 @@ void asservPID::updateError(float errorPos[3])
 }
 
 
+
 void asservPID::updateCommand() {
 
     // cmdV[0] = vd + KP*errorPos[0]
      
 }
+
