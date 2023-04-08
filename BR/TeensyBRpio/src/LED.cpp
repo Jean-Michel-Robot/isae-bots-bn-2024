@@ -29,9 +29,10 @@ BlinkLED::BlinkLED(){
 }
 
 void BlinkLED::loop(){
-  if(millis() - m_timer > 500){
+  if(millis() - m_timer > 100){
     m_state = 1 - m_state;
     digitalWrite(13, m_state);
+    m_timer = millis();
   }
 }
 

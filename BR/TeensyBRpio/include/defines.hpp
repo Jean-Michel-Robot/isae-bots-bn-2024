@@ -3,7 +3,7 @@
 #define ODOS_METHOD 1
 #define ODO_HARD
 
-#define ODO_SEND_POSITION_TIMER 50 //ms
+#define ODO_SEND_POSITION_TIMER 100 //ms
 
 
 // Macros

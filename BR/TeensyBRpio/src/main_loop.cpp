@@ -32,6 +32,7 @@ void setup() {
 
     // led_instance = new LED();
 
+    pinMode(13, OUTPUT);
 
     Serial.begin(9600);
 
