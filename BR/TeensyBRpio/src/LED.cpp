@@ -22,3 +22,17 @@ void LED::color(int R, int G, int B)
   m_pixels->show(); // This sends the updated pixel color to the hardware.
 }
 
+
+
+BlinkLED::BlinkLED(){
+  m_state = 1;
+}
+
+void BlinkLED::loop(){
+  if(millis() - m_timer > 500){
+    m_state = 1 - m_state;
+    digitalWrite(13, m_state);
+  }
+}
+
+

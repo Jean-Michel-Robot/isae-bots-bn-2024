@@ -2,6 +2,7 @@
 #define __H_LED_RGB
 
 #include <Adafruit_NeoPixel.h>
+#include <Arduino.h>
 // #include "a_define.h"
 
 
@@ -18,5 +19,16 @@ public :
     void color(int R, int G, int B);
 protected :
     Adafruit_NeoPixel *m_pixels;
+};
+
+class BlinkLED{
+    public:
+        BlinkLED();
+        void loop();
+
+    private:
+        unsigned long  m_timer;
+        bool m_state;
+
 };
 #endif

@@ -14,6 +14,7 @@
 
 ROS* p_ros = NULL;
 OdosPosition* p_odos = NULL;
+BlinkLED* p_blink = NULL;
 // LED* led_instance = NULL;
 
 unsigned long begin = 0.0;
@@ -27,6 +28,7 @@ void setup() {
     // Instanciation des classes
     p_ros = new ROS();
     p_odos = new OdosPosition();
+    p_blink = new BlinkLED();
 
     // led_instance = new LED();
 
@@ -50,6 +52,7 @@ void loop() {
     p_ros->loop();
 
     p_odos->loop();
+    p_blink->loop();
 
 
 
