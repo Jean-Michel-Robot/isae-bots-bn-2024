@@ -26,7 +26,7 @@ def logCallback(data):
     global log
     log = data.data
 
-log_subcriber = rospy.Subscriber("logTotaleArray", Float32MultiArray, logCallback)
+log_subcriber = rospy.Subscriber("odos_count", Float32MultiArray, logCallback)
 
 def odosLigneDroite():
     
@@ -35,7 +35,7 @@ def odosLigneDroite():
     fileLigneDroite = open("logLigneDroite.log", "a")
 
     LR = []
-    Units = []
+    Units = [] 
 
     continueInput = 'y'
     keepInput = 'y'
@@ -43,12 +43,12 @@ def odosLigneDroite():
     while continueInput != 'n':
 
         raw_input("Press enter to start ")
-        Li = log[18]
-        Ri = log[19]
+        Li = log[0]
+        Ri = log[1]
         
         raw_input("Press enter to stop ")
-        Lf = log[18]
-        Rf = log[19]
+        Lf = log[0]
+        Rf = log[1]
 
         dL = Lf - Li
         dR = Rf - Ri + 1
@@ -82,20 +82,20 @@ def odosRotation(LR = 1.):
     while continueInput != 'n':
 
         raw_input("Press enter to start ")
-        Li = log[18]
-        Ri = log[19]
+        Li = log[0]
+        Ri = log[1]
 
         rotSpeed = input("Rotation speed ? ")
 
         raw_input("Press enter to rotate ")
-        sendOrder(rotSpeed,-rotSpeed,0,9)
+        sendOrder(rotSpeed,-rotSpeed,0,4)
         
         raw_input("Press enter to stop the rotation ")
-        sendOrder(0,0,0,9)
+        sendOrder(0,0,0,4)
 
         raw_input("Press enter to stop the measure ")
-        Lf = log[18]
-        Rf = log[19]
+        Lf = log[0]
+        Rf = log[1]
 
         dL = Lf - Li
         dR = (Rf - Ri)*LR + 1

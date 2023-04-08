@@ -7,20 +7,27 @@ from std_msgs.msg import Int16
 from geometry_msgs.msg import Pose2D
 
 from os import system
+import sys
+from time import time
 
 currentPosition = None
 log = None
 okVal = None
+lastUpdateTime = time() 
 
 rospy.init_node("node_info")
 
 def updateDisplay():
-    system('clear')
-    print(currentPosition)
-    print("okPosition : " + str(okVal))
-    if log != None:
-        for n in range(len(log)):
-            print(log[n])
+    global lastUpdateTime
+    if time() > (lastUpdateTime + 0.10):
+        string = str(currentPosition) + "\nokPosition : " + str(okVal)
+        for i in log:
+            string +="\n" + str(i)
+        system('clear')
+        print(string)
+        lastUpdateTime = time()
+
+
 
 def positionCallback(data):
     global currentPosition
