@@ -25,6 +25,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float32MultiArray.h>
+#include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/String.h>
 
 // #include "SM.hpp"
@@ -69,6 +70,11 @@ public :
     static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
     static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
 
+
+    std_msgs::Int32MultiArray m_odosTicks;
+    ros::Publisher m_odosTicksPub{ros::Publisher("odos_count", &m_odosTicks)};
+
+
 private :
     ros::Subscriber<geometry_msgs::Quaternion>   m_subOrder {ros::Subscriber<geometry_msgs::Quaternion>  ("nextPositionTeensy", s_goToCb)};
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsP{ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGainsPosition)};
@@ -81,6 +87,10 @@ private :
 
     geometry_msgs::Pose2D m_feedbackPosition;
     ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
+
+
+    
+
 
     // std_msgs::Int16 m_feedbackOk;
     // ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};

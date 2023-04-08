@@ -123,9 +123,10 @@ void OdosPosition::loop()
     m_timer_last_send = millis();
     this->sendRobotPosition();
 
-    char msg[50];
-    sprintf(msg, "Odos Counts L: %li R: %li", m_odoLeftCount, m_odoRightCount);
-    p_ros->logPrint(LogType::DEBUG, msg);
+    int32_t ticks[2] = {this->m_odoLeftCount, this->m_odoRightCount};
+    p_ros->m_odosTicks.data = ticks;
+    p_ros->m_odosTicks.data_length = 2;
+    p_ros->m_odosTicksPub.publish(&(p_ros->m_odosTicks));
   }
 
 }

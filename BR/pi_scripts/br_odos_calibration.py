@@ -3,7 +3,7 @@
 
 
 import rospy
-from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Int32MultiArray
 from geometry_msgs.msg import Quaternion
 
 from numpy import mean
@@ -26,7 +26,7 @@ def logCallback(data):
     global log
     log = data.data
 
-log_subcriber = rospy.Subscriber("odos_count", Float32MultiArray, logCallback)
+log_subcriber = rospy.Subscriber("odos_count", Int32MultiArray, logCallback)
 
 def odosLigneDroite():
     
