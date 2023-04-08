@@ -42,20 +42,20 @@ def odosLigneDroite():
 
     while continueInput != 'n':
 
-        raw_input("Press enter to start ")
+        input("Press enter to start ")
         Li = log[0]
         Ri = log[1]
         
-        raw_input("Press enter to stop ")
+        input("Press enter to stop ")
         Lf = log[0]
         Rf = log[1]
 
         dL = Lf - Li
         dR = Rf - Ri + 1
 
-        d = input("Enter distance (mm) : ")
+        d = float(input("Enter distance (mm) : "))
 
-        keepInput = raw_input("Keep this try ? [y/n] ")
+        keepInput = input("Keep this try ? [y/n] ")
         if(keepInput != 'n'):
             LR.append(dL/dR)
             Units.append(dL/d)
@@ -64,7 +64,7 @@ def odosLigneDroite():
         print("LR : " + str(LR) + ", avg = " + str(mean(LR)))
         print("Units : " + str(Units) + ", avg = " + str(mean(Units)))
         
-        continueInput = raw_input("Continue ? [y/n]")
+        continueInput = input("Continue ? [y/n]")
 
     return(mean(LR), mean(Units))
 
@@ -81,35 +81,35 @@ def odosRotation(LR = 1.):
 
     while continueInput != 'n':
 
-        raw_input("Press enter to start ")
+        input("Press enter to start ")
         Li = log[0]
         Ri = log[1]
 
-        rotSpeed = input("Rotation speed ? ")
+        #rotSpeed = input("Rotation speed ? ")
 
-        raw_input("Press enter to rotate ")
-        sendOrder(rotSpeed,-rotSpeed,0,4)
+        #input("Press enter to rotate ")
+        #sendOrder(rotSpeed,-rotSpeed,0,4)
         
-        raw_input("Press enter to stop the rotation ")
-        sendOrder(0,0,0,4)
+        #input("Press enter to stop the rotation ")
+        #sendOrder(0,0,0,4)
 
-        raw_input("Press enter to stop the measure ")
+        input("Press enter to stop the measure ")
         Lf = log[0]
         Rf = log[1]
 
         dL = Lf - Li
         dR = (Rf - Ri)*LR + 1
 
-        d = input("Enter distance (rad) : ")
+        d = float(input("Enter distance (rad) : "))
 
-        keepInput = raw_input("Keep this try ? [y/n] ")
+        keepInput = input("Keep this try ? [y/n] ")
         if(keepInput != 'n'):
             Ecarts.append((dL-dR)/d)
             fileRotation.write(str((d,Li,Ri,Lf,Rf)) + "\n")
 
         print("Ecarts : " + str(Ecarts) + ", avg = " + str(mean(Ecarts)))
         
-        continueInput = raw_input("Continue ? [y/n] ")
+        continueInput = input("Continue ? [y/n] ")
         
     return(mean(Ecarts))
 
