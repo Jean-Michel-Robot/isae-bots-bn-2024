@@ -16,6 +16,7 @@ LED::LED()
     m_pixels->begin(); // This initializes the NeoPixel library.
     // color(0,0,0);
 }
+
 void LED::color(int R, int G, int B)
 {
   m_pixels->setPixelColor(0, m_pixels->Color(R, G, B));
@@ -24,11 +25,14 @@ void LED::color(int R, int G, int B)
 
 
 
-BlinkLED::BlinkLED(){
+BlinkLED::BlinkLED()
+{
+  pinMode(13, OUTPUT);
   m_state = 1;
 }
 
-void BlinkLED::loop(){
+void BlinkLED::loop()
+{
   if(millis() - m_timer > 100){
     m_state = 1 - m_state;
     digitalWrite(13, m_state);

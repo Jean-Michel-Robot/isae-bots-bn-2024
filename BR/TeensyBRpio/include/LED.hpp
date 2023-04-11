@@ -27,7 +27,7 @@ class BlinkLED{
         void loop();
 
     private:
-        unsigned long  m_timer;
+        unsigned long m_timer;
         bool m_state;
 
 };

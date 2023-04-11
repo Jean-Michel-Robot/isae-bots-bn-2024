@@ -8,8 +8,6 @@
 #include "main_loop.hpp"
 
 
-// for prints (peut etre pas que)
-
 // forward declarations
 class Forward;
 class FinalRot;
