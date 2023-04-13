@@ -13,21 +13,26 @@ public :
     // TODO destructeur
 
     Position2D getPointAtTime(uint32_t current_time);
+    float* getVelAndTheta(uint32_t current_time);
 
-// protected :
+    // protected :
 
 
 private:
 
     uint32_t t_0;
+    float V;
 
-    uint32_t t_pred;
+    float theta0;
+    float Dtotale;
+
 
     // pour une traj générale on ne connait pas la distance totale
 
     // t_next = t_pred + 
 
-    //NOTE avec la distance totale de la ligne droite
+    //NOTE avec la distance totale de la ligne droite    //NOTE pour l'instant avec V constante
+
 
     // s = 0 a l'init, il va de 0 à 1
 
@@ -36,12 +41,27 @@ private:
     //NOTE : pour l'instant on peut mettre un vilain échelon de consigne et voir si l'asserv peut le gérer
 
     float u, v;  // coefs directeurs de la droite
+    float s;
     // x = x0 + u(t - t0)
     // y = y0 + v(t - t0)
     // theta = theta0 (constant)
 
+    //NOTE pour l'instant avec V constante
+    // d_current = V(t - t0)
+    // s = d_current/Dtotale
+
+    // if d_current < 10 (mm)
+    // if d_current > Dtotale - 10 (mm)
+
+    // Dtotale = sqrt((x0 - xdest)*(x0 - xdest) + (y0 - ydest)*(y0 - ydest))
+    // theta0 = atan2(ydest - y0,xdest - x0)
+
+
     float x0, y0, theta0;  // point initial de la droite
 
+    float s, d_current;
+
+    float vd;
 };
 
 #endif
