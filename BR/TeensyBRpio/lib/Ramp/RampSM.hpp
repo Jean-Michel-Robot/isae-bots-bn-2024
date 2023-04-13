@@ -4,15 +4,15 @@
 #include <tinyfsm/tinyfsm.hpp>
 #include <Events.hpp>
 
+#include "defines.hpp"
 
 enum RampState
 {
 	UNDEF = 0,
-	STILL = 1,
-	ACCEL = 2,
+	IDLE = 1,  // constant a 0 (pas de mouvement en cours)
+	SLOPE = 2,  // positive ou négative
 	CONSTANT = 3,
-	DECEL = 4,
-	BRAKE = 5,
+	BRAKE = 4,
 };
 
 
@@ -36,26 +36,30 @@ public:
     virtual void react(UpdateEvent const &);
 	virtual void react(GoalSpeedChangeEvent const &);
 
-	//   void         react(Alarm       const &);
-
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	RampState getCurrentState();
     void setAccelParam(float accelParam);
+    void setGoalSpeed(float goalSpeed);
+    void setT0(float t0);
     float getCurrentSpeed();
+
+    template<typename E>
+    void send_event(E const & event)
+    {
+        dispatch<E>(event);
+    }
 
 protected:
 
-	// static constexpr int initial_floor = 0;
-	// static int current_floor;
-	// static int dest_floor;
-
-	// static AxisStates axisStates;
-	// static OrderType currentOrder;
+    static float t0, t_current, t_start_slope, V_start_slope;
+    static float d;
 
     static float accelParam;  // pas en constexpr car potentiellement modifiable
+    static constexpr float accelBrake = ACCEL_BRAKE;
 
+    static float goalSpeed;
     static float currentSpeed;
 	static RampState currentState;
 };

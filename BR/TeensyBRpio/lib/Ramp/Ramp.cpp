@@ -1,9 +1,11 @@
 
 #include "Ramp.hpp"
 
+#include <ROS.hpp>
+#include "main_loop.hpp"
 
 
-Ramp::Ramp(uint32_t t_0, float accelParam) {
+Ramp::Ramp(float accelParam) {
     this->accelParam = accelParam;
 
     this->rampSM = RampSM();  // stack memory (instanciation without new keyword)
@@ -11,12 +13,54 @@ Ramp::Ramp(uint32_t t_0, float accelParam) {
     // init accel param using set function
     this->rampSM.setAccelParam(accelParam);
 
+    goalSpeedChangeEvent.newSpeed = 0.0;
+    updateEvent.currentTime = 0.0;
 }
 
 
-float Ramp::getOutputSpeed(uint32_t t_0) {
+void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
 
-    //TODO comment utiliser t_0 ?
-    
+    // Verify that the Ramp SM is in IDLE
+    if (rampSM.getCurrentState() != RampState::IDLE) {
+        
+        //TODO error
+        p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
+        return;
+    }
+
+    rampSM.setT0(t0);
+    rampSM.setGoalSpeed(goalSpeed);
+
+    // Start ramp by sending an updateEvent (not read)
+    rampSM.send_event(updateEvent);
+}
+
+
+
+
+float Ramp::updateRamp(uint32_t t) {
+
+    // check if ramp is running
+    //TODO
+
+    // send UpdateEvent
+    updateEvent.currentTime = t;
+    rampSM.send_event(updateEvent);
+
+    // return output speed (that has been modified by the ramp SM)
     return rampSM.getCurrentSpeed();
+}
+
+void Ramp::endRamp() {
+    rampSM.send_event(endRampEvent);
+}
+
+
+void Ramp::changeGoalSpeed(float goalSpeed) {
+    goalSpeedChangeEvent.newSpeed = goalSpeed;
+    rampSM.send_event(goalSpeedChangeEvent);
+}
+
+void Ramp::emergencyBrake() {
+    rampSM.send_event(emergencyBrakeEvent);
 }

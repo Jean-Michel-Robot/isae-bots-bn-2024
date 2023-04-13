@@ -30,6 +30,8 @@ struct ErrorEvent : tinyfsm::Event
 	int errorCode = 0;
 };
 
+struct EmergencyBrakeEvent : tinyfsm::Event {};
+
 
 // for ramp SM
 
@@ -37,6 +39,8 @@ struct GoalSpeedChangeEvent : tinyfsm::Event
 {
 	float newSpeed = 0;
 };
+
+struct EndRampEvent : tinyfsm::Event {};  // Signale qu'il faut rediriger la rampe vers 0
 
 
 

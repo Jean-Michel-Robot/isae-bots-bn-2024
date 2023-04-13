@@ -25,7 +25,7 @@ void setup() {
 
     motors_init();
 
-    // Instanciation des classes
+    // Instanciation des classes en dynamique
     p_ros = new ROS();
     p_odos = new OdosPosition();
     p_blink = new BlinkLED();
