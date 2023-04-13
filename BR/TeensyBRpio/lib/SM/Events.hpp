@@ -30,4 +30,20 @@ struct ErrorEvent : tinyfsm::Event
 	int errorCode = 0;
 };
 
+
+// for ramp SM
+
+struct GoalSpeedChangeEvent : tinyfsm::Event
+{
+	float newSpeed = 0;
+};
+
+
+
+// for any SM ?
+struct UpdateEvent : tinyfsm::Event
+{
+	float currentTime;
+};
+
 #endif  // EVENTS_H
