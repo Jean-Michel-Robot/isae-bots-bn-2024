@@ -4,6 +4,8 @@
 #include <Position2D.h>
 #include <LinearTrajectory.hpp>
 
+#include "defines.hpp"
+
 
 class asservPID
 {
@@ -17,12 +19,18 @@ public:
     float m_target[2];  // vd, omegad
 
     Position2D m_errorPos;  // ex, ey, etheta
-    float m_cmdV[2];  // v, omega
+    float m_botSpeed[2];  // v, omega of the center of the bot
 
-    LinearTrajectory m_trajectory;
+    float m_leftWheelSpeed;
+    float m_rightWheelSpeed;
+
+    LinearTrajectory* m_p_trajectory; // DEFINED AS POINTER ?????
+
+    asservPID(float k1, float k2, float k3);
 
     void updateError();
     void updateCommand();
+    void loop();
 
 
 private:

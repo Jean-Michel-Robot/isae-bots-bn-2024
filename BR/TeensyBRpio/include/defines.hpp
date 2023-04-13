@@ -5,6 +5,9 @@
 
 #define ODO_SEND_POSITION_TIMER 100 //ms
 
+/* ASSERV */
+#define WHEEL_DISTANCE 0.25 //m
+
 
 // Macros
 #define sign(value) (value > 0 ? 1 : -1)
