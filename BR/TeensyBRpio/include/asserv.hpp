@@ -2,6 +2,7 @@
 #define ASSERV_H
 
 #include <Position2D.h>
+#include <LinearTrajectory.hpp>
 
 
 class asservPID
@@ -9,27 +10,26 @@ class asservPID
 
 public:
 
-    float k1, k2, k3;
+    float m_k1, m_k2, m_k3;
 
-    float KP, KI, KD;
+    float m_KP, m_KI, m_KD;
 
-    float target[2];  // vd, omegad
+    float m_target[2];  // vd, omegad
 
-    float errorPos[3];  // ex, ey, etheta
-    float cmdV[2];  // v, omega
+    Position2D m_errorPos;  // ex, ey, etheta
+    float m_cmdV[2];  // v, omega
 
-    void updateError(float errorPos[3]);
+    LinearTrajectory m_trajectory;
 
-
+    void updateError();
     void updateCommand();
 
 
 private:
-    float Rsb[2][2];  // matrice de passage du repère monde vers le repère 
 
-    void updatePosition();
+    float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère 
 
-    Position2D robotPos;  // x, y, theta
+    // Position2D robotPos;  // x, y, theta
 
 };
 
