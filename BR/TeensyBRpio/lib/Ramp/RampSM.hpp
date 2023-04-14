@@ -42,6 +42,8 @@ public:
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */
 
+	void setCurrentState(RampState rampState);
+
 	RampState getCurrentState();
     void setAccelParam(float accelParam);
     void setGoalSpeed(float goalSpeed);

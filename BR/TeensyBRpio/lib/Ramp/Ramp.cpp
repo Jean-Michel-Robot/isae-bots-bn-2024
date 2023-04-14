@@ -5,7 +5,7 @@
 // #include "main_loop.hpp"
 
 
-Ramp::Ramp(float accelParam) {
+Ramp::Ramp(float accelParam = 0.0) {
     this->accelParam = accelParam;
 
     this->rampSM = RampSM();  // stack memory (instanciation without new keyword)
@@ -25,6 +25,7 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
     if (rampSM.getCurrentState() != RampState::IDLE) {
         
         //TODO error
+        Serial.println("ERROR : Tried to begin a ramp that is not in IDLE state");
         // p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
         return;
     }

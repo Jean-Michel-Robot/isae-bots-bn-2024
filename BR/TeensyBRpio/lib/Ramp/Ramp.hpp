@@ -21,6 +21,7 @@ class Ramp
 {
 public :
     Ramp(float accelParam);
+    Ramp() = default;
     // TODO destructeur
 
     void beginRamp(uint32_t t0, float goalSpeed);

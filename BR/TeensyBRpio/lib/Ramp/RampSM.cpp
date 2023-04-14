@@ -36,14 +36,18 @@ float RampSM::getCurrentSpeed() {
     return currentSpeed;
 }
 
-
+void RampSM::setCurrentState(RampState rampState) {
+  currentState = rampState;
+}
 
 // Forward declarations
-class Slope;
 class Constant;
 class RampEnd;
 class Brake;
 
+
+
+// RampSM::t_start_slope = 0.0;
 
 
 // ----------------------------------------------------------------------------
@@ -52,25 +56,7 @@ class Brake;
 
 
 
-// ----------------------------------------------------------------------------
-// State: Idle
-//
-class Idle
-: public RampSM
-{
-  void entry() override {
-    currentState = RampState::IDLE;
-  }
 
-  void react(BeginRampEvent const & e) override {  // on commence juste la rampe
-    
-    Serial.println("Starting new ramp");
-    // p_ros->logPrint(LogType::INFO, "Starting new ramp");
-    t0 = e.t0;  // set de t0
-    transit<Slope>();
-  }
-
-};
 
 
 // ----------------------------------------------------------------------------
@@ -80,7 +66,8 @@ class Slope
 : public RampSM
 {
   void entry() override {
-    currentState = RampState::SLOPE;
+    // currentState = RampState::SLOPE;
+    setCurrentState(RampState::SLOPE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -92,6 +79,7 @@ class Slope
     // t_current = e.currentTime;
 
     if (e.currentTime - t_start_slope < 0) {
+      Serial.println("Ecart de temps negatif");
       // p_ros->logPrint(LogType::ERROR, "Ecart de temps negatif"); //TOTEST pas de valeurs négatives
     }
 
@@ -101,6 +89,7 @@ class Slope
       currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope);  // en ASC
     
       if (currentSpeed > goalSpeed - RAMP_EPSILON) {
+        Serial.println("Reached constant part of upwards slope");
         // p_ros->logPrint(LogType::INFO, "Reached constant part of upwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
@@ -111,6 +100,7 @@ class Slope
       currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
     
       if (currentSpeed < goalSpeed + RAMP_EPSILON) {
+        Serial.println("Reached constant part of downwards slope");
         // p_ros->logPrint(LogType::INFO, "Reached constant part of downwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
@@ -131,6 +121,7 @@ class Slope
   void react(EndRampEvent const & e) override {
     
     // transition
+    Serial.println("Ending ramp from slope");
     // p_ros->logPrint(LogType::INFO, "Ending ramp from slope");
     transit<RampEnd>();
   }
@@ -139,6 +130,7 @@ class Slope
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
+    Serial.println("Goal speed changed in ramp slope");
     // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp slope");
 
     transit<Slope>();  //TOTEST est ce que avec le UpdateEvent on passe bien qu'une fois dans entry ?
@@ -146,6 +138,7 @@ class Slope
 
   void react(EmergencyBrakeEvent const & e) override {
 
+    Serial.println("Emergency brake in ramp slope");
     // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp slope");
     transit<Brake>();
   };
@@ -160,7 +153,8 @@ class Constant
 : public RampSM
 {
   void entry() override {
-    currentState = RampState::CONSTANT;
+    // currentState = RampState::CONSTANT;
+    setCurrentState(RampState::CONSTANT);
   }
 
   void react(UpdateEvent const & e) override {
@@ -171,6 +165,7 @@ class Constant
   void react(EndRampEvent const & e) override {
     
     // transition
+    Serial.println("Ending ramp from constant");
     // p_ros->logPrint(LogType::INFO, "Ending ramp from constant");
     transit<RampEnd>();
   }
@@ -178,6 +173,7 @@ class Constant
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
+    Serial.println("Goal speed changed in ramp constant");
     // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp constant");
 
     transit<Slope>();  // go back to slope if the goal speed is changed
@@ -185,13 +181,33 @@ class Constant
 
   void react(EmergencyBrakeEvent const & e) override {
 
+    Serial.println("Emergency brake in ramp constant");
     // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp constant");
     transit<Brake>();
   };
 };
 
 
+// ----------------------------------------------------------------------------
+// State: Idle
+//
+class Idle
+: public RampSM
+{
+  void entry() override {
+    // currentState = RampState::IDLE;
+    setCurrentState(RampState::IDLE);
+  }
 
+  void react(BeginRampEvent const & e) override {  // on commence juste la rampe
+    
+    Serial.println("Starting new ramp");
+    // p_ros->logPrint(LogType::INFO, "Starting new ramp");
+    t0 = e.t0;  // set de t0
+    transit<Slope>();
+  }
+
+};
 
 // ----------------------------------------------------------------------------
 // State: RampEnd
@@ -200,7 +216,8 @@ class RampEnd
 : public RampSM
 {
   void entry() override {
-    currentState = RampState::RAMP_END;
+    // currentState = RampState::RAMP_END;
+    setCurrentState(RampState::RAMP_END);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -212,6 +229,8 @@ class RampEnd
     currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
   
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
+
+      Serial.println("Ramp finished ending");
       // p_ros->logPrint(LogType::INFO, "Ramp finished ending");
       currentSpeed = 0.0;
       transit<Idle>();
@@ -228,7 +247,8 @@ class Brake
 : public RampSM
 {
   void entry() override {
-    currentState = RampState::BRAKE;
+    // currentState = RampState::BRAKE;
+    setCurrentState(RampState::BRAKE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -254,26 +274,34 @@ class Brake
 
 
 
-
-
 // ----------------------------------------------------------------------------
 // Base state: default implementations
 //
 
 void RampSM::react(GoalSpeedChangeEvent const &) {
-  // std::cout << "Order event ignored" << std::endl;
 }
 
 void RampSM::react(UpdateEvent const &) {
-    
+}
+
+void RampSM::react(BeginRampEvent const &) {
+}
+
+void RampSM::react(EndRampEvent const &) {
+}
+
+void RampSM::react(EmergencyBrakeEvent const &) {
 }
 
 
-RampState RampSM::getCurrentState() {
-  return currentState;
-}
+// Variable initializations (so that every state knows what it is)
 
-
+float RampSM::t_start_slope = 0.0;
+float RampSM::V_start_slope = 0.0;
+float RampSM::goalSpeed = 0.0;
+float RampSM::accelParam = 0.0;
+float RampSM::currentSpeed = 0.0;
+RampState RampSM::currentState = RampState::IDLE;
 
 // ----------------------------------------------------------------------------
 // Initial state definition
