@@ -9,14 +9,15 @@
 LinearTrajectory::LinearTrajectory()
 {
 
-    V = 0.1;
+    goalSpeed = 0.1;
     vd = 0.0;
 
     d_current = 0.0;
 
     float accelParam = 0.2;
 
-    rampSpeed = new Ramp(accelParam);
+    rampSpeed = Ramp(accelParam);  //TODO : static object or change it to dynamic ?
+                                   // Or LinearTrajectory is dynamic but this is static ?
 }
 
 
@@ -32,8 +33,10 @@ void LinearTrajectory::setDest(float x0, float y0, float xdest, float ydest) {
 }
 
 
-void LinearTrajectory::beginTrajectory(uint32_t t_0) {
-    this->t_0 = t_0;
+void LinearTrajectory::beginTrajectory(uint32_t t0) {
+    this->t0 = t0;
+
+    rampSpeed.beginRamp(t0, goalSpeed);
 
 }
 
@@ -46,7 +49,7 @@ Position2D LinearTrajectory::getPointAtTime(uint32_t current_time)  //TODO gener
     // On récupère V(t) de la rampe
 
 
-    d_current = V * (current_time - t_0);
+    d_current = goalSpeed * (current_time - t0);
 
     s = d_current / Dtotale;
 
@@ -56,7 +59,7 @@ Position2D LinearTrajectory::getPointAtTime(uint32_t current_time)  //TODO gener
 }
 
 float* LinearTrajectory::getVelAndTheta(uint32_t current_time) {
-    d_current = V*(current_time - t_0);
+    d_current = goalSpeed*(current_time - t0);
 
 
     // float res[2] = {vd, theta0};

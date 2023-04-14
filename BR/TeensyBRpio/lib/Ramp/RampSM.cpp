@@ -275,7 +275,7 @@ class Brake
 
 
 // ----------------------------------------------------------------------------
-// Base state: default implementations
+// Base state: default implementations (need all events here)
 //
 
 void RampSM::react(GoalSpeedChangeEvent const &) {

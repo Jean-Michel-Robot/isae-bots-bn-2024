@@ -15,7 +15,7 @@ public :
 
     void setDest(float x0, float y0, float xdest, float ydest);
 
-    void beginTrajectory(uint32_t t_0);
+    void beginTrajectory(uint32_t t0);
 
     Position2D getPointAtTime(uint32_t current_time);
     float* getVelAndTheta(uint32_t current_time);
@@ -28,12 +28,12 @@ private:
 
     float velTheta[2];
 
-    Ramp* rampSpeed;
+    Ramp rampSpeed;
 
     float x0, y0, xdest, ydest;
     float theta0;
-    uint32_t t_0;
-    float V;
+    uint32_t t0;
+    float goalSpeed;
 
     float Dtotale;
     float s;
