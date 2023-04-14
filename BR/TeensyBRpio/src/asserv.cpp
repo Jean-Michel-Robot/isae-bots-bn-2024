@@ -4,7 +4,7 @@
 // #include "ROS.hpp"
 // #include "OdosPosition.hpp"
 
-#include <ROS.hpp>
+#include "ROS.hpp"
 #include "OdosPosition.hpp"
 
 
@@ -31,7 +31,7 @@ void asservPID::updateError() {
 
 void asservPID::updateCommand() {
 
-    m_target = m_p_trajectory->getVelAndTheta(micros());
+    // m_target = m_p_trajectory->getVelAndTheta(micros());  //TODO
 
     float vd = m_target[0];
     float omega_d = m_target[1];

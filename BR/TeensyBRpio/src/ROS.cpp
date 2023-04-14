@@ -49,6 +49,7 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 { // goToCallBack
     if (int(positionMsg.w) != 4) // has to be direct command
         return;
+        
 
     float cmd_M0 = positionMsg.x;
     float cmd_M1 = positionMsg.y;

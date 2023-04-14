@@ -4,7 +4,6 @@
 #include <tinyfsm/tinyfsm.hpp>
 #include <Events.hpp>
 
-#include "defines.hpp"
 
 enum RampState
 {
@@ -60,8 +59,7 @@ protected:
     static float t0, t_start_slope, V_start_slope;  //t_current si on a besoin du dt
     static float d;
 
-    static float accelParam;  // pas en constexpr car potentiellement modifiable
-    static constexpr float accelBrake = ACCEL_BRAKE;
+    static float accelParam;  // pas en define car potentiellement modifiable
 
     static float goalSpeed;
     static float currentSpeed;

@@ -4,6 +4,7 @@
 // #include <Arduino.h>
 // #include "a_define.h"
 #include <Position2D.h>
+#include <Ramp.hpp>
 
 
 class LinearTrajectory
@@ -15,15 +16,20 @@ public :
     Position2D getPointAtTime(uint32_t current_time);
     float* getVelAndTheta(uint32_t current_time);
 
+
     // protected :
 
 
 private:
 
+    float velTheta[2];
+
+    // Ramp rampSpeed;
+
+
     uint32_t t_0;
     float V;
 
-    float theta0;
     float Dtotale;
 
 
@@ -59,7 +65,7 @@ private:
 
     float x0, y0, theta0;  // point initial de la droite
 
-    float s, d_current;
+    float d_current;
 
     float vd;
 
@@ -110,6 +116,8 @@ private:
 
     On peut alors calculer le nouveau s :
     s(t) = sprev + ds(t)
+    OU
+    s(t) = (d_parc + d(t)) / Dtotale
 
     Si s devient supérieur à 1 on le ramène à 1 et on repasse en Idle
     Il faudrait un moyen de l'amener à 1 s'il a tendance à s'arrêter avant

@@ -1,10 +1,12 @@
 
 #include "RampSM.hpp"
 
-#include <ROS.hpp>
-#include "main_loop.hpp"
+// #include <ROS.hpp>
+// #include "main_loop.hpp"
 
-#include "defines.hpp"
+#include <Arduino.h>
+
+#include "RampDefines.hpp"
 
 // Constructor
 RampSM::RampSM() {
@@ -36,6 +38,12 @@ float RampSM::getCurrentSpeed() {
 
 
 
+// Forward declarations
+class Slope;
+class Constant;
+class RampEnd;
+class Brake;
+
 
 
 // ----------------------------------------------------------------------------
@@ -56,7 +64,8 @@ class Idle
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
     
-    p_ros->logPrint(LogType::INFO, "Starting new ramp");
+    Serial.println("Starting new ramp");
+    // p_ros->logPrint(LogType::INFO, "Starting new ramp");
     t0 = e.t0;  // set de t0
     transit<Slope>();
   }
@@ -83,7 +92,7 @@ class Slope
     // t_current = e.currentTime;
 
     if (e.currentTime - t_start_slope < 0) {
-      p_ros->logPrint(LogType::ERROR, "Ecart de temps negatif"); //TOTEST
+      // p_ros->logPrint(LogType::ERROR, "Ecart de temps negatif"); //TOTEST pas de valeurs négatives
     }
 
     // update currentSpeed (no need for previous currentSpeed)
@@ -92,7 +101,7 @@ class Slope
       currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope);  // en ASC
     
       if (currentSpeed > goalSpeed - RAMP_EPSILON) {
-        p_ros->logPrint(LogType::INFO, "Reached constant part of upwards slope");
+        // p_ros->logPrint(LogType::INFO, "Reached constant part of upwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
       }
@@ -102,7 +111,7 @@ class Slope
       currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
     
       if (currentSpeed < goalSpeed + RAMP_EPSILON) {
-        p_ros->logPrint(LogType::INFO, "Reached constant part of downwards slope");
+        // p_ros->logPrint(LogType::INFO, "Reached constant part of downwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
       }
@@ -122,7 +131,7 @@ class Slope
   void react(EndRampEvent const & e) override {
     
     // transition
-    p_ros->logPrint(LogType::INFO, "Ending ramp from slope");
+    // p_ros->logPrint(LogType::INFO, "Ending ramp from slope");
     transit<RampEnd>();
   }
 
@@ -130,14 +139,14 @@ class Slope
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp slope");
+    // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp slope");
 
     transit<Slope>();  //TOTEST est ce que avec le UpdateEvent on passe bien qu'une fois dans entry ?
   };
 
   void react(EmergencyBrakeEvent const & e) override {
 
-    p_ros->logPrint(LogType::WARN, "Emergency brake in ramp slope");
+    // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp slope");
     transit<Brake>();
   };
 };
@@ -162,21 +171,21 @@ class Constant
   void react(EndRampEvent const & e) override {
     
     // transition
-    p_ros->logPrint(LogType::INFO, "Ending ramp from constant");
+    // p_ros->logPrint(LogType::INFO, "Ending ramp from constant");
     transit<RampEnd>();
   }
 
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp constant");
+    // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp constant");
 
     transit<Slope>();  // go back to slope if the goal speed is changed
   };
 
   void react(EmergencyBrakeEvent const & e) override {
 
-    p_ros->logPrint(LogType::WARN, "Emergency brake in ramp constant");
+    // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp constant");
     transit<Brake>();
   };
 };
@@ -203,7 +212,7 @@ class RampEnd
     currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
   
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
-      p_ros->logPrint(LogType::INFO, "Ramp finished ending");
+      // p_ros->logPrint(LogType::INFO, "Ramp finished ending");
       currentSpeed = 0.0;
       transit<Idle>();
     }
@@ -231,8 +240,8 @@ class Brake
     currentSpeed = V_start_slope - ACCEL_BRAKE * (e.currentTime - t_start_slope);
 
     // transition to Idle
-    if (currentSpeed <= 0) {
-      currentSpeed = 0;
+    if (currentSpeed < 0.0 + RAMP_EPSILON) {
+      currentSpeed = 0.0;
       transit<Idle>();
     }
   }
