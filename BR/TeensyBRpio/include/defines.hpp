@@ -17,5 +17,6 @@
 
 #define ODO_SEND_POSITION_TIMER 100 //ms
 
-
-#define ACCEL_BRAKE 0.1 // m/s^-2
+// Ramps
+#define ACCEL_BRAKE 0.5  // m/s^-2
+#define RAMP_EPSILON 0.001  // epsilon for values to be considered the same

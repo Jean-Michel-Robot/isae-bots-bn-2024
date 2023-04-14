@@ -50,4 +50,9 @@ struct UpdateEvent : tinyfsm::Event
 	float currentTime;
 };
 
+struct BeginRampEvent : tinyfsm::Event
+{
+	float t0;
+};
+
 #endif  // EVENTS_H

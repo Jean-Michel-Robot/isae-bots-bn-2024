@@ -37,6 +37,7 @@ private :
 
     RampSM rampSM;
 
+    BeginRampEvent beginRampEvent;
     GoalSpeedChangeEvent goalSpeedChangeEvent;
     EndRampEvent endRampEvent;
     UpdateEvent updateEvent;

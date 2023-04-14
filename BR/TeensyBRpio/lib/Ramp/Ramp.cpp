@@ -13,6 +13,7 @@ Ramp::Ramp(float accelParam) {
     // init accel param using set function
     this->rampSM.setAccelParam(accelParam);
 
+    beginRampEvent.t0 = 0.0;
     goalSpeedChangeEvent.newSpeed = 0.0;
     updateEvent.currentTime = 0.0;
 }
@@ -28,11 +29,12 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
         return;
     }
 
-    rampSM.setT0(t0);
+    // rampSM.setT0(t0);
     rampSM.setGoalSpeed(goalSpeed);
 
-    // Start ramp by sending an updateEvent (not read)
-    rampSM.send_event(updateEvent);
+    // Start ramp by sending an updateEvent which sets t0 value
+    beginRampEvent.t0 = t0;
+    rampSM.send_event(beginRampEvent);
 }
 
 
