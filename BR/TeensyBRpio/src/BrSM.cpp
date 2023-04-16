@@ -152,14 +152,16 @@ class FinalRot
 
 
 // ----------------------------------------------------------------------------
-// State: Idle
+// State: BR_Idle
 //
 
-class Idle
+class BR_Idle
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::IDLE;
+        digitalWrite(13, 1);
+
+    currentState = BRState::BR_IDLE;
   }
 
   void react(OrderEvent const & e) override {
@@ -168,7 +170,7 @@ class Idle
     // store order
     this->currentOrder = e.order;
 
-    p_ros->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
+    p_ros->logPrint(LogType::INFO, "Transition : BR_Idle -> InitRot");
   }
 };
 
@@ -203,4 +205,4 @@ OrderType BrSM::currentOrder = {0};
 // Initial state definition
 //
 BRState BrSM::currentState = BRState::UNDEF;
-FSM_INITIAL_STATE(BrSM, Idle)
+FSM_INITIAL_STATE(BrSM, BR_Idle)

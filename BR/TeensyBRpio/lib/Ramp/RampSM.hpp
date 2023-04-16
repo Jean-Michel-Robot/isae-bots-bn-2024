@@ -8,7 +8,7 @@
 enum RampState
 {
 	UNDEF = 0,
-	IDLE = 1,  // constant a 0 (pas de mouvement en cours)
+	RAMP_IDLE = 1,  // constant a 0 (pas de mouvement en cours)
 	SLOPE = 2,  // positive ou négative
 	CONSTANT = 3,
 	RAMP_END = 4,

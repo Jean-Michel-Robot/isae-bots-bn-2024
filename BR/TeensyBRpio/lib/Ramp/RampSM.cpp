@@ -14,7 +14,7 @@ RampSM::RampSM() {
     this->currentSpeed = 0;
 
     // init state var
-    this->currentState = RampState::IDLE;
+    this->currentState = RampState::RAMP_IDLE;
 
     // this->t_current = 0.0;
     this->t_start_slope = 0.0;
@@ -28,9 +28,14 @@ void RampSM::setGoalSpeed(float goalSpeed) {
     this->goalSpeed = goalSpeed;
 }
 
+
 // void RampSM::setT0(float t0) {
 //     this->t0 = t0;
 // }
+
+RampState RampSM::getCurrentState() {
+    return currentState;
+}
 
 float RampSM::getCurrentSpeed() {
     return currentSpeed;
@@ -189,14 +194,18 @@ class Constant
 
 
 // ----------------------------------------------------------------------------
-// State: Idle
+// State: RampIdle
 //
-class Idle
+class RampIdle
 : public RampSM
 {
   void entry() override {
-    // currentState = RampState::IDLE;
-    setCurrentState(RampState::IDLE);
+
+
+    Serial.println("ICI dans entry");
+    delay(100);
+    // currentState = RampState::RAMP_IDLE;
+    // setCurrentState(RampState::RAMP_IDLE);
   }
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
@@ -233,7 +242,7 @@ class RampEnd
       Serial.println("Ramp finished ending");
       // p_ros->logPrint(LogType::INFO, "Ramp finished ending");
       currentSpeed = 0.0;
-      transit<Idle>();
+      transit<RampIdle>();
     }
   }
 
@@ -247,8 +256,8 @@ class Brake
 : public RampSM
 {
   void entry() override {
-    // currentState = RampState::BRAKE;
-    setCurrentState(RampState::BRAKE);
+    currentState = RampState::BRAKE;
+    // setCurrentState(RampState::BRAKE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -259,10 +268,10 @@ class Brake
     // direction is down
     currentSpeed = V_start_slope - ACCEL_BRAKE * (e.currentTime - t_start_slope);
 
-    // transition to Idle
+    // transition to RampIdle
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
       currentSpeed = 0.0;
-      transit<Idle>();
+      transit<RampIdle>();
     }
   }
 
@@ -296,14 +305,15 @@ void RampSM::react(EmergencyBrakeEvent const &) {
 
 // Variable initializations (so that every state knows what it is)
 
+float RampSM::t0 = 0.0;
 float RampSM::t_start_slope = 0.0;
 float RampSM::V_start_slope = 0.0;
 float RampSM::goalSpeed = 0.0;
 float RampSM::accelParam = 0.0;
 float RampSM::currentSpeed = 0.0;
-RampState RampSM::currentState = RampState::IDLE;
+RampState RampSM::currentState = RampState::RAMP_IDLE;
 
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-FSM_INITIAL_STATE(RampSM, Idle)
+FSM_INITIAL_STATE(RampSM, RampIdle)

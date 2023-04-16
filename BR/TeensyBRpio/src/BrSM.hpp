@@ -13,7 +13,7 @@ enum BRState
 {
 	UNDEF = 0,
 
-	IDLE = 1,
+	BR_IDLE = 1,
 	INITROT = 2,
 	FORWARD = 3,
 	FINALROT = 4,
