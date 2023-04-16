@@ -5,9 +5,12 @@
 // forward declarations
 class ROS;
 class OdosPosition;
+class LinearTrajectory;
 
-// pointers to the classes, accessible from anywhere in the code
+// pointers to the classes, accessible from anywhere in the src code
 extern ROS* p_ros;
 extern OdosPosition* p_odos;
+
+extern LinearTrajectory *p_linearTrajectory;
 
 #endif

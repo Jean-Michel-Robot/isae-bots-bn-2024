@@ -8,22 +8,26 @@
 Ramp::Ramp(float accelParam = 0.0) {
     this->accelParam = accelParam;
 
-    this->rampSM = RampSM();  // stack memory (instanciation without new keyword)
+    rampSM = RampSM();  // stack memory (instanciation without new keyword)
+
 
     // init accel param using set function
-    this->rampSM.setAccelParam(accelParam);
+    rampSM.setAccelParam(accelParam);
 
     beginRampEvent.t0 = 0.0;
     goalSpeedChangeEvent.newSpeed = 0.0;
     updateEvent.currentTime = 0.0;
+
+    rampSM.start();
 }
 
 
 void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
 
     // Verify that the Ramp SM is in IDLE
-    if (rampSM.getCurrentState() != RampState::IDLE) {
-        
+    if (rampSM.getCurrentState() != RampState::RAMP_IDLE)
+    {
+
         //TODO error
         Serial.println("ERROR : Tried to begin a ramp that is not in IDLE state");
         // p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
@@ -35,7 +39,12 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
 
     // Start ramp by sending an updateEvent which sets t0 value
     beginRampEvent.t0 = t0;
+    Serial.println("here1");
+
     rampSM.send_event(beginRampEvent);
+
+    Serial.println("here2");
+
 }
 
 
