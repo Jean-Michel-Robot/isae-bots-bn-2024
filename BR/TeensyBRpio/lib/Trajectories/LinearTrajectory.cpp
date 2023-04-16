@@ -9,7 +9,7 @@
 LinearTrajectory::LinearTrajectory()
 {
 
-    goalSpeed = 0.1;
+    goalSpeed = 1.0;
     vd = 0.0;
 
     d_current = 0.0;
@@ -47,7 +47,7 @@ Position2D LinearTrajectory::getPointAtTime(uint32_t current_time)  //TODO gener
 {
 
     // On récupère V(t) de la rampe
-
+    float current_speed = rampSpeed.updateRamp(current_time);
 
     d_current = goalSpeed * (current_time - t0);
 
@@ -58,10 +58,11 @@ Position2D LinearTrajectory::getPointAtTime(uint32_t current_time)  //TODO gener
     return pos;
 }
 
-float* LinearTrajectory::getVelAndTheta(uint32_t current_time) {
+float LinearTrajectory::getVelAndTheta(uint32_t current_time) {
     d_current = goalSpeed*(current_time - t0);
 
+    float current_speed = rampSpeed.updateRamp(current_time);
 
     // float res[2] = {vd, theta0};
-    return nullptr;
+    return current_speed;
 }

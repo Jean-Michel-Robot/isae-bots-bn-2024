@@ -58,6 +58,10 @@ unsigned long timer_old = 0;
 // int32_t odoL;
 // int32_t odoR;
 
+uint32_t loop_timer = 0.0;
+
+float current_speed;
+
 Position2D trajPoint = 0;
 
 void loop() {
@@ -70,21 +74,27 @@ void loop() {
 
     uint32_t t = micros();
 
-    trajPoint = p_linearTrajectory->getPointAtTime(t);
-    Serial.println(trajPoint.toString());
 
-    // led_on = !led_on;
-    // if (led_on) {
-    //     digitalWrite(LED_BUILTIN, HIGH);
-    //     // led_instance->color(255, 255, 255);
-    //     }
-    // else {
-    //     digitalWrite(LED_BUILTIN, LOW);
-    //     // led_instance->color(0, 0, 0);
-    //     }
+    // trajPoint = p_linearTrajectory->getPointAtTime(t);
+    // Serial.println(trajPoint.toString());
+
+    current_speed = p_linearTrajectory->getVelAndTheta(t);
+
+    // Periodic display for test
+    if (millis() - loop_timer > 100) {
+        Serial.println(current_speed);
+        loop_timer = millis();
+    }
 
 
-    // while (millis() - begin < 100) {}  // période de 10 Hz
-    // begin = millis();
+    // Commands for debugging
+    if (Serial.available()) {
+        Serial.println("good");
+        char c = Serial.read();
 
+        // Run calibration sequence
+        if (c == 't') {
+            Serial.println("Bien joue");
+        }
+    }
 }

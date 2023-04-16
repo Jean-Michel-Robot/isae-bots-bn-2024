@@ -18,7 +18,7 @@ public :
     void beginTrajectory(uint32_t t0);
 
     Position2D getPointAtTime(uint32_t current_time);
-    float* getVelAndTheta(uint32_t current_time);
+    float getVelAndTheta(uint32_t current_time);
 
 
     // protected :

@@ -27,7 +27,6 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
     // Verify that the Ramp SM is in IDLE
     if (rampSM.getCurrentState() != RampState::RAMP_IDLE)
     {
-
         //TODO error
         Serial.println("ERROR : Tried to begin a ramp that is not in IDLE state");
         // p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
@@ -39,12 +38,8 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
 
     // Start ramp by sending an updateEvent which sets t0 value
     beginRampEvent.t0 = t0;
-    Serial.println("here1");
 
     rampSM.send_event(beginRampEvent);
-
-    Serial.println("here2");
-
 }
 
 
@@ -60,6 +55,7 @@ float Ramp::updateRamp(uint32_t t) {
     rampSM.send_event(updateEvent);
 
     // return output speed (that has been modified by the ramp SM)
+
     return rampSM.getCurrentSpeed();
 }
 

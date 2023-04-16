@@ -91,7 +91,7 @@ class Slope
     // update currentSpeed (no need for previous currentSpeed)
 
     if (V_start_slope < goalSpeed - RAMP_EPSILON) {
-      currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope);  // en ASC
+      currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope)*0.000001;  // en ASC
     
       if (currentSpeed > goalSpeed - RAMP_EPSILON) {
         Serial.println("Reached constant part of upwards slope");
