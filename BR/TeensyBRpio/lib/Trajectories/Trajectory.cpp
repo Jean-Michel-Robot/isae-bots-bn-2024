@@ -6,12 +6,15 @@
 
 Trajectory::Trajectory()
 {
+    x = 0.0; y = 0.0; theta = 0.0; V = 0.0; omega = 0.0;
+    x0 = 0.0; y0 = 0.0; theta0 = 0.0;
 
     goalSpeed = 1.0;  // m/s  //TODO à set par le HN
     accelParam = 1.0;  // m/s^2  //TODO à set par le HN
     currentSpeed = 0.0;
 
     d_current = 0.0;
+    Dtotale = 0.0;
 
     float accelParam = 0.2;
 
@@ -19,10 +22,14 @@ Trajectory::Trajectory()
                                    // Or LinearTrajectory is dynamic but this is static ?
 }
 
-
+void Trajectory::setRobotPos(float x0, float y0, float theta0) {
+    this->x0 = x0; this->y0 = y0; this->theta0 = theta0;
+}
 
 void Trajectory::beginTrajectory(uint32_t t0) {
     this->t0 = t0;
+
+    x = x0; y = y0; theta = theta0;
 
     current_time = t0;
     d_parc = 0.0;
@@ -83,7 +90,7 @@ void Trajectory::beginTrajectory(uint32_t t0) {
 
 
 // // Update un array de 5 floats [x, y, theta, V, omega] à un temps t
-void Trajectory::calculatePointAtTime(uint32_t current_time, float *q)
+void Trajectory::updateTrajectory(uint32_t current_time)
 {
     // Calcul de dt
     float dt = current_time - this->current_time;
@@ -122,13 +129,24 @@ void Trajectory::calculatePointAtTime(uint32_t current_time, float *q)
 
     // Application des équations paramétriques avec s
     // et attribution des vitesses (linéaire et angulaire)
-    void modifyVars(float *q);
+    modifyVars();
 
 }
-
-
 
 void Trajectory::setGoalSpeed(float goalSpeed) {
     this->goalSpeed = goalSpeed;
     rampSpeed.changeGoalSpeed(goalSpeed);
+}
+
+
+Position2D Trajectory::getTrajectoryPoint() {
+    return Position2D(x, y, theta);
+}
+
+float Trajectory::getTrajectoryLinearSpeed() {
+    return V;
+}
+
+float Trajectory::getTrajectoryAngularSpeed() {
+    return omega;
 }

@@ -1,34 +1,27 @@
-#ifndef __H_LINEAR_TRAJECTORY
-#define __H_LINEAR_TRAJECTORY
+#ifndef __H_LINEAR_TRAJECTORY_2
+#define __H_LINEAR_TRAJECTORY_2
 
-// #include <Arduino.h>
-// // #include "a_define.h"
-// #include <Position2D.h>
-// #include <Ramp.hpp>
 #include <Trajectory.hpp>
 
-
-class LinearTrajectory : Trajectory 
+class LinearTrajectory : Trajectory
 {
 public :
-    LinearTrajectory();  // quatre coords définissant le segment + l'origine de temps
+
+    LinearTrajectory(float initialGoalSpeed, float initialAccelParam);
     // TODO destructeur
 
-    void setDest(float x0, float y0, float xdest, float ydest);
-
-    // bool detectEndRamp();
-
-    // Position2D getPointAtTime(uint32_t current_time);
-    // Position2D calculateTrajCoords(float s);
-
-
+    void setDest(float xdest, float ydest) override;
 
 private:
 
-    float x0, y0, xdest, ydest;
-    float theta0;
-    float Dtotale;
+    // variables caractéristiques de la trajectoire
+    // pour le déplacement linéaire c'est juste la position de fin
+    float xdest, ydest;
+
+    bool detectEndRamp() override;
+    void modifyVars() override;
 
 };
+
 
 #endif

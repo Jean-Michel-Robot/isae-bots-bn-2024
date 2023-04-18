@@ -16,21 +16,26 @@ public :
 
     // Méthodes dépendant du type de trajectoire
 
-    virtual void setDest(float x0, float y0, float xdest, float ydest);
-    virtual void setDest(float x0, float y0, float theta0, float thetaDest);
+    virtual void setDest(float xdest, float ydest);  // déplacement linéaire
+    virtual void setDest(float thetaDest);  // rotation
 
     virtual bool detectEndRamp();
 
-    virtual void modifyVars(float *q);
+    virtual void modifyVars();
 
 
     // Méthodes indépendantes du type de trajectoire
 
     void beginTrajectory(uint32_t t0);
 
-    void calculatePointAtTime(uint32_t current_time, float *q);
+    void updateTrajectory(uint32_t current_time);
+
+    void setRobotPos(float x0, float y0, float theta0);
 
     void setGoalSpeed(float goalSpeed);
+    Position2D getTrajectoryPoint();
+    float getTrajectoryLinearSpeed();
+    float getTrajectoryAngularSpeed();
 
 
     //TODO public for now
@@ -38,9 +43,11 @@ public :
     uint32_t t0;
 
     float goalSpeed;
-    float currentSpeed;
+    float currentSpeed;  // vitesse de la rampe, interprétée comme linéaire ou comme angulaire
     float accelParam;
-    
+
+    float x, y, theta, V, omega;
+    float x0, y0, theta0;  // valable pour n'importe quelle trajectoire
 
     float Dtotale;
     float s;
