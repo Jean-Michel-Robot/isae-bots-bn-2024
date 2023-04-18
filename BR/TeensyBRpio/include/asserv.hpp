@@ -8,6 +8,11 @@
 #include "defines.hpp"
 
 
+enum asservState{
+    IDLE,
+    ACTIVE
+};
+
 class asservPID
 {
 
@@ -20,25 +25,23 @@ public:
     float m_target[2];  // vd, omegad
 
     Position2D m_errorPos;  // ex, ey, etheta
-    float m_botSpeed[2];  // v, omega of the center of the bot
+    float m_botSpeed[2];  // v, omega of the center of the bot (m/s and rad/s)
 
-    float m_leftWheelSpeed;
-    float m_rightWheelSpeed;
+    float m_leftWheelSpeed;  // left speed wheel (m/s)
+    float m_rightWheelSpeed; // right speed wheel (m/s)
 
-    // LinearTrajectory* m_p_trajectory; // DEFINED AS POINTER ?????
+    asservState m_state;
 
     asservPID(float k1, float k2, float k3);
 
-    void updateError(uint32_t t);
-    void updateCommand(uint32_t t);
+    void updateError();
+    void updateCommand();
     void loop();
 
 
 private:
 
     float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère 
-
-    // Position2D robotPos;  // x, y, theta
 
 };
 

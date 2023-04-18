@@ -11,18 +11,19 @@
 
 
 
+
 asservPID::asservPID(float k1, float k2, float k3) {
     m_k1 = k1;
     m_k2 = k2;
     m_k3 = k3;
 
-    p_linearTrajectory = NULL;
+    m_state = ACTIVE;
 }
 
 void asservPID::updateError(uint32_t t) {
     //TOTEST CHECK IF REF CHANGE IS OK
     Position2D botPosition = p_odos->getRobotPosition();
-    m_errorPos = p_linearTrajectory->getPointAtTime(t) - p_odos->getRobotPosition();
+    m_errorPos = p_linearTrajectory->getPointAtTime(micros()) - p_odos->getRobotPosition();
     m_errorPos.changeReferentiel(botPosition);
 }
 
@@ -32,26 +33,29 @@ void asservPID::updateCommand(uint32_t t) {
 
     uint32_t t = micros();
 
-    // m_target = m_p_trajectory->getVelAndTheta(micros());  //TODO
+    if(m_state == ACTIVE){
+        
+        // m_target = p_trajectory->getVelAndTheta(micros());  //TODO
 
-    float vd = m_target[0];
-    float omega_d = m_target[1];
+        float vd = m_target[0];
+        float omega_d = m_target[1];
 
-    this->updateError(t);
+        this->updateError();
 
-    /* En utilisant la formule qu'on sait pas d'où elle sort */
-    if(cos(m_errorPos.theta) == 0){
-        // Protection div par 0 (ça peut servir)
-        m_botSpeed[0] = 0;
-        m_botSpeed[1] = 0; 
-    }
-    else {
-        m_botSpeed[0] = (vd - m_k1*abs(vd)*(m_errorPos.x + m_errorPos.y*tan(m_errorPos.theta)))/cos(m_errorPos.theta);
-        m_botSpeed[1] = omega_d - (m_k2*vd*m_errorPos.y  + m_k3*abs(vd)*tan(m_errorPos.theta))*pow(cos(m_errorPos.theta),2);
-    }
+        /* En utilisant la formule qu'on sait pas d'où elle sort*/
+        if(cos(m_errorPos.theta) == 0){
+            // Protection div par 0 (ça peut servir)
+            m_botSpeed[0] = 0;
+            m_botSpeed[1] = 0; 
+        }
+        else {   
+            m_botSpeed[0] = (vd - m_k1*abs(vd)*(m_errorPos.x + m_errorPos.y*tan(m_errorPos.theta)))/cos(m_errorPos.theta);
+            m_botSpeed[1] = omega_d - (m_k2*vd*m_errorPos.y  + m_k3*abs(vd)*tan(m_errorPos.theta))*pow(cos(m_errorPos.theta),2);
+        }
 
-    m_leftWheelSpeed = m_botSpeed[0] + m_botSpeed[1]*WHEEL_DISTANCE/2;
-    m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
+        m_leftWheelSpeed = m_botSpeed[0] + m_botSpeed[1]*WHEEL_DISTANCE/2; 
+        m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
+    }        
 }
 
 void asservPID::loop() {
