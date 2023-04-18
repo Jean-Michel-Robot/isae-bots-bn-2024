@@ -20,33 +20,37 @@ asservPID::asservPID(float k1, float k2, float k3) {
     m_state = ACTIVE;
 }
 
-void asservPID::updateError(uint32_t t) {
-    //TOTEST CHECK IF REF CHANGE IS OK
+void asservPID::updateError() {
+    //TOTEST CHECK IF REF CHANGE IS OK (avec alpha et beta aussi)
     Position2D botPosition = p_odos->getRobotPosition();
-    m_errorPos = p_linearTrajectory->getPointAtTime(micros()) - p_odos->getRobotPosition();
+    m_errorPos = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
     m_errorPos.changeReferentiel(botPosition);
 }
 
 
 
-void asservPID::updateCommand(uint32_t t) {
+void asservPID::updateCommand() {
 
-    uint32_t t = micros();
+    // update trajectory
+    p_linearTrajectory->updateTrajectory( micros() );
 
-    if(m_state == ACTIVE){
+    if(m_state == ACTIVE) {
         
-        // m_target = p_trajectory->getVelAndTheta(micros());  //TODO
+        // get trajectory speed (linear and angular)
+        m_target[0] = p_linearTrajectory->getTrajectoryLinearSpeed();
+        m_target[1] = p_linearTrajectory->getTrajectoryAngularSpeed();
 
         float vd = m_target[0];
         float omega_d = m_target[1];
 
+        // update error using trajectory
         this->updateError();
 
         /* En utilisant la formule qu'on sait pas d'où elle sort*/
         if(cos(m_errorPos.theta) == 0){
             // Protection div par 0 (ça peut servir)
             m_botSpeed[0] = 0;
-            m_botSpeed[1] = 0; 
+            m_botSpeed[1] = 0;
         }
         else {   
             m_botSpeed[0] = (vd - m_k1*abs(vd)*(m_errorPos.x + m_errorPos.y*tan(m_errorPos.theta)))/cos(m_errorPos.theta);
@@ -60,5 +64,20 @@ void asservPID::updateCommand(uint32_t t) {
 
 void asservPID::loop() {
     // this->updateCommand();
+
+    /*
+    Dansl'ordre :
+
+    setRobotPos(x0, y0, theta0);
+    setDest( <vars> );
+
+    beginTrajectory(t0);
+
+    updateTrajectory(t);
+
+    getTrajectoryPoint() -> (x, y, theta)
+    getTrajectoryLinearSpeed() -> V
+    getTrajectoryAngularSpeed() -> omega
+    */
 }
 

@@ -41,7 +41,7 @@ public:
 
 private:
 
-    float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère 
+    float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère robot
 
 };
 
