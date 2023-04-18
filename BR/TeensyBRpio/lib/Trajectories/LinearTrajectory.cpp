@@ -41,7 +41,7 @@ bool LinearTrajectory::detectEndRamp() {
 
 
 
-void LinearTrajectory::modifyVars() {
+void LinearTrajectory::updateTrajectoryState() {
 
     x = x0 + s*(xdest - x0);
     y = y0 + s*(ydest - y0);
@@ -49,4 +49,5 @@ void LinearTrajectory::modifyVars() {
 
     V = currentSpeed;
     omega = 0.0;
+    
 }

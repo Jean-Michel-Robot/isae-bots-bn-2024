@@ -1,9 +1,9 @@
-#ifndef __H_LINEAR_TRAJECTORY_2
-#define __H_LINEAR_TRAJECTORY_2
+#ifndef H_LINEAR_TRAJECTORY
+#define H_LINEAR_TRAJECTORY
 
 #include <Trajectory.hpp>
 
-class LinearTrajectory : Trajectory
+class LinearTrajectory : public Trajectory
 {
 public :
 
@@ -12,6 +12,7 @@ public :
 
     void setDest(float xdest, float ydest) override;
 
+
 private:
 
     // variables caractéristiques de la trajectoire
@@ -19,7 +20,8 @@ private:
     float xdest, ydest;
 
     bool detectEndRamp() override;
-    void modifyVars() override;
+    void updateTrajectoryState() override;
+    
 
 };
 

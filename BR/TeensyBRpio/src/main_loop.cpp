@@ -41,8 +41,8 @@ void setup() {
 
     // led_instance = new LED();
 
-    p_linearTrajectory = new LinearTrajectory();
-    p_linearTrajectory->setDest(0.0, 0.0, 0.0, 0.0);
+    p_linearTrajectory = new LinearTrajectory(0.0, 0.0);
+    p_linearTrajectory->setDest(0.0, 0.0);
     p_linearTrajectory->beginTrajectory( micros() );
 
 
@@ -72,13 +72,12 @@ void loop() {
     p_odos->loop();
     p_blink->loop();
 
-    uint32_t t = micros();
+    // uint32_t t = micros();
 
 
     // trajPoint = p_linearTrajectory->getPointAtTime(t);
     // Serial.println(trajPoint.toString());
 
-    current_speed = p_linearTrajectory->getVelAndTheta(t);
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {

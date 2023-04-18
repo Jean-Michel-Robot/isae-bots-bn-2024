@@ -22,6 +22,13 @@ Trajectory::Trajectory()
                                    // Or LinearTrajectory is dynamic but this is static ?
 }
 
+Trajectory::~Trajectory() {
+}
+
+bool Trajectory::detectEndRamp() {
+    return false;
+}
+
 void Trajectory::setRobotPos(float x0, float y0, float theta0) {
     this->x0 = x0; this->y0 = y0; this->theta0 = theta0;
 }
@@ -129,7 +136,7 @@ void Trajectory::updateTrajectory(uint32_t current_time)
 
     // Application des équations paramétriques avec s
     // et attribution des vitesses (linéaire et angulaire)
-    modifyVars();
+    updateTrajectoryState();
 
 }
 

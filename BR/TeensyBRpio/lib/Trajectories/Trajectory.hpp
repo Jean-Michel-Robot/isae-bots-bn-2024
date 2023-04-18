@@ -1,5 +1,5 @@
-#ifndef __H_LINEAR_TRAJECTORY
-#define __H_LINEAR_TRAJECTORY
+#ifndef H_TRAJECTORY
+#define H_TRAJECTORY
 
 #include <Arduino.h>
 // #include "a_define.h"
@@ -11,17 +11,17 @@ class Trajectory
 {
 public :
     Trajectory();  // quatre coords définissant le segment + l'origine de temps
-    // TODO destructeur
 
+    virtual ~Trajectory();  // destructeur
 
     // Méthodes dépendant du type de trajectoire
 
-    virtual void setDest(float xdest, float ydest);  // déplacement linéaire
-    virtual void setDest(float thetaDest);  // rotation
+    virtual void setDest(float xdest, float ydest) {};  // déplacement linéaire
+    virtual void setDest(float thetaDest) {};  // rotation
 
     virtual bool detectEndRamp();
 
-    virtual void modifyVars();
+    virtual void updateTrajectoryState() {};  // variables x, y, theta, V, omega
 
 
     // Méthodes indépendantes du type de trajectoire
