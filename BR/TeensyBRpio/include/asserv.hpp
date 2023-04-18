@@ -2,7 +2,8 @@
 #define ASSERV_H
 
 #include <Position2D.h>
-#include <LinearTrajectory.hpp>
+
+
 
 #include "defines.hpp"
 
@@ -24,12 +25,12 @@ public:
     float m_leftWheelSpeed;
     float m_rightWheelSpeed;
 
-    LinearTrajectory* m_p_trajectory; // DEFINED AS POINTER ?????
+    // LinearTrajectory* m_p_trajectory; // DEFINED AS POINTER ?????
 
     asservPID(float k1, float k2, float k3);
 
-    void updateError();
-    void updateCommand();
+    void updateError(uint32_t t);
+    void updateCommand(uint32_t t);
     void loop();
 
 

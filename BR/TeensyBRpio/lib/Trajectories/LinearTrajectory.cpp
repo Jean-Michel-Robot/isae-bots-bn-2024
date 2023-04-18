@@ -4,13 +4,10 @@
 
 #include <LinearTrajectory.hpp>
 
-#define D_RAMPE 0.2
-
 LinearTrajectory::LinearTrajectory()
 {
 
-    goalSpeed = 1.0;
-    vd = 0.0;
+    goalSpeed = 1.0;  // m/s
 
     d_current = 0.0;
 
@@ -49,11 +46,23 @@ Position2D LinearTrajectory::getPointAtTime(uint32_t current_time)  //TODO gener
     // On récupère V(t) de la rampe
     float current_speed = rampSpeed.updateRamp(current_time);
 
-    d_current = goalSpeed * (current_time - t0);
+    d_current = goalSpeed * (current_time - t0)*0.000001;
+    d_parc = d_parc + d_current;
 
-    s = d_current / Dtotale;
+    s = d_parc / Dtotale;
 
-    Position2D pos = Position2D(0.0, 0.0, 0.0);
+    // Test s > 1
+    if (s >= 1) {
+        s = 1;
+        rampeTerminee; // event de fin de trajectoire
+    }
+
+    // Injection de s dans les équations paramétriques
+    float x = x0 + s*(xdest - x0);
+    float y = y0 + s*(ydest - y0);
+    float theta = theta0;
+
+    Position2D pos = Position2D(x, y, theta);
 
     return pos;
 }

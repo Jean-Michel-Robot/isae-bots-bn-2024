@@ -7,13 +7,13 @@
 #include <Ramp.hpp>
 
 
-class LinearTrajectory
+class RotationTrajectory
 {
 public :
-    LinearTrajectory();  // quatre coords définissant le segment + l'origine de temps
+    RotationTrajectory();  // quatre coords définissant le segment + l'origine de temps
     // TODO destructeur
 
-    void setDest(float x0, float y0, float xdest, float ydest);
+    void setDest(float x0, float y0, float theta0, float thetaDest);
 
     void beginTrajectory(uint32_t t0);
 
@@ -30,17 +30,16 @@ private:
 
     Ramp rampSpeed;
 
-    float x0, y0, xdest, ydest;
-    float theta0;
-
+    float x0, y0;
+    float theta0, thetaDest;
     uint32_t t0;
-
     float goalSpeed;
 
     float Dtotale;
     float s;
 
-    float d_current, d_parc;
+    float d_current;
+    float vd;
 
     
     /*

@@ -102,7 +102,7 @@ class Slope
     }
 
     else if (V_start_slope > goalSpeed + RAMP_EPSILON) {
-      currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
+      currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope)*0.000001;  // en DESC
     
       if (currentSpeed < goalSpeed + RAMP_EPSILON) {
         Serial.println("Reached constant part of downwards slope");
@@ -235,7 +235,7 @@ class RampEnd
   void react(UpdateEvent const & e) override {
 
     // ici on est forcément en DESC vers 0.0
-    currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope);  // en DESC
+    currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope)*0.000001;  // en DESC
   
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
 
@@ -266,7 +266,7 @@ class Brake
   void react(UpdateEvent const & e) override {
 
     // direction is down
-    currentSpeed = V_start_slope - ACCEL_BRAKE * (e.currentTime - t_start_slope);
+    currentSpeed = V_start_slope - ACCEL_BRAKE * (e.currentTime - t_start_slope)*0.000001;
 
     // transition to RampIdle
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
