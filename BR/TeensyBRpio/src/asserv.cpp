@@ -17,14 +17,21 @@ Asserv::Asserv(float k1, float k2, float k3) {
     m_k2 = k2;
     m_k3 = k3;
 
+    setErrorPositionThreshold(OBJECTIVE_THRESHOLD_X, OBJECTIVE_THRESHOLD_Y, OBJECTIVE_THRESHOLD_THETA);
+
     m_state = ACTIVE;
 }
 
-void Asserv::updateError() {
+void AsservPID::updateError() {
+
+    Position2D currentBotPosition = p_odos->getRobotPosition();
+    Position2D errorPosTableFrame = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
+    float angle = currentBotPosition.theta;
+
     //TOTEST CHECK IF REF CHANGE IS OK (avec alpha et beta aussi)
-    Position2D botPosition = p_odos->getRobotPosition();
-    m_errorPos = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
-    m_errorPos.changeReferentiel(botPosition);
+    m_errorPos.x = cos(angle)*errorPosTableFrame.x + sin(angle)*errorPosTableFrame.y;
+    m_errorPos.y = -sin(angle)*errorPosTableFrame.x + cos(angle)*errorPosTableFrame.y;
+    m_errorPos.theta = errorPosTableFrame.theta;
 }
 
 
@@ -62,7 +69,33 @@ void Asserv::updateCommand() {
     }        
 }
 
-void Asserv::loop() {
+void AsservPID::setErrorPositionThreshold(float x, float y, float theta){
+    if (x>0)
+        m_errorPosThreshold.x = x;
+    
+    if (y>0)
+        m_errorPosThreshold.y = y;
+
+    if (theta>0)
+        m_errorPosThreshold.theta = theta;
+}
+
+
+bool AsservPID::isAtObjectivePoint(bool checkAngle){
+    
+    this->updateError();
+
+    if (abs(m_errorPos.x) > m_errorPosThreshold.x)
+        return false;
+    else if (abs(m_errorPos.y) > m_errorPosThreshold.y)
+        return false;
+    else if (checkAngle && (abs(fmod(m_errorPos.theta, TWO_PI)) > m_errorPosThreshold.theta))
+        return false;
+    else
+        return true;
+}
+
+void AsservPID::loop() {
     // this->updateCommand();
 
     /*
