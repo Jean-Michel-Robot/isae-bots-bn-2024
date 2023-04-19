@@ -13,9 +13,12 @@
 
 
 asservPID::asservPID(float k1, float k2, float k3) {
+    
     m_k1 = k1;
     m_k2 = k2;
     m_k3 = k3;
+
+    setErrorPositionThreshold(OBJECTIVE_THRESHOLD_X, OBJECTIVE_THRESHOLD_Y, OBJECTIVE_THRESHOLD_THETA);
 
     m_state = ACTIVE;
 }
@@ -60,6 +63,32 @@ void asservPID::updateCommand() {
         m_leftWheelSpeed = m_botSpeed[0] + m_botSpeed[1]*WHEEL_DISTANCE/2; 
         m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
     }        
+}
+
+void asservPID::setErrorPositionThreshold(float x, float y, float theta){
+    if (x>0)
+        m_errorPosThreshold.x = x;
+    
+    if (y>0)
+        m_errorPosThreshold.y = y;
+
+    if (theta>0)
+        m_errorPosThreshold.theta = theta;
+}
+
+
+bool asservPID::isAtObjectivePoint(bool checkAngle){
+    
+    this->updateError();
+
+    if (abs(m_errorPos.x) > m_errorPosThreshold.x)
+        return false;
+    else if (abs(m_errorPos.y) > m_errorPosThreshold.y)
+        return false;
+    else if (checkAngle && (abs(fmod(m_errorPos.theta, TWO_PI)) > m_errorPosThreshold.theta))
+        return false;
+    else
+        return true;
 }
 
 void asservPID::loop() {

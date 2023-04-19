@@ -25,6 +25,7 @@ public:
     float m_target[2];  // vd, omegad
 
     Position2D m_errorPos;  // ex, ey, etheta
+    Position2D m_errorPosThreshold; // error threshold x,y,tetha (m, m & rad)
     float m_botSpeed[2];  // v, omega of the center of the bot (m/s and rad/s)
 
     float m_leftWheelSpeed;  // left speed wheel (m/s)
@@ -36,7 +37,19 @@ public:
 
     void updateError();
     void updateCommand();
+
+    /* Set error position threshold
+    x : m, y : m, tetha : rad
+    Provide negative value not to update the corresponding direction
+    */
+    void setErrorPositionThreshold(float x, float y, float theta);
+
+    /*
+    */
+    bool isAtObjectivePoint(bool checkAngle);
+
     void loop();
+
 
 
 private:
