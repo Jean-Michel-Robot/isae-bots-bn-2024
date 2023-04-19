@@ -13,7 +13,7 @@
 
 
 asservPID::asservPID(float k1, float k2, float k3) {
-    
+
     m_k1 = k1;
     m_k2 = k2;
     m_k3 = k3;
@@ -24,10 +24,15 @@ asservPID::asservPID(float k1, float k2, float k3) {
 }
 
 void asservPID::updateError() {
+
+    Position2D currentBotPosition = p_odos->getRobotPosition();
+    Position2D errorPosTableFrame = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
+    float angle = currentBotPosition.theta;
+
     //TOTEST CHECK IF REF CHANGE IS OK (avec alpha et beta aussi)
-    Position2D botPosition = p_odos->getRobotPosition();
-    m_errorPos = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
-    m_errorPos.changeReferentiel(botPosition);
+    m_errorPos.x = cos(angle)*errorPosTableFrame.x + sin(angle)*errorPosTableFrame.y;
+    m_errorPos.y = -sin(angle)*errorPosTableFrame.x + cos(angle)*errorPosTableFrame.y;
+    m_errorPos.theta = errorPosTableFrame.theta;
 }
 
 
