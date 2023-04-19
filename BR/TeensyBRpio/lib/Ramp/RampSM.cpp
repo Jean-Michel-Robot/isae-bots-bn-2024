@@ -72,7 +72,7 @@ class Slope
 {
   void entry() override {
     // currentState = RampState::SLOPE;
-    setCurrentState(RampState::SLOPE);
+    setCurrentState(RampState::RAMP_SLOPE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -159,7 +159,7 @@ class Constant
 {
   void entry() override {
     // currentState = RampState::CONSTANT;
-    setCurrentState(RampState::CONSTANT);
+    setCurrentState(RampState::RAMP_CONSTANT);
   }
 
   void react(UpdateEvent const & e) override {
@@ -256,7 +256,7 @@ class Brake
 : public RampSM
 {
   void entry() override {
-    currentState = RampState::BRAKE;
+    currentState = RampState::RAMP_BRAKE;
     // setCurrentState(RampState::BRAKE);
 
     t_start_slope = micros();
@@ -311,7 +311,7 @@ float RampSM::V_start_slope = 0.0;
 float RampSM::goalSpeed = 0.0;
 float RampSM::accelParam = 0.0;
 float RampSM::currentSpeed = 0.0;
-RampState RampSM::currentState = RampState::RAMP_IDLE;
+RampState RampSM::currentState = RampState::RAMP_UNDEF;
 
 // ----------------------------------------------------------------------------
 // Initial state definition

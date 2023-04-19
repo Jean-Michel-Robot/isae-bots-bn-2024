@@ -4,7 +4,6 @@
 #include <Arduino.h>
 
 #include <motors.hpp>
-// #include <QuadDecode.h>
 
 
 #include "ROS.hpp"
@@ -12,6 +11,7 @@
 #include "OdosPosition.hpp"
 #include "LinearTrajectory.hpp"
 #include "Asserv.hpp"
+#include "BrSMWrapper.hpp"
 
 
 ROS* p_ros = NULL;
@@ -21,7 +21,7 @@ BlinkLED* p_blink = NULL;
 
 LinearTrajectory* p_linearTrajectory = NULL;
 Asserv* p_asserv = NULL;
-
+BrSMWrapper* p_sm = NULL;
 
 void setup() {
 
@@ -49,6 +49,8 @@ void setup() {
     p_linearTrajectory->beginTrajectory( micros() );
 
     p_asserv = new Asserv(1.0, 1.0, 1.0);
+
+    p_sm = new BrSMWrapper();
 
     Serial.println("Entering loop");
 }

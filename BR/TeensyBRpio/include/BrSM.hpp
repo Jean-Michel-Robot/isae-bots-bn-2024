@@ -11,13 +11,13 @@
 // States
 enum BRState
 {
-	UNDEF = 0,
+	BR_UNDEF = 0,
 
 	BR_IDLE = 1,
-	INITROT = 2,
-	FORWARD = 3,
-	FINALROT = 4,
-	ARRIVED = 5,
+	BR_INITROT = 2,
+	BR_FORWARD = 3,
+	BR_FINALROT = 4,
+	BR_ARRIVED = 5,
 };
 
 
@@ -69,6 +69,12 @@ public:
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	BRState getCurrentState();
+
+	template<typename E>
+    void send_event(E const & event)
+    {
+        dispatch<E>(event);
+    }
 
 protected:
 

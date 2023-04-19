@@ -22,7 +22,7 @@ Asserv::Asserv(float k1, float k2, float k3) {
     m_state = ACTIVE;
 }
 
-void AsservPID::updateError() {
+void Asserv::updateError() {
 
     Position2D currentBotPosition = p_odos->getRobotPosition();
     Position2D errorPosTableFrame = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
@@ -69,7 +69,7 @@ void Asserv::updateCommand() {
     }        
 }
 
-void AsservPID::setErrorPositionThreshold(float x, float y, float theta){
+void Asserv::setErrorPositionThreshold(float x, float y, float theta){
     if (x>0)
         m_errorPosThreshold.x = x;
     
@@ -81,7 +81,7 @@ void AsservPID::setErrorPositionThreshold(float x, float y, float theta){
 }
 
 
-bool AsservPID::isAtObjectivePoint(bool checkAngle){
+bool Asserv::isAtObjectivePoint(bool checkAngle){
     
     this->updateError();
 
@@ -95,11 +95,11 @@ bool AsservPID::isAtObjectivePoint(bool checkAngle){
         return true;
 }
 
-void AsservPID::loop() {
+void Asserv::loop() {
     // this->updateCommand();
 
     /*
-    Dansl'ordre :
+    Dans l'ordre :
 
     setRobotPos(x0, y0, theta0);
     setDest( <vars> );

@@ -30,7 +30,7 @@ class Arrived
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::ARRIVED;
+    currentState = BRState::BR_ARRIVED;
 
     // send_event(MotorStop());
 	}
@@ -45,7 +45,7 @@ class InitRot
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::INITROT;
+    currentState = BRState::BR_INITROT;
   }
 
   void react(GoalReachedEvent const & e) override {
@@ -86,7 +86,7 @@ class Forward
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::FORWARD;
+    currentState = BRState::BR_FORWARD;
   }
 
   void react(GoalReachedEvent const & e) override {
@@ -125,7 +125,7 @@ class FinalRot
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::FINALROT;
+    currentState = BRState::BR_FINALROT;
   }
 
 
@@ -166,11 +166,15 @@ class BR_Idle
 
   void react(OrderEvent const & e) override {
 
-    
     // store order
     this->currentOrder = e.order;
 
     p_ros->logPrint(LogType::INFO, "Transition : BR_Idle -> InitRot");
+
+    //TODO : check if both axis are running (closed loop state)
+
+    transit<InitRot>();  // mettre une fonctions dans transit fait qu'elle est exécutée
+                         // après le exit() de l'état
   }
 };
 
@@ -204,5 +208,5 @@ OrderType BrSM::currentOrder = {0};
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-BRState BrSM::currentState = BRState::UNDEF;
+BRState BrSM::currentState = BRState::BR_UNDEF;
 FSM_INITIAL_STATE(BrSM, BR_Idle)
