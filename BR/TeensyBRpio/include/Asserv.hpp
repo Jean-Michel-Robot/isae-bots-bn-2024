@@ -8,12 +8,12 @@
 #include "defines.hpp"
 
 
-enum asservState{
+enum AsservState{
     IDLE,
     ACTIVE
 };
 
-class asservPID
+class Asserv
 {
 
 public:
@@ -30,9 +30,9 @@ public:
     float m_leftWheelSpeed;  // left speed wheel (m/s)
     float m_rightWheelSpeed; // right speed wheel (m/s)
 
-    asservState m_state;
+    AsservState m_state;
 
-    asservPID(float k1, float k2, float k3);
+    Asserv(float k1, float k2, float k3);
 
     void updateError();
     void updateCommand();

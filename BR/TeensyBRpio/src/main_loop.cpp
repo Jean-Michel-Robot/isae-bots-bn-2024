@@ -11,6 +11,7 @@
 #include "LED.hpp"
 #include "OdosPosition.hpp"
 #include "LinearTrajectory.hpp"
+#include "Asserv.hpp"
 
 
 ROS* p_ros = NULL;
@@ -19,8 +20,8 @@ BlinkLED* p_blink = NULL;
 // LED* led_instance = NULL;
 
 LinearTrajectory* p_linearTrajectory = NULL;
+Asserv* p_asserv = NULL;
 
-unsigned long begin = 0.0;
 
 void setup() {
 
@@ -42,12 +43,12 @@ void setup() {
     // led_instance = new LED();
 
     p_linearTrajectory = new LinearTrajectory(0.0, 0.0);
+
+    p_linearTrajectory->setRobotPos(100, 100, 0);
     p_linearTrajectory->setDest(0.0, 0.0);
     p_linearTrajectory->beginTrajectory( micros() );
 
-
-
-    begin = millis();
+    p_asserv = new Asserv(1.0, 1.0, 1.0);
 
     Serial.println("Entering loop");
 }

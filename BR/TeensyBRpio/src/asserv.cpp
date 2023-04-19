@@ -1,5 +1,5 @@
 
-#include "asserv.hpp"
+#include "Asserv.hpp"
 
 #include "ROS.hpp"
 #include "OdosPosition.hpp"
@@ -12,7 +12,7 @@
 
 
 
-asservPID::asservPID(float k1, float k2, float k3) {
+Asserv::Asserv(float k1, float k2, float k3) {
     m_k1 = k1;
     m_k2 = k2;
     m_k3 = k3;
@@ -20,7 +20,7 @@ asservPID::asservPID(float k1, float k2, float k3) {
     m_state = ACTIVE;
 }
 
-void asservPID::updateError() {
+void Asserv::updateError() {
     //TOTEST CHECK IF REF CHANGE IS OK (avec alpha et beta aussi)
     Position2D botPosition = p_odos->getRobotPosition();
     m_errorPos = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
@@ -29,7 +29,7 @@ void asservPID::updateError() {
 
 
 
-void asservPID::updateCommand() {
+void Asserv::updateCommand() {
 
     // update trajectory
     p_linearTrajectory->updateTrajectory( micros() );
@@ -62,7 +62,7 @@ void asservPID::updateCommand() {
     }        
 }
 
-void asservPID::loop() {
+void Asserv::loop() {
     // this->updateCommand();
 
     /*

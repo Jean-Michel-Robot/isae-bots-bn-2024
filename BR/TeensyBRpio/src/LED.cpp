@@ -15,6 +15,7 @@ LED::LED()
     m_pixels = new Adafruit_NeoPixel(2, 6, NEO_GRB); // 2 leds sur la pin 6
     m_pixels->begin(); // This initializes the NeoPixel library.
     // color(0,0,0);
+    
 }
 
 void LED::color(int R, int G, int B)
@@ -29,6 +30,7 @@ BlinkLED::BlinkLED()
 {
   pinMode(13, OUTPUT);
   m_state = 1;
+  m_timer = 0.0;
 }
 
 void BlinkLED::loop()
@@ -37,7 +39,6 @@ void BlinkLED::loop()
     m_state = 1 - m_state;
     digitalWrite(13, m_state);
     m_timer = millis();
+    // Serial.println("ting");
   }
 }
-
-
