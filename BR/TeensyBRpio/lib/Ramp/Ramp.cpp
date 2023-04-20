@@ -1,6 +1,8 @@
 
 #include "Ramp.hpp"
 
+#include "unity.h"
+
 // #include <ROS.hpp>
 // #include "main_loop.hpp"
 
@@ -19,6 +21,7 @@ Ramp::Ramp(float accelParam = 0.0) {
     updateEvent.currentTime = 0.0;
 
     rampSM.start();
+    TEST_MESSAGE("Ramp started successfully");
 }
 
 
