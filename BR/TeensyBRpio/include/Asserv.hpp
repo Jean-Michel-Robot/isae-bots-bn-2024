@@ -18,8 +18,6 @@ public:
 
     float m_k1, m_k2, m_k3;
 
-    float m_KP, m_KI, m_KD;
-
     float m_target[2];  // vd, omegad
 
     Position2D m_errorPos;  // ex, ey, etheta

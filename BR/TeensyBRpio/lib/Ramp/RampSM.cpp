@@ -7,6 +7,7 @@
 #include <Arduino.h>
 
 #include "RampDefines.hpp"
+#include "defines.hpp"
 
 // Constructor
 RampSM::RampSM() {

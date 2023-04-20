@@ -45,8 +45,8 @@ void setup() {
 
     // led_instance = new LED();
 
-    p_linearTrajectory = new LinearTrajectory(0.0, 0.0);
-    p_rotationTrajectory = new RotationTrajectory(0.0, 0.0);
+    p_linearTrajectory = new LinearTrajectory(DEFAULT_LINEAR_GOAL_SPEED, DEFAULT_LINEAR_ACCEL_PARAM);
+    p_rotationTrajectory = new RotationTrajectory(DEFAULT_ROTATION_GOAL_SPEED, DEFAULT_ROTATION_ACCEL_PARAM);
 
     // p_linearTrajectory->setRobotPos(100, 100, 0);
     // p_linearTrajectory->setDest(0.0, 0.0);
@@ -69,8 +69,6 @@ uint32_t loop_timer = 0.0;
 
 float current_speed;
 
-Position2D trajPoint = 0;
-
 void loop() {
 
     uint32_t t = micros();
@@ -82,10 +80,6 @@ void loop() {
 
 
     p_sm->update(t);
-
-
-    // trajPoint = p_linearTrajectory->getPointAtTime(t);
-    // Serial.println(trajPoint.toString());
 
 
     // Periodic display for test
