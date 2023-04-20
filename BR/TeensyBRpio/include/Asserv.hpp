@@ -3,8 +3,6 @@
 
 #include <Position2D.h>
 
-
-
 #include "defines.hpp"
 
 
@@ -35,8 +33,11 @@ public:
 
     Asserv(float k1, float k2, float k3);
 
-    void updateError();
-    void updateCommand();
+    // update l'erreur en recevant la position du point objectif actuel
+    void updateError(Position2D trajectoryPointPos);
+
+    // update la commande en recevant la consigne en vitesse (linéaire et angulaire)
+    void updateCommand(float vd, float omega_d);
 
     /* Set error position threshold
     x : m, y : m, tetha : rad

@@ -46,7 +46,21 @@ void RotationTrajectory::updateTrajectoryState() {
 
     x = x0;
     y = y0;
-    theta = theta0 + s*(thetaDest - theta0); //TODO pb du passage par -pi;pi
+    // theta = theta0 + s*(thetaDest - theta0); //TODO pb du passage par -pi;pi
+
+    // en fait une différence d'angles se trouve toujours entre -pi et pi (angles opposés)
+    // donc il faut passer la différence entre -pi et pi
+    // Manuellement :
+    float angle_diff = thetaDest - theta0;
+    
+    if (angle_diff > PI) {
+        angle_diff = angle_diff - PI;
+    }
+    else if (angle_diff < -PI) {
+        angle_diff = angle_diff + PI;
+    }
+
+    theta = theta0 + s*angle_diff; //TODO pb du passage par -pi;pi
 
     V = 0.0;
     omega = currentSpeed;

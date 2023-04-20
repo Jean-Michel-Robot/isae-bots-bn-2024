@@ -10,8 +10,9 @@
 #include "LED.hpp"
 #include "OdosPosition.hpp"
 #include "LinearTrajectory.hpp"
+#include <RotationTrajectory.hpp>
 #include "Asserv.hpp"
-#include "BrSMWrapper.hpp"
+#include "BrSM.hpp"
 
 
 ROS* p_ros = NULL;
@@ -20,8 +21,10 @@ BlinkLED* p_blink = NULL;
 // LED* led_instance = NULL;
 
 LinearTrajectory* p_linearTrajectory = NULL;
+RotationTrajectory* p_rotationTrajectory = NULL;
+
 Asserv* p_asserv = NULL;
-BrSMWrapper* p_sm = NULL;
+BrSM* p_sm = NULL;
 
 void setup() {
 
@@ -43,14 +46,15 @@ void setup() {
     // led_instance = new LED();
 
     p_linearTrajectory = new LinearTrajectory(0.0, 0.0);
+    p_rotationTrajectory = new RotationTrajectory(0.0, 0.0);
 
-    p_linearTrajectory->setRobotPos(100, 100, 0);
-    p_linearTrajectory->setDest(0.0, 0.0);
-    p_linearTrajectory->beginTrajectory( micros() );
+    // p_linearTrajectory->setRobotPos(100, 100, 0);
+    // p_linearTrajectory->setDest(0.0, 0.0);
+    // p_linearTrajectory->beginTrajectory( micros() );
 
     p_asserv = new Asserv(1.0, 1.0, 1.0);
 
-    p_sm = new BrSMWrapper();
+    p_sm = new BrSM();
 
     Serial.println("Entering loop");
 }
@@ -69,13 +73,15 @@ Position2D trajPoint = 0;
 
 void loop() {
 
+    uint32_t t = micros();
 
     p_ros->loop();
 
     p_odos->loop();
     p_blink->loop();
 
-    // uint32_t t = micros();
+
+    p_sm->update(t);
 
 
     // trajPoint = p_linearTrajectory->getPointAtTime(t);

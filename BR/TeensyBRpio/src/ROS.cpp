@@ -47,22 +47,26 @@ void ROS::loop()
 // callback to an order (TODO: for now just direct command)
 void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 { // goToCallBack
-    if (int(positionMsg.w) != 4) // has to be direct command
-        return;
+    // if (int(positionMsg.w) != 4) // has to be direct command
+    //     return;
         
+    // float cmd_M0 = positionMsg.x;
+    // float cmd_M1 = positionMsg.y;
 
-    float cmd_M0 = positionMsg.x;
-    float cmd_M1 = positionMsg.y;
-    // float theta = positionMsg.z;
-    // int w = int(positionMsg.w);
+    // sendMotorCommand(0, cmd_M0);
+    // sendMotorCommand(1, cmd_M1);
 
-    sendMotorCommand(0, cmd_M0);
-    sendMotorCommand(1, cmd_M1);
+    // if (abs(cmd_M0) > 30 || abs(cmd_M1) > 30) {digitalWrite(LED_BUILTIN, HIGH);}
+    // else {digitalWrite(LED_BUILTIN, LOW);}
 
-    if (abs(cmd_M0) > 30 || abs(cmd_M1) > 30) {digitalWrite(LED_BUILTIN, HIGH);}
-    else {digitalWrite(LED_BUILTIN, LOW);}
+    OrderEvent e;
+    e.order.x = positionMsg.x;
+    e.order.y = positionMsg.y;
+    e.order.theta = positionMsg.z;
+    e.order.goalType = positionMsg.w;
 
-    // machineAEtatAsservInstance->manageNewOrder(Position2D(positionMsg.x,positionMsg.y,positionMsg.z),(MachineAEtatAsserv::GoalType) int(positionMsg.w));
+    
+
 }
 
 void ROS::logPrint(LogType logtype, String msg)

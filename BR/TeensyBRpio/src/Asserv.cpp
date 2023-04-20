@@ -3,8 +3,9 @@
 
 #include "ROS.hpp"
 #include "OdosPosition.hpp"
+#include "motors.hpp"
 
-#include <LinearTrajectory.hpp>
+// #include <LinearTrajectory.hpp>
 #include "main_loop.hpp"
 
 #include <cmath>
@@ -22,10 +23,10 @@ Asserv::Asserv(float k1, float k2, float k3) {
     m_state = ACTIVE;
 }
 
-void Asserv::updateError() {
+void Asserv::updateError(Position2D trajectoryPointPos) {
 
     Position2D currentBotPosition = p_odos->getRobotPosition();
-    Position2D errorPosTableFrame = p_linearTrajectory->getTrajectoryPoint() - p_odos->getRobotPosition();
+    Position2D errorPosTableFrame = trajectoryPointPos - p_odos->getRobotPosition();
     float angle = currentBotPosition.theta;
 
     //TOTEST CHECK IF REF CHANGE IS OK (avec alpha et beta aussi)
@@ -36,22 +37,22 @@ void Asserv::updateError() {
 
 
 
-void Asserv::updateCommand() {
+void Asserv::updateCommand(float vd, float omega_d) {
 
     // update trajectory
-    p_linearTrajectory->updateTrajectory( micros() );
+    // p_linearTrajectory->updateTrajectory( micros() );
 
     if(m_state == ACTIVE) {
         
         // get trajectory speed (linear and angular)
-        m_target[0] = p_linearTrajectory->getTrajectoryLinearSpeed();
-        m_target[1] = p_linearTrajectory->getTrajectoryAngularSpeed();
+        // m_target[0] = p_linearTrajectory->getTrajectoryLinearSpeed();
+        // m_target[1] = p_linearTrajectory->getTrajectoryAngularSpeed();
 
-        float vd = m_target[0];
-        float omega_d = m_target[1];
+        // float vd = m_target[0];
+        // float omega_d = m_target[1];
 
-        // update error using trajectory
-        this->updateError();
+        // // update error using trajectory
+        // this->updateError();
 
         /* En utilisant la formule qu'on sait pas d'où elle sort*/
         if(cos(m_errorPos.theta) == 0){
@@ -66,7 +67,15 @@ void Asserv::updateCommand() {
 
         m_leftWheelSpeed = m_botSpeed[0] + m_botSpeed[1]*WHEEL_DISTANCE/2; 
         m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
-    }        
+
+        // send the commands to the motors
+        sendMotorCommand(0, m_leftWheelSpeed);
+        sendMotorCommand(1, m_rightWheelSpeed);
+    }
+
+    else {
+        //TODO : make the axis states IDLE
+    }
 }
 
 void Asserv::setErrorPositionThreshold(float x, float y, float theta){
@@ -83,7 +92,7 @@ void Asserv::setErrorPositionThreshold(float x, float y, float theta){
 
 bool Asserv::isAtObjectivePoint(bool checkAngle){
     
-    this->updateError();
+    // this->updateError();
 
     if (abs(m_errorPos.x) > m_errorPosThreshold.x)
         return false;

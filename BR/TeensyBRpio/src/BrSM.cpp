@@ -6,6 +6,12 @@
 #include "ROS.hpp"
 
 #include "main_loop.hpp"
+#include <Arduino.h>
+#include <LinearTrajectory.hpp>
+#include <RotationTrajectory.hpp>
+#include "OdosPosition.hpp"
+
+#include "Asserv.hpp"
 
 
 // forward declarations
@@ -20,6 +26,23 @@ class FinalRot;
 //   std::cout << "*** calling maintenance ***" << std::endl;
 // }
 
+
+
+// Helper function to setup a trajectory
+void BrSM::setupTrajectory() {
+
+  // RAZ des variables
+  //TODO
+
+  // Set robot position
+  currentTrajectory->setRobotPos( p_odos->getRobotPosition() );
+
+  // Set destination (order angle)
+  currentTrajectory->setDest( currentOrder.theta );
+
+  // Begin trajectory
+  currentTrajectory->beginTrajectory( micros() );
+}
 
 
 // ----------------------------------------------------------------------------
@@ -46,7 +69,16 @@ class InitRot
 {
   void entry() override {
     currentState = BRState::BR_INITROT;
+
+    // Changement de trajectoire en rotation
+    currentTrajectory = p_rotationTrajectory;
+
+    setupTrajectory();
+
+    // Démarrage de l'asserv
+    //TODO
   }
+
 
   void react(GoalReachedEvent const & e) override {
 
@@ -164,6 +196,10 @@ class BR_Idle
     currentState = BRState::BR_IDLE;
   }
 
+  void update(uint32_t t) override {
+    // ne rien faire en Idle
+  }
+
   void react(OrderEvent const & e) override {
 
     // store order
@@ -195,6 +231,30 @@ void BrSM::react(ErrorEvent const &) {
   // std::cout << "Error event ignored" << std::endl;
 }
 
+void BrSM::update(uint32_t t) {
+
+  currentTrajectory->updateTrajectory(t);
+
+  p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
+
+  p_asserv->updateCommand(
+    currentTrajectory->getTrajectoryLinearSpeed(),
+    currentTrajectory->getTrajectoryAngularSpeed());
+  //TODO update la commande des moteurs directement dans l'asserv
+
+  if ( !currentTrajectory->isTrajectoryActive() ) {
+
+    // Can mean that the trajectory is done
+    if (p_asserv->isAtObjectivePoint(false)) {  //TODO checkangle ??
+
+      GoalReachedEvent e;
+      e.goalType = currentOrder.goalType;
+      send_event(e);
+    }
+  }
+}
+
+
 BRState BrSM::getCurrentState() {
   return currentState;
 }
@@ -202,6 +262,7 @@ BRState BrSM::getCurrentState() {
 // Variable initializations
 AxisStates BrSM::axisStates = {0};
 OrderType BrSM::currentOrder = {0};
+Trajectory* BrSM::currentTrajectory = NULL;
 
 // BrSM::current_state_ptr
 

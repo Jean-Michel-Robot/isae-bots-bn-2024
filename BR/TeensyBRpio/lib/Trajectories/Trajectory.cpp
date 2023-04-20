@@ -29,8 +29,15 @@ bool Trajectory::detectEndRamp() {
     return false;
 }
 
-void Trajectory::setRobotPos(float x0, float y0, float theta0) {
-    this->x0 = x0; this->y0 = y0; this->theta0 = theta0;
+// The trajectory is active when the rampSpeed is not Idle
+bool Trajectory::isTrajectoryActive() {
+    return !rampSpeed.isRampIdle();
+}
+
+void Trajectory::setRobotPos(Position2D pos) {
+    this->x0 = pos.x;
+    this->y0 = pos.y;
+    this->theta0 = pos.theta;
 }
 
 void Trajectory::beginTrajectory(uint32_t t0) {

@@ -24,5 +24,8 @@
 #define OBJECTIVE_THRESHOLD_Y      0.005 //m
 #define OBJECTIVE_THRESHOLD_THETA  0.008 //rad (0.008 rad ~ .5 deg)
 
+#define WHEEL_DIAMETER 0.07 // m
+#define TRANSMISSION_RATIO 1 // reduction factor
+
 #endif
 

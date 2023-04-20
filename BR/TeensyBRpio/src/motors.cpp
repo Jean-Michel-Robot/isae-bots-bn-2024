@@ -1,5 +1,10 @@
 #include "motors.hpp"
 
+#include "defines.hpp"
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
+
 SoftwareSerial odrive_serial(ODRIVE_RX_PIN, ODRIVE_TX_PIN);
 
 ODriveArduino odrive(odrive_serial);
@@ -16,8 +21,18 @@ void motors_init() {
 
 void sendMotorCommand(int motor_number, float velCmd) {
 
-    //TODO : transform velCMd into odrive command
-    float odrv_cmd = 2 * velCmd / 60.0;  // command between -255 and 255 (extreme values)
+    //TODO : transform velCMd into odrive command (nb_turn/s)
+    // knowing the wheel diameter and the transmission ratio
+
+    // float odrv_cmd = 2 * velCmd / 60.0;  // command between -255 and 255 (extreme values)
+    float odrv_cmd = velCmd*TRANSMISSION_RATIO/(PI*WHEEL_DIAMETER);
+
+    // constrain the motor command for safety
+    if (abs(odrv_cmd) > 5) {
+        p_ros->logPrint(LogType::ERROR, "Valeur de commande Odrive supérieure au seuil");
+    }
+    odrv_cmd = constrain(odrv_cmd, -5, 5);
+    
 
     if (motor_number == 1) {odrive.SetVelocity(motor_number, -odrv_cmd);}
     else {odrive.SetVelocity(motor_number, odrv_cmd);}

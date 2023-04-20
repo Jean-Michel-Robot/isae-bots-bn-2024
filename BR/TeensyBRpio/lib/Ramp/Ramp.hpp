@@ -29,6 +29,8 @@ public :
     float updateRamp(uint32_t t);
 
     void endRamp();
+    bool isRampIdle();
+
 
     void changeGoalSpeed(float goalSpeed);
     void emergencyBrake();

@@ -30,12 +30,15 @@ public :
 
     void updateTrajectory(uint32_t current_time);
 
-    void setRobotPos(float x0, float y0, float theta0);
+    void setRobotPos(Position2D pos);
 
     void setGoalSpeed(float goalSpeed);
     Position2D getTrajectoryPoint();
     float getTrajectoryLinearSpeed();
     float getTrajectoryAngularSpeed();
+
+    bool isTrajectoryActive();
+
 
 
     //TODO public for now

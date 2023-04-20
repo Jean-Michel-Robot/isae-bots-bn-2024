@@ -63,6 +63,10 @@ void Ramp::endRamp() {
     rampSM.send_event(endRampEvent);
 }
 
+bool Ramp::isRampIdle() {
+    return (rampSM.getCurrentState() == RampState::RAMP_IDLE);
+}
+
 
 void Ramp::changeGoalSpeed(float goalSpeed) {
     goalSpeedChangeEvent.newSpeed = goalSpeed;

@@ -9,6 +9,10 @@
 class BrSMWrapper : public BrSM
 {
 public :
+    BrSMWrapper();
+
+    void sendEvent();
+
     int test;
 };
 

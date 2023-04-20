@@ -5,6 +5,10 @@
 
 #include <Events.hpp>
 
+#include <Arduino.h>
+
+#include <Trajectory.hpp>
+
 // #include <ROS.hpp>
 
 
@@ -62,6 +66,10 @@ public:
 	virtual void react(OrderEvent        const &);
 	virtual void react(GoalReachedEvent const &);
 	virtual void react(ErrorEvent const &);
+	
+	// Update function in states, can be overwritten
+	virtual void update(uint32_t t);
+
 
 	//   void         react(Alarm       const &);
 
@@ -86,6 +94,10 @@ protected:
 	static OrderType currentOrder;
 
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
+
+	static Trajectory* currentTrajectory;
+
+	static void setupTrajectory();
 };
 
 #endif  // BR_SM_H
