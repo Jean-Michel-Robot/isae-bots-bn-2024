@@ -4,6 +4,8 @@
 
 #include <Trajectory.hpp>
 
+#include <defines.hpp>
+
 Trajectory::Trajectory()
 {
     x = 0.0; y = 0.0; theta = 0.0; V = 0.0; omega = 0.0;
@@ -109,7 +111,12 @@ void Trajectory::setGoalSpeed(float goalSpeed) {
 
 
 Position2D Trajectory::getTrajectoryPoint() {
-    return Position2D(x, y, theta);
+
+    // transform coordinates to the asserv tracking point frame
+    float x_p = x + ASSERV_ALPHA*cos(theta);
+    float y_p = y + ASSERV_BETA*sin(theta);
+    
+    return Position2D(x_p, y_p, theta);
 }
 
 float Trajectory::getTrajectoryLinearSpeed() {

@@ -33,5 +33,15 @@
 #define DEFAULT_LINEAR_ACCEL_PARAM 1.0 // m/s^2 //TODO set
 #define DEFAULT_ROTATION_ACCEL_PARAM 1.0 // m/s^2 //TODO set
 
+
+
+// Asserv
+
+// x coord in robot frame of the tracking point (should be strictly greater than 0)
+#define ASSERV_ALPHA 0.10 // m //TODO set
+
+// y coord in robot frame of the tracking point (can be set to 0 if the point is centered)
+#define ASSERV_BETA 0.0 // m //TODO set
+
 #endif
 
