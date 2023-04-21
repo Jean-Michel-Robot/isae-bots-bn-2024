@@ -12,16 +12,7 @@ LinearTrajectory::LinearTrajectory(float initialGoalSpeed, float initialAccelPar
     goalSpeed = initialGoalSpeed;
     accelParam = initialAccelParam;
 
-    // goalSpeed = 1.0;  // m/s  //TODO à set par le HN
-    // accelParam = 1.0;  // m/s^2  //TODO à set par le HN
-    // currentSpeed = 0.0;
-
-    // d_current = 0.0;
-
-    // float accelParam = 0.2;
-
     xdest = 0.0; ydest = 0.0;
-
 }
 
 // A faire après avoir set la position du robot

@@ -10,23 +10,24 @@
 #include "defines.hpp"
 
 // Constructor
-RampSM::RampSM() {
-    this->accelParam = 0;
-    this->currentSpeed = 0;
+RampSM::RampSM(float accelParam) {
+  this->accelParam = accelParam;
 
-    // init state var
-    this->currentState = RampState::RAMP_IDLE;
+  // init state var
+  this->currentState = RampState::RAMP_IDLE;
 
-    // this->t_current = 0.0;
-    this->t_start_slope = 0.0;
+  // this->t_current = 0.0;
+  t_start_slope = 0.0; t0 = 0.0;
+  V_start_slope = 0.0;
+  currentSpeed = 0.0;
 }
 
 void RampSM::setAccelParam(float accelParam) {
-    this->accelParam = accelParam;
+  this->accelParam = accelParam;
 }
 
 void RampSM::setGoalSpeed(float goalSpeed) {
-    this->goalSpeed = goalSpeed;
+  this->goalSpeed = goalSpeed;
 }
 
 
@@ -35,11 +36,11 @@ void RampSM::setGoalSpeed(float goalSpeed) {
 // }
 
 RampState RampSM::getCurrentState() {
-    return currentState;
+  return currentState;
 }
 
 float RampSM::getCurrentSpeed() {
-    return currentSpeed;
+  return currentSpeed;
 }
 
 void RampSM::setCurrentState(RampState rampState) {
@@ -52,8 +53,6 @@ class RampEnd;
 class Brake;
 
 
-
-// RampSM::t_start_slope = 0.0;
 
 
 // ----------------------------------------------------------------------------

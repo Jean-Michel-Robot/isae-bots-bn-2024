@@ -1,27 +1,23 @@
 
 #include "Ramp.hpp"
 
-#include "unity.h"
+// #include "unity.h"
 
 // #include <ROS.hpp>
 // #include "main_loop.hpp"
 
 
-Ramp::Ramp(float accelParam = 0.0) {
+Ramp::Ramp(float accelParam) {
     this->accelParam = accelParam;
 
-    rampSM = RampSM();  // stack memory (instanciation without new keyword)
-
-
-    // init accel param using set function
-    rampSM.setAccelParam(accelParam);
+    rampSM = RampSM(accelParam);  // stack memory (instanciation without new keyword)
 
     beginRampEvent.t0 = 0.0;
     goalSpeedChangeEvent.newSpeed = 0.0;
     updateEvent.currentTime = 0.0;
 
     rampSM.start();
-    TEST_MESSAGE("Ramp started successfully");
+    // TEST_MESSAGE("Ramp started successfully");
 }
 
 

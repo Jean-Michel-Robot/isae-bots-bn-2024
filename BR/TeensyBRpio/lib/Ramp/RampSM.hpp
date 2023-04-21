@@ -28,7 +28,8 @@ class RampSM
 	*/
 public:
 
-    RampSM();
+    RampSM(float accelParam);
+	RampSM() = default;
 
 	/* default reaction for unhandled events */
 	void react(tinyfsm::Event const &) { };
@@ -58,8 +59,7 @@ public:
 
 protected:
 
-    static float t0, t_start_slope, V_start_slope;  //t_current si on a besoin du dt
-    static float d;
+    static float t0, t_start_slope, V_start_slope;  // t_current si on a besoin du dt
 
     static float accelParam;  // pas en define car potentiellement modifiable
 

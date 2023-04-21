@@ -5,6 +5,7 @@
 #include <RotationTrajectory.hpp>
 
 #include <Arduino.h>
+#include <GeometricTools.hpp>
 
 
 RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAccelParam)
@@ -12,16 +13,7 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
     goalSpeed = initialGoalSpeed;
     accelParam = initialAccelParam;
 
-    // goalSpeed = 1.0;  // m/s  //TODO à set par le HN
-    // accelParam = 1.0;  // m/s^2  //TODO à set par le HN
-    // currentSpeed = 0.0;
-
-    // d_current = 0.0;
-
-    // float accelParam = 0.2;
-
     thetaDest = 0.0;
-
 }
 
 // A faire après avoir set la position du robot
@@ -32,7 +24,7 @@ void RotationTrajectory::setDest(float thetaDest) {
 
     Dtotale = RADIUS * abs(thetaDest - theta0);
     // theta0 = atan2(ydest - y0, xdest - x0);
- 
+
 }
 
 
