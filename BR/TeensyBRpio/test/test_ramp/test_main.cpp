@@ -10,15 +10,14 @@ float currentSpeed = 0;
 uint32_t current_time;
 Ramp* rampLinear = NULL;
 
-
+// runs before each test
 void setUp(void)
 {
-  // set stuff up here
 }
 
+// runs after each test
 void tearDown(void)
 {
-  // clean stuff up here
 }
 
 void test_ramp_update()
@@ -39,6 +38,7 @@ void test_smth() {
   TEST_FAIL_MESSAGE("C'est con");
   TEST_IGNORE_MESSAGE("Osef");
 
+  TEST_MESSAGE("Coucou");
 }
 
 void setup()
@@ -53,7 +53,7 @@ void setup()
   rampLinear->beginRamp(t0, DEFAULT_LINEAR_GOAL_SPEED);
 
 
-  UNITY_BEGIN(); // IMPORTANT LINE!
+  UNITY_BEGIN(); // begin unit testing
 }
 
 uint8_t i = 0;
