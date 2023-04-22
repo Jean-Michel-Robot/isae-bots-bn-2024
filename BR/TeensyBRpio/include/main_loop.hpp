@@ -8,7 +8,7 @@ class OdosPosition;
 class LinearTrajectory;
 class RotationTrajectory;
 class Asserv;
-class BrSM;
+class BrSMWrapper;
 
 // pointers to the classes, accessible from anywhere in the src code
 extern ROS* p_ros;
@@ -18,6 +18,6 @@ extern LinearTrajectory *p_linearTrajectory;
 extern RotationTrajectory *p_rotationTrajectory;
 
 extern Asserv *p_asserv;
-extern BrSM *p_sm;
+extern BrSMWrapper *p_sm;
 
 #endif

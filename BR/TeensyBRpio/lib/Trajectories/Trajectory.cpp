@@ -51,17 +51,18 @@ void Trajectory::beginTrajectory(uint32_t t0) {
 
 
 // Update les variables de la trajectoire [x, y, theta, V, omega] à un temps t
-void Trajectory::updateTrajectory(uint32_t current_time)
+void Trajectory::updateTrajectory(uint32_t new_time)
 {
     // Calcul de dt
-    float dt = current_time - this->current_time;
+    // uint32_t previous_time = this->current_time;
+    uint32_t dt = new_time - current_time;
 
     if (dt < 0) {
         Serial.println("ERROR : dt négatif");
         return;
     }
 
-    this->current_time = current_time;
+    current_time = new_time;
 
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);

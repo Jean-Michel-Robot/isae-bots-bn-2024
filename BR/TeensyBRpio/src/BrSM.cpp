@@ -196,8 +196,9 @@ class BR_Idle
     currentState = BRState::BR_IDLE;
   }
 
-  void update(uint32_t t) override {
+  void react(BrUpdateEvent const & e) override {
     // ne rien faire en Idle
+    Serial.println("Update of Idle");
   }
 
   void react(OrderEvent const & e) override {
@@ -231,9 +232,18 @@ void BrSM::react(ErrorEvent const &) {
   // std::cout << "Error event ignored" << std::endl;
 }
 
-void BrSM::update(uint32_t t) {
+void BrSM::react(BrUpdateEvent const & e) {
+
+  uint32_t t = e.currentTime;
+
+  if (currentTrajectory == NULL) {
+    Serial.println("ERROR : pointer to current trajectory is NULL");
+    return;
+  }
 
   currentTrajectory->updateTrajectory(t);
+
+  Serial.println("Got here !");
 
   p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
@@ -269,5 +279,5 @@ Trajectory* BrSM::currentTrajectory = NULL;
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-BRState BrSM::currentState = BRState::BR_UNDEF;
+BRState BrSM::currentState = BRState::BR_IDLE;
 FSM_INITIAL_STATE(BrSM, BR_Idle)

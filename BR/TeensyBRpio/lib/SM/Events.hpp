@@ -2,6 +2,7 @@
 #define EVENTS_H
 
 #include "tinyfsm/tinyfsm.hpp"
+#include <Arduino.h>
 
 // ----------------------------------------------------------------------------
 // Event declarations
@@ -47,7 +48,12 @@ struct EndRampEvent : tinyfsm::Event {};  // Signale qu'il faut rediriger la ram
 // for any SM ?
 struct UpdateEvent : tinyfsm::Event
 {
-	float currentTime;
+	uint32_t currentTime;
+};
+
+struct BrUpdateEvent : tinyfsm::Event
+{
+	uint32_t currentTime;
 };
 
 struct BeginRampEvent : tinyfsm::Event

@@ -68,7 +68,7 @@ public:
 	virtual void react(ErrorEvent const &);
 	
 	// Update function in states, can be overwritten
-	virtual void update(uint32_t t);
+	virtual void react(BrUpdateEvent const & e);
 
 
 	//   void         react(Alarm       const &);

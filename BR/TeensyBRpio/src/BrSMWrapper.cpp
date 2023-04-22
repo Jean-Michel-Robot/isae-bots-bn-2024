@@ -8,8 +8,22 @@
 
 BrSMWrapper::BrSMWrapper() {
 
+
+  brSM = BrSM();  // stack memory (instanciation without new keyword)
+
+  // beginRampEvent.t0 = 0.0;
+  // goalSpeedChangeEvent.newSpeed = 0.0;
+  // updateEvent.currentTime = 0.0;
+
+  // brSM.setupTrajectory();
+  brUpdateEvent.currentTime = micros();
+
+  brSM.start();
+
 }
 
+void BrSMWrapper::updateSM() {
 
-void BrSMWrapper::sendEvent() {
+  brUpdateEvent.currentTime = micros();
+  brSM.send_event(brUpdateEvent);
 }
