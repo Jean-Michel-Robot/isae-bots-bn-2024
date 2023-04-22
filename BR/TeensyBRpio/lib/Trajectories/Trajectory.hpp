@@ -6,6 +6,12 @@
 #include <Position2D.h>
 #include <Ramp.hpp>
 
+enum TrajectoryType
+{
+    TRAJ_UNDEF = 0,
+    TRAJ_LINEAR = 1,
+    TRAJ_ROTATION = 2,
+};
 
 class Trajectory
 {
@@ -20,7 +26,7 @@ public :
 
     virtual bool detectEndRamp();
 
-    virtual void updateTrajectoryState() {};  // variables x, y, theta, V, omega
+    virtual void updateTrajectoryState();  // variables x, y, theta, V, omega
 
 
     // Méthodes indépendantes du type de trajectoire
@@ -54,6 +60,8 @@ public :
     float Dtotale;
     float s;
     float d_current, d_parc;
+
+    TrajectoryType trajectoryType;
 
 private:
 

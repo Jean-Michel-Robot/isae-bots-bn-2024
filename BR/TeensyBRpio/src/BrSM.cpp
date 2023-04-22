@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include <LinearTrajectory.hpp>
 #include <RotationTrajectory.hpp>
+#include <Trajectory.hpp>
 #include "OdosPosition.hpp"
 
 #include "Asserv.hpp"
@@ -199,7 +200,6 @@ class BR_Idle
 
   void react(BrUpdateEvent const & e) override {
     // ne rien faire en Idle
-    Serial.println("Update of Idle");
   }
 
   void react(OrderEvent const & e) override {
@@ -244,8 +244,6 @@ void BrSM::react(BrUpdateEvent const & e) {
 
   currentTrajectory->updateTrajectory(t);
 
-  Serial.println("Got here !");
-
   p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
   p_asserv->updateCommand(
@@ -268,6 +266,19 @@ void BrSM::react(BrUpdateEvent const & e) {
 
 BRState BrSM::getCurrentState() {
   return currentState;
+}
+
+float BrSM::getCurrentTargetSpeed() {
+  if (currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
+    return currentTrajectory->getTrajectoryLinearSpeed();
+  }
+  else if (currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
+    return currentTrajectory->getTrajectoryAngularSpeed();
+  }
+  else {
+    p_ros->logPrint(LogType::ERROR, "ERROR : Unhandled trajectory type");
+    return 0.0;
+  }
 }
 
 // Variable initializations

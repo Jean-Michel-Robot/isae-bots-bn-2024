@@ -15,6 +15,8 @@ Trajectory::Trajectory()
     d_current = 0.0;
     Dtotale = 0.0;
 
+    trajectoryType = TrajectoryType::TRAJ_UNDEF;
+
     rampSpeed = Ramp(accelParam);  //TODO : static object or change it to dynamic ?
                                    // Or LinearTrajectory is dynamic but this is static ?
 }
@@ -80,7 +82,7 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // Test s >= 1 (rampe terminee)
     if (s >= 1) {
         s = 1;
-
+        Serial.println("s >= 1");
         /*
         Sécurité : on met la commande de vitesse à 0
         (si jamais on a pas décéléré à temps on essaie quand même
@@ -102,7 +104,6 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // Application des équations paramétriques avec s
     // et attribution des vitesses (linéaire et angulaire)
     updateTrajectoryState();
-
 }
 
 void Trajectory::setGoalSpeed(float goalSpeed) {
@@ -126,4 +127,14 @@ float Trajectory::getTrajectoryLinearSpeed() {
 
 float Trajectory::getTrajectoryAngularSpeed() {
     return omega;
+}
+
+
+// default def
+void Trajectory::updateTrajectoryState() {
+    Serial.println("ERROR : default implementation of updateTrajectoryState");
+}
+
+void Trajectory::setDest(OrderType order) {
+    Serial.println("ERROR : default implementation of setDest");
 }

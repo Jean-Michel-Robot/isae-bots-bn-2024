@@ -14,13 +14,15 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
     accelParam = initialAccelParam;
 
     thetaDest = 0.0;
+
+    trajectoryType = TrajectoryType::TRAJ_ROTATION;
 }
 
 // A faire après avoir set la position du robot
 void RotationTrajectory::setDest(OrderType order) {
     this->thetaDest = order.theta;
 
-    Dtotale = RADIUS * abs(thetaDest - theta0);
+    Dtotale = ASSERV_ALPHA * abs(thetaDest - theta0); //TODO : pb de modulo
     // theta0 = atan2(ydest - y0, xdest - x0);
 
 }

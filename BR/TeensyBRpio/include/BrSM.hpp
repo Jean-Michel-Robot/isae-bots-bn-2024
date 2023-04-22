@@ -77,6 +77,7 @@ public:
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	BRState getCurrentState();
+	float getCurrentTargetSpeed();
 
 	template<typename E>
     void send_event(E const & event)
