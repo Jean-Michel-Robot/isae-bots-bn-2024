@@ -17,10 +17,8 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
 }
 
 // A faire après avoir set la position du robot
-void RotationTrajectory::setDest(float thetaDest) {
-    this->thetaDest = thetaDest;
-
-    float RADIUS = 0.10;  //TODO param
+void RotationTrajectory::setDest(OrderType order) {
+    this->thetaDest = order.theta;
 
     Dtotale = RADIUS * abs(thetaDest - theta0);
     // theta0 = atan2(ydest - y0, xdest - x0);

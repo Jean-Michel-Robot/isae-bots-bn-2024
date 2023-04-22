@@ -16,8 +16,7 @@ public :
 
     // Méthodes dépendant du type de trajectoire
 
-    virtual void setDest(float xdest, float ydest) {};  // déplacement linéaire
-    virtual void setDest(float thetaDest) {};  // rotation
+    virtual void setDest(OrderType order);
 
     virtual bool detectEndRamp();
 

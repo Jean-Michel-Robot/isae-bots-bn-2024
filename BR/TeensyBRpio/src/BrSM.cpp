@@ -37,8 +37,9 @@ void BrSM::setupTrajectory() {
   // Set robot position
   currentTrajectory->setRobotPos( p_odos->getRobotPosition() );
 
-  // Set destination (order angle)
-  currentTrajectory->setDest( currentOrder.theta );
+  // Set destination using order info
+  currentTrajectory->setDest( currentOrder );
+  
 
   // Begin trajectory
   currentTrajectory->beginTrajectory( micros() );

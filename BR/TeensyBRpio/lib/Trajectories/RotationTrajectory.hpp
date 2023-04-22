@@ -10,8 +10,7 @@ public :
     RotationTrajectory(float initialGoalSpeed, float initialAccelParam);
     // TODO destructeur
 
-    void setDest(float thetaDest) override;
-
+    void setDest(OrderType order) override;
 
 private:
 
