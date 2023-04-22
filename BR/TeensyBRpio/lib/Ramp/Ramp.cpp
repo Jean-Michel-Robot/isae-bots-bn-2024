@@ -12,7 +12,7 @@ Ramp::Ramp(float accelParam) {
 
     rampSM = RampSM(accelParam);  // stack memory (instanciation without new keyword)
 
-    beginRampEvent.t0 = 0.0;
+    beginRampEvent.t0 = 0;
     goalSpeedChangeEvent.newSpeed = 0.0;
     updateEvent.currentTime = 0.0;
 

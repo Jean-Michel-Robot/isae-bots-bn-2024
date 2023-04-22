@@ -58,10 +58,10 @@ public:
     }
 
 protected:
+	static uint32_t t0, t_start_slope; // + t_current si on a besoin du dt
+	static float V_start_slope;
 
-    static float t0, t_start_slope, V_start_slope;  // t_current si on a besoin du dt
-
-    static float accelParam;  // pas en define car potentiellement modifiable
+	static float accelParam;  // pas en define car potentiellement modifiable
 
     static float goalSpeed;
     static float currentSpeed;

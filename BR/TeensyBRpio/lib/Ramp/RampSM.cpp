@@ -200,12 +200,7 @@ class RampIdle
 : public RampSM
 {
   void entry() override {
-
-
-    Serial.println("ICI dans entry");
-    delay(100);
-    // currentState = RampState::RAMP_IDLE;
-    // setCurrentState(RampState::RAMP_IDLE);
+    currentState = RampState::RAMP_IDLE;
   }
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
@@ -305,8 +300,8 @@ void RampSM::react(EmergencyBrakeEvent const &) {
 
 // Variable initializations (so that every state knows what it is)
 
-float RampSM::t0 = 0.0;
-float RampSM::t_start_slope = 0.0;
+uint32_t RampSM::t0 = 0;
+uint32_t RampSM::t_start_slope = 0;
 float RampSM::V_start_slope = 0.0;
 float RampSM::goalSpeed = 0.0;
 float RampSM::accelParam = 0.0;
