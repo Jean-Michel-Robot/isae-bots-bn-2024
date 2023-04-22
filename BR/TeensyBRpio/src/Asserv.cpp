@@ -69,8 +69,8 @@ void Asserv::updateCommand(float vd, float omega_d) {
         m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
 
         // send the commands to the motors
-        sendMotorCommand(0, m_leftWheelSpeed);
-        sendMotorCommand(1, m_rightWheelSpeed);
+        // sendMotorCommand(0, m_leftWheelSpeed);
+        // sendMotorCommand(1, m_rightWheelSpeed);
     }
 
     else {

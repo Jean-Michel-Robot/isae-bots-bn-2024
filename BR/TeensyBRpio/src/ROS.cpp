@@ -71,6 +71,9 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 
 void ROS::logPrint(LogType logtype, String msg)
 {
+
+  Serial.println(msg);
+  return; //NOTE deactivated to debug with serial interface
   if (logtype == LogType::INFO) {m_nodeHandle.loginfo(msg.c_str());}
   else if (logtype == LogType::WARN) {m_nodeHandle.logwarn(msg.c_str());}
   else if (logtype == LogType::ERROR) {m_nodeHandle.logerror(msg.c_str());}

@@ -27,3 +27,4 @@ void BrSMWrapper::updateSM() {
   brUpdateEvent.currentTime = micros();
   brSM.send_event(brUpdateEvent);
 }
+

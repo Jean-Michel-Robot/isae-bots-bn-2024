@@ -30,8 +30,8 @@
 #define DEFAULT_LINEAR_GOAL_SPEED 1.0 // m/s //TODO set
 #define DEFAULT_ROTATION_GOAL_SPEED 1.0 // m/s //TODO set
 
-#define DEFAULT_LINEAR_ACCEL_PARAM 1.0 // m/s^2 //TODO set
-#define DEFAULT_ROTATION_ACCEL_PARAM 1.0 // m/s^2 //TODO set
+#define DEFAULT_LINEAR_ACCEL_PARAM 0.5 // m/s^2 //TODO set
+#define DEFAULT_ROTATION_ACCEL_PARAM 5 // m/s^2 //TODO set
 
 
 

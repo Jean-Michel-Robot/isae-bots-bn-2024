@@ -35,11 +35,12 @@ public :
     void changeGoalSpeed(float goalSpeed);
     void emergencyBrake();
 
+    RampSM rampSM; //TODO remettre en private
+
 private :
 
     float accelParam;
 
-    RampSM rampSM;
 
     BeginRampEvent beginRampEvent;
     GoalSpeedChangeEvent goalSpeedChangeEvent;

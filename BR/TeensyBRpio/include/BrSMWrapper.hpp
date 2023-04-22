@@ -16,9 +16,10 @@ public :
 
     int test;
 
+    BrSM brSM; //TODO remettre en private
+
 
 private :
-    BrSM brSM;
     BrUpdateEvent brUpdateEvent;
 };
 

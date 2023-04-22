@@ -85,6 +85,9 @@ public:
         dispatch<E>(event);
     }
 
+	static Trajectory* currentTrajectory; //TODO remettre en private
+
+
 protected:
 
 	// static constexpr int initial_floor = 0;
@@ -96,7 +99,6 @@ protected:
 
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
 
-	static Trajectory* currentTrajectory;
 
 	static void setupTrajectory();
 };

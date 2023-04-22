@@ -63,9 +63,12 @@ public :
 
     TrajectoryType trajectoryType;
 
+
+    Ramp rampSpeed; //TODO remettre en private
+
+
 private:
 
-    Ramp rampSpeed;
 
     /*
     s est déduit de t et de V(t)

@@ -49,6 +49,10 @@ float Ramp::updateRamp(uint32_t t) {
     // check if ramp is running
     //TODO
 
+    //NOTE TEST
+    Serial.println("Current Ramp state : " + String(rampSM.getCurrentState()));
+
+
     // send UpdateEvent
     updateEvent.currentTime = t;
     rampSM.send_event(updateEvent);

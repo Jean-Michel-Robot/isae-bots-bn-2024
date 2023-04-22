@@ -30,7 +30,7 @@ void setup() {
 
     Serial.begin(9600);
 
-    delay(1000);
+    delay(500);
 
     Serial.println("Setup");
 
@@ -83,7 +83,8 @@ void loop() {
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
-        // Serial.println(current_speed)
+        Serial.println(p_sm->getCurrentTargetSpeed());
+        // Serial.println(p_odos->getRobotPosition().toString());
 
         p_sm->updateSM();
 
@@ -100,6 +101,7 @@ void loop() {
         }
 
         else if (c == 'o') {
+            Serial.println("Received order request");
 
             OrderEvent orderEvent;
             orderEvent.order.x = 100;
@@ -109,7 +111,25 @@ void loop() {
 
             p_sm->send_event(orderEvent);
 
-            Serial.println("Received order");
+        }
+
+
+        else if (c == 's') {
+            Serial.println("Send goal speed change event of 2");
+
+            GoalSpeedChangeEvent goalSpeedChangeEvent;
+            goalSpeedChangeEvent.newSpeed = 2.0;
+
+            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+        }
+        else if (c == 'd') {
+            Serial.println("Send goal speed change event of 0.5");
+
+            GoalSpeedChangeEvent goalSpeedChangeEvent;
+            goalSpeedChangeEvent.newSpeed = 0.5;
+
+            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
         }
     }
+
 }

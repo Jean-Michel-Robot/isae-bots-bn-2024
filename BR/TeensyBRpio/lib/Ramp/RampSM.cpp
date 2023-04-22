@@ -71,8 +71,8 @@ class Slope
 : public RampSM
 {
   void entry() override {
-    // currentState = RampState::SLOPE;
-    setCurrentState(RampState::RAMP_SLOPE);
+    currentState = RampState::RAMP_SLOPE;
+    // setCurrentState(RampState::RAMP_SLOPE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -158,8 +158,8 @@ class Constant
 : public RampSM
 {
   void entry() override {
-    // currentState = RampState::CONSTANT;
-    setCurrentState(RampState::RAMP_CONSTANT);
+    currentState = RampState::RAMP_CONSTANT;
+    // setCurrentState(RampState::RAMP_CONSTANT);
   }
 
   void react(UpdateEvent const & e) override {

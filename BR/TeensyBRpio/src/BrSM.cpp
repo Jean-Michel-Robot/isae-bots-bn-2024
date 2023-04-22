@@ -40,7 +40,6 @@ void BrSM::setupTrajectory() {
 
   // Set destination using order info
   currentTrajectory->setDest( currentOrder );
-  
 
   // Begin trajectory
   currentTrajectory->beginTrajectory( micros() );
@@ -121,6 +120,11 @@ class Forward
 {
   void entry() override {
     currentState = BRState::BR_FORWARD;
+
+    // Changement de trajectoire en rotation
+    currentTrajectory = p_linearTrajectory;
+
+    setupTrajectory();
   }
 
   void react(GoalReachedEvent const & e) override {
@@ -211,7 +215,7 @@ class BR_Idle
 
     //TODO : check if both axis are running (closed loop state)
 
-    transit<InitRot>();  // mettre une fonctions dans transit fait qu'elle est exécutée
+    transit<Forward>();  // mettre une fonctions dans transit fait qu'elle est exécutée
                          // après le exit() de l'état
   }
 };
