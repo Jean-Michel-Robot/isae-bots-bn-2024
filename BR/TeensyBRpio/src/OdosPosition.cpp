@@ -119,7 +119,7 @@ void OdosPosition::loop()
   // Logger::setFieldValue(m_robotPosition.y, Logger::positionY);
   // Logger::setFieldValue(radToDeg(modulo_pipi(m_robotPosition.theta)), Logger::positionTheta);
   
-  if (m_timer_last_send - millis() > ODO_SEND_POSITION_TIMER) {
+  if (millis() - m_timer_last_send > ODO_SEND_POSITION_TIMER) {
     m_timer_last_send = millis();
     this->sendRobotPosition();
 
