@@ -24,6 +24,8 @@ BrSMWrapper::BrSMWrapper() {
 
 void BrSMWrapper::updateSM() {
 
+  Serial.println("Current BR state : " + getCurrentStateStr());
+
   brUpdateEvent.currentTime = micros();
   brSM.send_event(brUpdateEvent);
 }

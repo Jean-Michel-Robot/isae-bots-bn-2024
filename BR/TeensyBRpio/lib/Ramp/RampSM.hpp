@@ -5,17 +5,31 @@
 #include <Events.hpp>
 
 
-enum RampState
-{
-	RAMP_UNDEF = 0,
-	RAMP_IDLE = 1,  // constant a 0 (pas de mouvement en cours)
-	RAMP_SLOPE = 2,  // positive ou négative
-	RAMP_CONSTANT = 3,
-	RAMP_END = 4,
-	RAMP_BRAKE = 5,
+// enum RampState
+// {
+// 	RAMP_UNDEF = 0,
+// 	RAMP_IDLE = 1,  // constant a 0 (pas de mouvement en cours)
+// 	RAMP_SLOPE = 2,  // positive ou négative
+// 	RAMP_CONSTANT = 3,
+// 	RAMP_END = 4,
+// 	RAMP_BRAKE = 5,
+// };
+
+// States
+#define FOREACH_RAMPSTATE(RAMPSTATE) \
+        RAMPSTATE(RAMP_UNDEF)   \
+        RAMPSTATE(RAMP_IDLE)  \
+        RAMPSTATE(RAMP_SLOPE)   \
+        RAMPSTATE(RAMP_CONSTANT)  \
+        RAMPSTATE(RAMP_END)   \
+        RAMPSTATE(RAMP_BRAKE)  \
+
+#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_STRING(STRING) #STRING,
+
+enum RampState {
+    FOREACH_RAMPSTATE(GENERATE_ENUM)
 };
-
-
 
 class RampSM
 : public tinyfsm::Fsm<RampSM>
@@ -43,10 +57,10 @@ public:
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */
 
-	void setCurrentState(RampState rampState);
-
 	RampState getCurrentState();
-    void setAccelParam(float accelParam);
+	String getCurrentStateStr();
+
+	void setAccelParam(float accelParam);
     void setGoalSpeed(float goalSpeed);
     // void setT0(float t0);
     float getCurrentSpeed();

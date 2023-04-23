@@ -15,9 +15,15 @@
 #include "Asserv.hpp"
 
 
+// define string names for states
+static const char *BrStateStr[] = {
+    FOREACH_BRSTATE(GENERATE_STRING)
+};
+
 // forward declarations
 class Forward;
 class FinalRot;
+class InitRot;
 
 // ----------------------------------------------------------------------------
 // Transition functions
@@ -270,6 +276,10 @@ void BrSM::react(BrUpdateEvent const & e) {
 
 BRState BrSM::getCurrentState() {
   return currentState;
+}
+
+String BrSM::getCurrentStateStr() {
+  return BrStateStr[currentState];
 }
 
 float BrSM::getCurrentTargetSpeed() {

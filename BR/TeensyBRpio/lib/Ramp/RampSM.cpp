@@ -9,6 +9,12 @@
 #include "RampDefines.hpp"
 #include "defines.hpp"
 
+
+// define string names for states
+static const char *RampStateStr[] = {
+    FOREACH_RAMPSTATE(GENERATE_STRING)
+};
+
 // Constructor
 RampSM::RampSM(float accelParam) {
   this->accelParam = accelParam;
@@ -39,13 +45,15 @@ RampState RampSM::getCurrentState() {
   return currentState;
 }
 
+String RampSM::getCurrentStateStr() {
+  return RampStateStr[currentState];
+}
+
+
 float RampSM::getCurrentSpeed() {
   return currentSpeed;
 }
 
-void RampSM::setCurrentState(RampState rampState) {
-  currentState = rampState;
-}
 
 // Forward declarations
 class Constant;
@@ -72,7 +80,6 @@ class Slope
 {
   void entry() override {
     currentState = RampState::RAMP_SLOPE;
-    // setCurrentState(RampState::RAMP_SLOPE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -159,7 +166,6 @@ class Constant
 {
   void entry() override {
     currentState = RampState::RAMP_CONSTANT;
-    // setCurrentState(RampState::RAMP_CONSTANT);
   }
 
   void react(UpdateEvent const & e) override {
@@ -220,8 +226,7 @@ class RampEnd
 : public RampSM
 {
   void entry() override {
-    // currentState = RampState::RAMP_END;
-    setCurrentState(RampState::RAMP_END);
+    currentState = RampState::RAMP_END;
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;
@@ -252,7 +257,6 @@ class Brake
 {
   void entry() override {
     currentState = RampState::RAMP_BRAKE;
-    // setCurrentState(RampState::BRAKE);
 
     t_start_slope = micros();
     V_start_slope = currentSpeed;

@@ -13,15 +13,19 @@
 
 
 // States
-enum BRState
-{
-	BR_UNDEF = 0,
+#define FOREACH_BRSTATE(BRSTATE) \
+        BRSTATE(BR_UNDEF)   \
+        BRSTATE(BR_IDLE)  \
+        BRSTATE(BR_INITROT)   \
+        BRSTATE(BR_FORWARD)  \
+        BRSTATE(BR_FINALROT)   \
+        BRSTATE(BR_ARRIVED)  \
 
-	BR_IDLE = 1,
-	BR_INITROT = 2,
-	BR_FORWARD = 3,
-	BR_FINALROT = 4,
-	BR_ARRIVED = 5,
+#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_STRING(STRING) #STRING,
+
+enum BRState {
+    FOREACH_BRSTATE(GENERATE_ENUM)
 };
 
 
@@ -77,6 +81,8 @@ public:
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	BRState getCurrentState();
+	String getCurrentStateStr();
+
 	float getCurrentTargetSpeed();
 
 	template<typename E>

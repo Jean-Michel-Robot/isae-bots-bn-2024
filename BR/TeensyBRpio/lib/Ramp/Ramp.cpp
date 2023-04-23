@@ -50,7 +50,7 @@ float Ramp::updateRamp(uint32_t t) {
     //TODO
 
     //NOTE TEST
-    Serial.println("Current Ramp state : " + String(rampSM.getCurrentState()));
+    Serial.println("Current Ramp state : " + rampSM.getCurrentStateStr());
 
 
     // send UpdateEvent
