@@ -10,11 +10,12 @@
 // #include "v_Logger.h"
 // #include "z_Setup_Loop.h"
 
-#include "motors.hpp"
+#include <Motors.hpp>
 
 #include "ROS.hpp"
-#include "BrSMWrapper.hpp"
 #include "main_loop.hpp"
+
+#include "BrSMWrapper.hpp"
 
 // init ROS object
 ROS::ROS()
@@ -22,6 +23,7 @@ ROS::ROS()
     m_nodeHandle.initNode();
     // m_nodeHandle.subscribe(m_subGainsP);
     m_nodeHandle.subscribe(m_subOrder);
+    m_nodeHandle.subscribe(m_subDebug);
     // m_nodeHandle.subscribe(m_subGainsM);
     // m_nodeHandle.subscribe(m_subAcc);
     // m_nodeHandle.subscribe(m_subAcc2);

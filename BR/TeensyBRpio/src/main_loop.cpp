@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#include <motors.hpp>
+#include <Motors.hpp>
 
 
 #include "ROS.hpp"
@@ -13,6 +13,7 @@
 #include <RotationTrajectory.hpp>
 #include "Asserv.hpp"
 #include "BrSMWrapper.hpp"
+
 
 
 ROS* p_ros = NULL;
@@ -34,7 +35,6 @@ void setup() {
 
     //Serial.println("Setup");
 
-    pinMode(LED_BUILTIN, OUTPUT);
 
     motors_init();
 

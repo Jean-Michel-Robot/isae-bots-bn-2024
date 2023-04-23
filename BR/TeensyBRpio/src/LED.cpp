@@ -28,7 +28,7 @@ void LED::color(int R, int G, int B)
 
 BlinkLED::BlinkLED()
 {
-  pinMode(13, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   m_state = 1;
   m_timer = 0.0;
 }

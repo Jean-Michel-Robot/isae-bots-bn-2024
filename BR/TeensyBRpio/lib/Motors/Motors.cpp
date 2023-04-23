@@ -1,9 +1,9 @@
-#include "motors.hpp"
+#include <Motors.hpp>
 
 #include "defines.hpp"
 
-#include "ROS.hpp"
-#include "main_loop.hpp"
+
+// #include "main_loop.hpp"
 
 SoftwareSerial odrive_serial(ODRIVE_RX_PIN, ODRIVE_TX_PIN);
 
@@ -28,9 +28,9 @@ void sendMotorCommand(int motor_number, float velCmd) {
     float odrv_cmd = velCmd*TRANSMISSION_RATIO/(PI*WHEEL_DIAMETER);
 
     // constrain the motor command for safety
-    if (abs(odrv_cmd) > 10) {
-        p_ros->logPrint(LogType::ERROR, "Valeur de commande Odrive supérieure au seuil");
-    }
+    // if (abs(odrv_cmd) > 10) {
+    //     p_ros->logPrint(LogType::ERROR, "Valeur de commande Odrive supérieure au seuil");
+    // }
     odrv_cmd = constrain(odrv_cmd, -10, 10);
     
 
