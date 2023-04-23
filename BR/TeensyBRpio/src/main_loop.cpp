@@ -107,7 +107,7 @@ void loop() {
             orderEvent.order.x = 100;
             orderEvent.order.y = 200;
             orderEvent.order.theta = 1.57;
-            orderEvent.order.goalType = GoalType::ORIENT;
+            orderEvent.order.goalType = GoalType::TRANS;  // on essaie direct le depl linéaire
 
             p_sm->send_event(orderEvent);
 
@@ -129,6 +129,22 @@ void loop() {
             goalSpeedChangeEvent.newSpeed = 0.5;
 
             p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+        }
+
+        else if (c == 'b') {
+            Serial.println("Send emergency brake event");
+
+            EmergencyBrakeEvent emergencyBrakeEvent;
+
+            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+        }
+
+        else if (c == 'e') {
+            Serial.println("Send end ramp event");
+
+            EndRampEvent endRampEvent;
+
+            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(endRampEvent);
         }
     }
 

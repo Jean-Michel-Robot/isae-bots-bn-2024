@@ -61,9 +61,24 @@ class Arrived
 {
   void entry() override {
     currentState = BRState::BR_ARRIVED;
+  }
 
-    // send_event(MotorStop());
-	}
+  void react(BrUpdateEvent const & e) override {
+    //TODO bloquer les moteurs avec l'asserv (a la difference de IDLE)
+
+  }
+
+  void react(OrderEvent const & e) override {
+
+    // store order
+    this->currentOrder = e.order;
+
+    p_ros->logPrint(LogType::INFO, "Transition : Arrived -> InitRot");
+
+    //TODO : check if both axis are running (closed loop state)
+
+    transit<Forward>();  //FORTEST remettre initRot
+  }
 };
 
 
@@ -92,25 +107,20 @@ class InitRot
     switch (e.goalType) {
 
       case GoalType::ORIENT :
-      {
         p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Arrived");
         
         transit<Arrived>();
-        
-      }
+      break;
 
       case GoalType::TRANS :
-      {
         p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Forward");
 
         transit<Forward>();
-      }
+      break;
 
       default :
-      {
         // error
         p_ros->logPrint(LogType::ERROR, "Wrong goal type in state InitRot");
-      }
     }
 
   };
@@ -138,24 +148,20 @@ class Forward
     switch (e.goalType) {
 
       case GoalType::TRANS :
-      {
         p_ros->logPrint(LogType::INFO, "Transition : Forward -> Arrived");
 
         transit<Arrived>();
-      }
+      break;
 
       case GoalType::FINAL :
-      {
         p_ros->logPrint(LogType::INFO, "Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
-      }
+      break;
 
       default :
-      {
         // error
         p_ros->logPrint(LogType::ERROR, "Wrong goal type in state Forward");
-      }
     }
 
   };
@@ -178,17 +184,14 @@ class FinalRot
     switch (e.goalType) {
 
       case GoalType::FINAL :
-      {
         p_ros->logPrint(LogType::INFO, "Transition : FinalRot -> Arrived");
 
         transit<Arrived>();
-      }
+      break;
 
       default :
-      {
         // error
         p_ros->logPrint(LogType::ERROR, "Wrong goal type in state FinalRot");
-      }
     }
 
   };
@@ -217,12 +220,13 @@ class BR_Idle
     // store order
     this->currentOrder = e.order;
 
-    p_ros->logPrint(LogType::INFO, "Transition : BR_Idle -> InitRot");
+    p_ros->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
 
     //TODO : check if both axis are running (closed loop state)
 
     transit<Forward>();  // mettre une fonctions dans transit fait qu'elle est exécutée
                          // après le exit() de l'état
+                         //FORTEST remttre a InitRot
   }
 };
 
@@ -264,7 +268,9 @@ void BrSM::react(BrUpdateEvent const & e) {
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
     // Can mean that the trajectory is done
-    if (p_asserv->isAtObjectivePoint(false)) {  //TODO checkangle ??
+    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ??
+
+      Serial.println("Send goal reached event");
 
       GoalReachedEvent e;
       e.goalType = currentOrder.goalType;
