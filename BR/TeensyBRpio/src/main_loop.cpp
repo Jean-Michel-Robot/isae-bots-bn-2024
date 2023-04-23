@@ -28,11 +28,11 @@ BrSMWrapper* p_sm = NULL;
 
 void setup() {
 
-    Serial.begin(9600);
+    // Serial.begin(9600);
 
-    delay(500);
+    // delay(500);
 
-    Serial.println("Setup");
+    //Serial.println("Setup");
 
     pinMode(LED_BUILTIN, OUTPUT);
 
@@ -56,7 +56,7 @@ void setup() {
 
     p_sm = new BrSMWrapper();
 
-    Serial.println("Entering loop");
+    //Serial.println("Entering loop");
 }
 
 bool led_on = false;
@@ -76,6 +76,7 @@ void loop() {
     p_ros->loop();
 
     p_odos->loop();
+
     p_blink->loop();
 
 
@@ -84,27 +85,28 @@ void loop() {
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
-        Serial.println(p_sm->getCurrentTargetSpeed());
-        // Serial.println(p_odos->getRobotPosition().toString());
-        // Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
-        // Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
+        //Serial.println(p_sm->getCurrentTargetSpeed());
+        // //Serial.println(p_odos->getRobotPosition().toString());
+        // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
+        // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-        Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
 
         loop_timer = millis();
     }
 
+    return;
 
     // Commands for debugging
     if (Serial.available()) {
         char c = Serial.read();
 
         if (c == 't') {
-            Serial.println("Test input");
+            //Serial.println("Test input");
         }
 
         else if (c == 'o') {
-            Serial.println("Received order request");
+            //Serial.println("Received order request");
 
             OrderEvent orderEvent;
             orderEvent.order.x = 100;
@@ -118,7 +120,7 @@ void loop() {
 
 
         else if (c == 's') {
-            Serial.println("Send goal speed change event of 0.5");
+            //Serial.println("Send goal speed change event of 0.5");
 
             GoalSpeedChangeEvent goalSpeedChangeEvent;
             goalSpeedChangeEvent.newSpeed = 0.5;
@@ -126,7 +128,7 @@ void loop() {
             p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
         }
         else if (c == 'd') {
-            Serial.println("Send goal speed change event of 0.1");
+            //Serial.println("Send goal speed change event of 0.1");
 
             GoalSpeedChangeEvent goalSpeedChangeEvent;
             goalSpeedChangeEvent.newSpeed = 0.1;
@@ -135,7 +137,7 @@ void loop() {
         }
 
         else if (c == 'b') {
-            Serial.println("Send emergency brake event");
+            //Serial.println("Send emergency brake event");
 
             EmergencyBrakeEvent emergencyBrakeEvent;
 
@@ -143,7 +145,7 @@ void loop() {
         }
 
         else if (c == 'e') {
-            Serial.println("Send end ramp event");
+            //Serial.println("Send end ramp event");
 
             EndRampEvent endRampEvent;
 

@@ -91,7 +91,7 @@ class Slope
     // t_current = e.currentTime;
 
     if (e.currentTime - t_start_slope < 0) {
-      Serial.println("Ecart de temps negatif");
+      //Serial.println("Ecart de temps negatif");
       // p_ros->logPrint(LogType::ERROR, "Ecart de temps negatif"); //TOTEST pas de valeurs négatives
     }
 
@@ -101,7 +101,7 @@ class Slope
       currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope)*0.000001;  // en ASC
     
       if (currentSpeed > goalSpeed - RAMP_EPSILON) {
-        Serial.println("Reached constant part of upwards slope");
+        //Serial.println("Reached constant part of upwards slope");
         // p_ros->logPrint(LogType::INFO, "Reached constant part of upwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
@@ -112,7 +112,7 @@ class Slope
       currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope)*0.000001;  // en DESC
     
       if (currentSpeed < goalSpeed + RAMP_EPSILON) {
-        Serial.println("Reached constant part of downwards slope");
+        //Serial.println("Reached constant part of downwards slope");
         // p_ros->logPrint(LogType::INFO, "Reached constant part of downwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
@@ -133,7 +133,7 @@ class Slope
   void react(EndRampEvent const & e) override {
     
     // transition
-    Serial.println("Ending ramp from slope");
+    //Serial.println("Ending ramp from slope");
     // p_ros->logPrint(LogType::INFO, "Ending ramp from slope");
     transit<RampEnd>();
   }
@@ -142,7 +142,7 @@ class Slope
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    Serial.println("Goal speed changed in ramp slope");
+    //Serial.println("Goal speed changed in ramp slope");
     // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp slope");
 
     transit<Slope>();  //TOTEST est ce que avec le UpdateEvent on passe bien qu'une fois dans entry ?
@@ -150,7 +150,7 @@ class Slope
 
   void react(EmergencyBrakeEvent const & e) override {
 
-    Serial.println("Emergency brake in ramp slope");
+    //Serial.println("Emergency brake in ramp slope");
     // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp slope");
     transit<Brake>();
   };
@@ -176,7 +176,7 @@ class Constant
   void react(EndRampEvent const & e) override {
     
     // transition
-    Serial.println("Ending ramp from constant");
+    //Serial.println("Ending ramp from constant");
     // p_ros->logPrint(LogType::INFO, "Ending ramp from constant");
     transit<RampEnd>();
   }
@@ -184,7 +184,7 @@ class Constant
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    Serial.println("Goal speed changed in ramp constant");
+    //Serial.println("Goal speed changed in ramp constant");
     // p_ros->logPrint(LogType::INFO, "Goal speed changed in ramp constant");
 
     transit<Slope>();  // go back to slope if the goal speed is changed
@@ -192,7 +192,7 @@ class Constant
 
   void react(EmergencyBrakeEvent const & e) override {
 
-    Serial.println("Emergency brake in ramp constant");
+    //Serial.println("Emergency brake in ramp constant");
     // p_ros->logPrint(LogType::WARN, "Emergency brake in ramp constant");
     transit<Brake>();
   };
@@ -211,7 +211,7 @@ class RampIdle
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
     
-    Serial.println("Starting new ramp");
+    //Serial.println("Starting new ramp");
     // p_ros->logPrint(LogType::INFO, "Starting new ramp");
     t0 = e.t0;  // set de t0
     transit<Slope>();
@@ -239,7 +239,7 @@ class RampEnd
   
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
 
-      Serial.println("Ramp finished ending");
+      //Serial.println("Ramp finished ending");
       // p_ros->logPrint(LogType::INFO, "Ramp finished ending");
       currentSpeed = 0.0;
       transit<RampIdle>();

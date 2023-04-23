@@ -60,7 +60,7 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     uint32_t dt = new_time - current_time;
 
     if (dt < 0) {
-        Serial.println("ERROR : dt négatif");
+        //Serial.println("ERROR : dt négatif");
         return;
     }
 
@@ -82,7 +82,7 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // Test s >= 1 (rampe terminee)
     if (s >= 1) {
         s = 1;
-        Serial.println("s >= 1");
+        //Serial.println("s >= 1");
         /*
         Sécurité : on met la commande de vitesse à 0
         (si jamais on a pas décéléré à temps on essaie quand même
@@ -132,9 +132,9 @@ float Trajectory::getTrajectoryAngularSpeed() {
 
 // default def
 void Trajectory::updateTrajectoryState() {
-    Serial.println("ERROR : default implementation of updateTrajectoryState");
+    //Serial.println("ERROR : default implementation of updateTrajectoryState");
 }
 
 void Trajectory::setDest(OrderType order) {
-    Serial.println("ERROR : default implementation of setDest");
+    //Serial.println("ERROR : default implementation of setDest");
 }

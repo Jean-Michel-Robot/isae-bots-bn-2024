@@ -252,7 +252,7 @@ void BrSM::react(BrUpdateEvent const & e) {
   uint32_t t = e.currentTime;
 
   if (currentTrajectory == NULL) {
-    Serial.println("ERROR : pointer to current trajectory is NULL");
+    //Serial.println("ERROR : pointer to current trajectory is NULL");
     return;
   }
 
@@ -272,7 +272,7 @@ void BrSM::react(BrUpdateEvent const & e) {
     // Can mean that the trajectory is done
     if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ??
 
-      Serial.println("Send goal reached event");
+      //Serial.println("Send goal reached event");
 
       GoalReachedEvent e;
       e.goalType = currentOrder.goalType;
