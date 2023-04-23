@@ -28,10 +28,10 @@ void sendMotorCommand(int motor_number, float velCmd) {
     float odrv_cmd = velCmd*TRANSMISSION_RATIO/(PI*WHEEL_DIAMETER);
 
     // constrain the motor command for safety
-    if (abs(odrv_cmd) > 5) {
+    if (abs(odrv_cmd) > 10) {
         p_ros->logPrint(LogType::ERROR, "Valeur de commande Odrive supérieure au seuil");
     }
-    odrv_cmd = constrain(odrv_cmd, -5, 5);
+    odrv_cmd = constrain(odrv_cmd, -10, 10);
     
 
     if (motor_number == 1) {odrive.SetVelocity(motor_number, -odrv_cmd);}

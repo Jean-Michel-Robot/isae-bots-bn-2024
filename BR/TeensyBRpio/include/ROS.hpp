@@ -62,7 +62,7 @@ public :
     //callback sur les subscriber ROS
     // de plus l'utilisation en callback impose de les déclarer statique
     static void s_goToCb(const geometry_msgs::Quaternion& positionMsg);
-    static void s_debug(const std_msgs::String& debugMsg);
+    static void s_debug(const std_msgs::Int16& debugMsg);
 
     static void s_changeGainsPosition(const std_msgs::Float32MultiArray& gains);
     static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
@@ -83,7 +83,9 @@ private :
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc   {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters", s_changeAccDecRampe)};
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc2  {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters2", s_changeAccDecRampePrecise)};
 
-    ros::Subscriber<std_msgs::String> subDebug {ros::Subscriber<std_msgs::String>("debug/BR", s_debug)};
+
+
+    ros::Subscriber<std_msgs::Int16> m_subDebug {ros::Subscriber<std_msgs::Int16>("debug/BR", s_debug)};
 
     geometry_msgs::Pose2D m_feedbackPosition;
     ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};

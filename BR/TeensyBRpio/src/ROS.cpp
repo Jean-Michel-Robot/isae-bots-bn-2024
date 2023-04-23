@@ -13,6 +13,8 @@
 #include "motors.hpp"
 
 #include "ROS.hpp"
+#include "BrSMWrapper.hpp"
+#include "main_loop.hpp"
 
 // init ROS object
 ROS::ROS()
@@ -72,8 +74,8 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 void ROS::logPrint(LogType logtype, String msg)
 {
 
-  Serial.println(msg);
-  return; //NOTE deactivated to debug with serial interface
+  // Serial.println(msg);
+  // return; //NOTE deactivated to debug with serial interface
   if (logtype == LogType::INFO) {m_nodeHandle.loginfo(msg.c_str());}
   else if (logtype == LogType::WARN) {m_nodeHandle.logwarn(msg.c_str());}
   else if (logtype == LogType::ERROR) {m_nodeHandle.logerror(msg.c_str());}
@@ -83,17 +85,16 @@ void ROS::logPrint(LogType logtype, String msg)
 }
 
 
-void ROS::s_debug(const std_msgs::String& debugMsg)
+void ROS::s_debug(const std_msgs::Int16& debugMsg)
 {
-  // String data = debugMsg.data;
-  // if (data == "state") {
-  //   logPrint("lol");
-  // }
+  int res = debugMsg.data;
 
-  // OrderEvent orderEvent;
-  // orderEvent.order = {.x = 0, .y = 0, .theta = 0, .goalType = GoalType::FINAL};
+  if (res == 1) {
+    OrderEvent orderEvent;
+    orderEvent.order = {.x = 500, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
 
-  // send_event(orderEvent);
+    p_sm->send_event(orderEvent);
+  }
 }
 
 // void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)

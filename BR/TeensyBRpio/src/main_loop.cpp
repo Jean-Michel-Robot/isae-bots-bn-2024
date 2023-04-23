@@ -52,7 +52,7 @@ void setup() {
     // p_linearTrajectory->setDest(0.0, 0.0);
     // p_linearTrajectory->beginTrajectory( micros() );
 
-    p_asserv = new Asserv(1.0, 1.0, 1.0);
+    p_asserv = new Asserv(1.0, 0.0, 0.0);  //TODO réglage des gains
 
     p_sm = new BrSMWrapper();
 
@@ -79,14 +79,17 @@ void loop() {
     p_blink->loop();
 
 
+    p_sm->updateSM();
 
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
         Serial.println(p_sm->getCurrentTargetSpeed());
         // Serial.println(p_odos->getRobotPosition().toString());
+        // Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
+        // Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-        p_sm->updateSM();
+        Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
 
         loop_timer = millis();
     }
@@ -115,18 +118,18 @@ void loop() {
 
 
         else if (c == 's') {
-            Serial.println("Send goal speed change event of 2");
-
-            GoalSpeedChangeEvent goalSpeedChangeEvent;
-            goalSpeedChangeEvent.newSpeed = 2.0;
-
-            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
-        }
-        else if (c == 'd') {
             Serial.println("Send goal speed change event of 0.5");
 
             GoalSpeedChangeEvent goalSpeedChangeEvent;
             goalSpeedChangeEvent.newSpeed = 0.5;
+
+            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+        }
+        else if (c == 'd') {
+            Serial.println("Send goal speed change event of 0.1");
+
+            GoalSpeedChangeEvent goalSpeedChangeEvent;
+            goalSpeedChangeEvent.newSpeed = 0.1;
 
             p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
         }

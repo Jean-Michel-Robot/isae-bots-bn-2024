@@ -42,6 +42,12 @@ void Asserv::updateCommand(float vd, float omega_d) {
     // update trajectory
     // p_linearTrajectory->updateTrajectory( micros() );
 
+    //FORTEST
+    sendMotorCommand(0, vd); // RIGHT MOTOR
+    sendMotorCommand(1, vd); // LEFT MOTOR
+
+    return;
+
     if(m_state == ACTIVE) {
         
         // get trajectory speed (linear and angular)
@@ -69,7 +75,7 @@ void Asserv::updateCommand(float vd, float omega_d) {
         m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
 
         // send the commands to the motors
-        // sendMotorCommand(0, m_leftWheelSpeed);
+        sendMotorCommand(0, m_leftWheelSpeed);
         // sendMotorCommand(1, m_rightWheelSpeed);
     }
 

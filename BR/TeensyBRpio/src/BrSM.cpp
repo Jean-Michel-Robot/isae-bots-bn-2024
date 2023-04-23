@@ -265,6 +265,8 @@ void BrSM::react(BrUpdateEvent const & e) {
     currentTrajectory->getTrajectoryAngularSpeed());
   //TODO update la commande des moteurs directement dans l'asserv
 
+  
+
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
     // Can mean that the trajectory is done
