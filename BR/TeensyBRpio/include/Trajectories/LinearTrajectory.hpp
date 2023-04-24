@@ -1,26 +1,28 @@
-#ifndef H_ROTATION_TRAJECTORY
-#define H_ROTATION_TRAJECTORY
+#ifndef H_LINEAR_TRAJECTORY
+#define H_LINEAR_TRAJECTORY
 
-#include <Trajectory.hpp>
+#include "Trajectories/Trajectory.hpp"
 
-class RotationTrajectory : public Trajectory
+class LinearTrajectory : public Trajectory
 {
 public :
 
-    RotationTrajectory(float initialGoalSpeed, float initialAccelParam);
+    LinearTrajectory(float initialGoalSpeed, float initialAccelParam);
     // TODO destructeur
 
     void setDest(OrderType order) override;
+
 
 private:
 
     // variables caractéristiques de la trajectoire
     // pour le déplacement linéaire c'est juste la position de fin
-    float thetaDest;
+    float xdest, ydest;
 
     bool detectEndRamp() override;
     void updateTrajectoryState() override;
     
+
 };
 
 

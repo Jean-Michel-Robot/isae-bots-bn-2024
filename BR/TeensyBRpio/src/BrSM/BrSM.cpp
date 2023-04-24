@@ -1,18 +1,19 @@
 // #include "tinyfsm/tinyfsm.hpp"
 
-#include "BrSM.hpp"
+#include "BrSM/BrSM.hpp"
 // #include "fsmlist.hpp"
 
-#include "ROS.hpp"
 
-#include "main_loop.hpp"
 #include <Arduino.h>
-#include <LinearTrajectory.hpp>
-#include <RotationTrajectory.hpp>
-#include <Trajectory.hpp>
+#include "Trajectories/Trajectory.hpp"
+#include "Trajectories/LinearTrajectory.hpp"
+#include "Trajectories/RotationTrajectory.hpp"
 #include "OdosPosition.hpp"
 
 #include "Asserv.hpp"
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
 
 // define string names for states

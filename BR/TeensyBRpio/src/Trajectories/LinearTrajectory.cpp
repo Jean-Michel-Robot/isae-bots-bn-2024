@@ -2,9 +2,12 @@
    
 */
 
-#include <LinearTrajectory.hpp>
+#include "Trajectories/LinearTrajectory.hpp"
 
 #include <Arduino.h>
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
 
 LinearTrajectory::LinearTrajectory(float initialGoalSpeed, float initialAccelParam)

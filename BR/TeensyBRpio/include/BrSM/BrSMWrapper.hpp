@@ -1,7 +1,7 @@
 #ifndef STATE_MACHINE_H
 #define STATE_MACHINE_H
 
-#include "BrSM.hpp"
+#include "BrSM/BrSM.hpp"
 #include "Events.hpp"
 // wrapper to manage the state machines
 

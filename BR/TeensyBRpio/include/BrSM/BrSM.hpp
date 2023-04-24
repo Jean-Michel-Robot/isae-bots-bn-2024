@@ -7,7 +7,7 @@
 
 #include <Arduino.h>
 
-#include <Trajectory.hpp>
+#include "Trajectories/Trajectory.hpp"
 
 // #include <ROS.hpp>
 

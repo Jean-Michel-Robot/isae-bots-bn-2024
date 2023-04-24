@@ -1,5 +1,8 @@
 
-#include "BrSMWrapper.hpp"
+#include "BrSM/BrSMWrapper.hpp"
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
   // OrderEvent orderEvent;
   // orderEvent.order = {.x = 0, .y = 0, .theta = 0, .goalType = GoalType::FINAL};

@@ -15,7 +15,7 @@
 #include "ROS.hpp"
 #include "main_loop.hpp"
 
-#include "BrSMWrapper.hpp"
+#include "BrSM/BrSMWrapper.hpp"
 
 // init ROS object
 ROS::ROS()

@@ -4,15 +4,15 @@
 #include <Arduino.h>
 
 #include <Motors.hpp>
+#include <LED.hpp>
 
 
 #include "ROS.hpp"
-#include "LED.hpp"
 #include "OdosPosition.hpp"
-#include "LinearTrajectory.hpp"
-#include <RotationTrajectory.hpp>
+#include "Trajectories/LinearTrajectory.hpp"
+#include "Trajectories/RotationTrajectory.hpp"
 #include "Asserv.hpp"
-#include "BrSMWrapper.hpp"
+#include "BrSM/BrSMWrapper.hpp"
 
 
 

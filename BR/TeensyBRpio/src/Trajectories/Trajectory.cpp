@@ -2,9 +2,12 @@
    
 */
 
-#include <Trajectory.hpp>
+#include "Trajectories/Trajectory.hpp"
 
 #include <defines.hpp>
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
 Trajectory::Trajectory()
 {

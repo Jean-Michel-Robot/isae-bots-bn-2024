@@ -1,10 +1,10 @@
 
-#include "Ramp.hpp"
+#include "Ramp/Ramp.hpp"
 
 // #include "unity.h"
 
-// #include <ROS.hpp>
-// #include "main_loop.hpp"
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
 
 Ramp::Ramp(float accelParam) {
@@ -27,8 +27,7 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
     if (rampSM.getCurrentState() != RampState::RAMP_IDLE)
     {
         //TODO error
-        //Serial.println("ERROR : Tried to begin a ramp that is not in IDLE state");
-        // p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
+        p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
         return;
     }
 

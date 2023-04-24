@@ -2,10 +2,13 @@
    
 */
 
-#include <RotationTrajectory.hpp>
+#include "Trajectories/RotationTrajectory.hpp"
 
 #include <Arduino.h>
 #include <GeometricTools.hpp>
+
+#include "ROS.hpp"
+#include "main_loop.hpp"
 
 
 RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAccelParam)
