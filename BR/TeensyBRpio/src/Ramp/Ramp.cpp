@@ -16,6 +16,8 @@ Ramp::Ramp(float accelParam) {
     goalSpeedChangeEvent.newSpeed = 0.0;
     updateEvent.currentTime = 0.0;
 
+    // Don't put a logPrint in the constructor, it breaks the ramp behavior somehow
+
     rampSM.start();
     // TEST_MESSAGE("Ramp started successfully");
 }
