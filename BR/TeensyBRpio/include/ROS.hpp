@@ -30,6 +30,7 @@
 
 // #include "SM.hpp"
 #include <Events.hpp>
+#include <Position2D.h>
 
 enum LogType
 {
@@ -39,7 +40,6 @@ enum LogType
     FATAL = 3,
     DEBUG = 4,
 };
-#include <Position2D.h>
 
 class ROS
 {
