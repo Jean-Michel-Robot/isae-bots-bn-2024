@@ -61,6 +61,9 @@ class Arrived
 {
   void entry() override {
     currentState = BRState::BR_ARRIVED;
+
+    // send callback to HN
+    p_ros->sendCallback(OK_POS);
   }
 
   void react(BrUpdateEvent const & e) override {

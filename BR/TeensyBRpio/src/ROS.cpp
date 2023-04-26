@@ -9,10 +9,10 @@
 // #include "u_ROS.h"
 // #include "v_Logger.h"
 // #include "z_Setup_Loop.h"
+#include "ROS.hpp"
 
 #include <Motors.hpp>
 
-#include "ROS.hpp"
 #include "main_loop.hpp"
 
 #include "BrSM/BrSMWrapper.hpp"
@@ -141,16 +141,16 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 //     machineAEtatAsservInstance->getRampeOrientation()->setAccDecc(gains.data[6], gains.data[7],gains.data[7]);
 // }
 
-// void ROS::sendOkPos()
-// {
-//   m_feedbackOk.data = 1;
-//   m_okFeedback.publish( &m_feedbackOk );
-// }
+void ROS::sendCallback(CallbackHN callback)
+{
+  m_callbackHN.data = callback;
+  m_pubHN.publish( &m_callbackHN );
+}
 
 // void ROS::sendOkTurn()
 // {
-//   m_feedbackOk.data = 2;
-//   m_okFeedback.publish( &m_feedbackOk );
+//   m_callbackHN.data = 2;
+//   m_pubHN.publish( &m_callbackHN );
 // }
 
 // void ROS::confirmMarcheArriere()
@@ -181,22 +181,12 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 
 void ROS::sendCurrentPosition(Position2D position)
 {
-//   m_feedbackPosition.x = odosPositionTask->getRobotPosition().x;
-//   m_feedbackPosition.y = odosPositionTask->getRobotPosition().y;
-//   m_feedbackPosition.theta = odosPositionTask->getRobotPosition().theta;
-//   m_positionFeedback.publish( &m_feedbackPosition );
-
     m_feedbackPosition.x = position.x;
     m_feedbackPosition.y = position.y;
     m_feedbackPosition.theta = position.theta;
     m_positionFeedback.publish( &m_feedbackPosition );
-
 }
 
-// void ROS::logPrint(String msg)
-// {
-//   m_nodeHandle.loginfo(msg.c_str());
-// }
 
 // void ROS::publishFullLogs()
 // {

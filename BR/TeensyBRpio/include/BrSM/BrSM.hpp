@@ -29,18 +29,6 @@ enum BRState {
 };
 
 
-//TODO : mettre autre part
-enum GoalType { // type d'objectif recu par le haut niveau
-	UNVALID_GOALTYPE = -1, // sert a rejeter les valeurs non conformes
-
-	FINAL = 0,             // point final, avec orientation
-	TRANS = 1,             // point transitoire, sans orientation finale
-	ORIENT = 2,            // orientation seule sur place
-
-	STOP  = 8,             // freinage d'urgence
-	RESET = 9,             // reset de la position odometrique
-	CONTROL = 10,          // controle en commande directe
-};
 
 typedef struct AxisStates {
 	int state_ax0;

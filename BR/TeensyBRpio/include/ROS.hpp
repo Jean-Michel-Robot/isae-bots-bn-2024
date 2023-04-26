@@ -41,16 +41,40 @@ enum LogType
     DEBUG = 4,
 };
 
+
+enum GoalType // type d'objectif recu par le haut niveau
+{ 
+	UNVALID_GOALTYPE = -1, // sert a rejeter les valeurs non conformes
+
+	FINAL = 0,             // point final, avec orientation
+	TRANS = 1,             // point transitoire, sans orientation finale
+	ORIENT = 2,            // orientation seule sur place
+
+    RECAL = 3,
+
+	STOP  = 8,             // freinage d'urgence
+	RESET = 9,             // reset de la position odometrique
+	CONTROL = 10,          // controle en commande directe
+};
+
+enum CallbackHN // retour renvoyé vers le haut niveau
+{
+    OK_POS = 0,
+    OK_TURN = 1,
+    OK_RECAL = 2,
+
+    ERROR_ASSERV = 3,
+};
+
 class ROS
 {
 public :
     ROS();
-    void sendOkPos();
-    void sendOkTurn();
-    void errorAsserv(String details);
-    void errorAsservNotSet(String details);
+    void sendCallback(CallbackHN callback);
+    // void errorAsserv(String details);
+    // void errorAsservNotSet(String details);
     void logPrint(LogType logtype, String msg);
-    void publishFullLogs();
+    // void publishFullLogs();
     void sendCurrentPosition(Position2D position);
 
     void loop();
@@ -94,8 +118,8 @@ private :
     
 
 
-    // std_msgs::Int16 m_feedbackOk;
-    // ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};
+    std_msgs::Int16 m_callbackHN;
+    ros::Publisher m_pubHN{ros::Publisher("okPosition", &m_callbackHN)};
 
     // std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
     // ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
