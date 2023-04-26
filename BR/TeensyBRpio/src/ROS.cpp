@@ -97,6 +97,32 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 
     p_sm->send_event(orderEvent);
   }
+
+  else if (res == 2) {
+    GoalSpeedChangeEvent goalSpeedChangeEvent;
+    goalSpeedChangeEvent.newSpeed = 0.5;
+
+    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+  }
+
+  else if (res == 3) {
+    GoalSpeedChangeEvent goalSpeedChangeEvent;
+    goalSpeedChangeEvent.newSpeed = 0.1;
+
+    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+  }
+
+  else if (res == 4) {
+    EmergencyBrakeEvent emergencyBrakeEvent;
+
+    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+  }
+
+  else if (res == 5) {
+    EndRampEvent endRampEvent;
+
+    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(endRampEvent);
+  }
 }
 
 // void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
