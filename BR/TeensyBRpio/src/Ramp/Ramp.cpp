@@ -29,7 +29,7 @@ void Ramp::beginRamp(uint32_t t0, float goalSpeed) {
     if (rampSM.getCurrentState() != RampState::RAMP_IDLE)
     {
         //TODO error
-        p_ros->logPrint(LogType::ERROR, "Tried to begin a ramp that is not in IDLE state");
+        p_ros->logPrint(ERROR, "Tried to begin a ramp that is not in IDLE state");
         return;
     }
 

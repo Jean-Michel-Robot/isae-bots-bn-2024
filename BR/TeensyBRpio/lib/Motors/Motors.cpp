@@ -29,7 +29,7 @@ void sendMotorCommand(int motor_number, float velCmd) {
 
     // constrain the motor command for safety
     // if (abs(odrv_cmd) > 10) {
-    //     p_ros->logPrint(LogType::ERROR, "Valeur de commande Odrive supérieure au seuil");
+    //     p_ros->logPrint(ERROR, "Valeur de commande Odrive supérieure au seuil");
     // }
     odrv_cmd = constrain(odrv_cmd, -10, 10);
     

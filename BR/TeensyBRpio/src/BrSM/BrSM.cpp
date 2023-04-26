@@ -39,8 +39,7 @@ class InitRot;
 // Helper function to setup a trajectory
 void BrSM::setupTrajectory() {
 
-  // RAZ des variables
-  //TODO
+  //TODO RAZ des variables
 
   // Set robot position
   currentTrajectory->setRobotPos( p_odos->getRobotPosition() );
@@ -74,7 +73,7 @@ class Arrived
     // store order
     this->currentOrder = e.order;
 
-    p_ros->logPrint(LogType::INFO, "Transition : Arrived -> InitRot");
+    p_ros->logPrint(INFO, "Transition : Arrived -> InitRot");
 
     //TODO : check if both axis are running (closed loop state)
 
@@ -97,9 +96,6 @@ class InitRot
     currentTrajectory = p_rotationTrajectory;
 
     setupTrajectory();
-
-    // Démarrage de l'asserv
-    //TODO
   }
 
 
@@ -108,20 +104,20 @@ class InitRot
     switch (e.goalType) {
 
       case GoalType::ORIENT :
-        p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Arrived");
+        p_ros->logPrint(INFO, "Transition : InitRot -> Arrived");
         
         transit<Arrived>();
       break;
 
       case GoalType::TRANS :
-        p_ros->logPrint(LogType::INFO, "Transition : InitRot -> Forward");
+        p_ros->logPrint(INFO, "Transition : InitRot -> Forward");
 
         transit<Forward>();
       break;
 
       default :
         // error
-        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state InitRot");
+        p_ros->logPrint(ERROR, "Wrong goal type in state InitRot");
     }
 
   };
@@ -138,7 +134,7 @@ class Forward
   void entry() override {
     currentState = BRState::BR_FORWARD;
 
-    // Changement de trajectoire en rotation
+    // Changement de trajectoire en linéaire
     currentTrajectory = p_linearTrajectory;
 
     setupTrajectory();
@@ -149,20 +145,20 @@ class Forward
     switch (e.goalType) {
 
       case GoalType::TRANS :
-        p_ros->logPrint(LogType::INFO, "Transition : Forward -> Arrived");
+        p_ros->logPrint(INFO, "Transition : Forward -> Arrived");
 
         transit<Arrived>();
       break;
 
       case GoalType::FINAL :
-        p_ros->logPrint(LogType::INFO, "Transition : Forward -> FinalRot");
+        p_ros->logPrint(INFO, "Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
       break;
 
       default :
         // error
-        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state Forward");
+        p_ros->logPrint(ERROR, "Wrong goal type in state Forward");
     }
 
   };
@@ -177,6 +173,11 @@ class FinalRot
 {
   void entry() override {
     currentState = BRState::BR_FINALROT;
+
+    // Changement de trajectoire en rotation
+    currentTrajectory = p_rotationTrajectory;
+
+    setupTrajectory();
   }
 
 
@@ -185,14 +186,14 @@ class FinalRot
     switch (e.goalType) {
 
       case GoalType::FINAL :
-        p_ros->logPrint(LogType::INFO, "Transition : FinalRot -> Arrived");
+        p_ros->logPrint(INFO, "Transition : FinalRot -> Arrived");
 
         transit<Arrived>();
       break;
 
       default :
         // error
-        p_ros->logPrint(LogType::ERROR, "Wrong goal type in state FinalRot");
+        p_ros->logPrint(ERROR, "Wrong goal type in state FinalRot");
     }
 
   };
@@ -221,7 +222,7 @@ class BR_Idle
     // store order
     this->currentOrder = e.order;
 
-    p_ros->logPrint(LogType::INFO, "Transition : Idle -> InitRot");
+    p_ros->logPrint(INFO, "Transition : Idle -> InitRot");
 
     //TODO : check if both axis are running (closed loop state)
 
@@ -299,7 +300,7 @@ float BrSM::getCurrentTargetSpeed() {
     return currentTrajectory->getTrajectoryAngularSpeed();
   }
   else {
-    p_ros->logPrint(LogType::ERROR, "ERROR : Unhandled trajectory type");
+    p_ros->logPrint(ERROR, "ERROR : Unhandled trajectory type");
     return 0.0;
   }
 }

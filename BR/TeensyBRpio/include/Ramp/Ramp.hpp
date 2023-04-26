@@ -45,7 +45,7 @@ private :
     BeginRampEvent beginRampEvent;
     GoalSpeedChangeEvent goalSpeedChangeEvent;
     EndRampEvent endRampEvent;
-    UpdateEvent updateEvent;
+    UpdateEvent updateEvent;  //TODO rename in updateRampEvent
     EmergencyBrakeEvent emergencyBrakeEvent;
 
 };
