@@ -53,14 +53,14 @@ void BrSM::setupTrajectory() {
 
 
 // ----------------------------------------------------------------------------
-// State: Arrived
+// State: Ready
 //
 
-class Arrived
+class Ready
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::BR_ARRIVED;
+    currentState = BR_READY;
 
     // send callback to HN
     p_ros->sendCallback(OK_POS);
@@ -76,7 +76,7 @@ class Arrived
     // store order
     this->currentOrder = e.order;
 
-    p_ros->logPrint(INFO, "Transition : Arrived -> InitRot");
+    p_ros->logPrint(INFO, "Transition : Ready -> InitRot");
 
     //TODO : check if both axis are running (closed loop state)
 
@@ -93,7 +93,7 @@ class InitRot
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::BR_INITROT;
+    currentState = BR_INITROT;
 
     // Changement de trajectoire en rotation
     currentTrajectory = p_rotationTrajectory;
@@ -107,9 +107,9 @@ class InitRot
     switch (e.goalType) {
 
       case GoalType::ORIENT :
-        p_ros->logPrint(INFO, "Transition : InitRot -> Arrived");
+        p_ros->logPrint(INFO, "Transition : InitRot -> Ready");
         
-        transit<Arrived>();
+        transit<Ready>();
       break;
 
       case GoalType::TRANS :
@@ -135,7 +135,7 @@ class Forward
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::BR_FORWARD;
+    currentState = BR_FORWARD;
 
     // Changement de trajectoire en linéaire
     currentTrajectory = p_linearTrajectory;
@@ -148,9 +148,9 @@ class Forward
     switch (e.goalType) {
 
       case GoalType::TRANS :
-        p_ros->logPrint(INFO, "Transition : Forward -> Arrived");
+        p_ros->logPrint(INFO, "Transition : Forward -> Ready");
 
-        transit<Arrived>();
+        transit<Ready>();
       break;
 
       case GoalType::FINAL :
@@ -175,7 +175,7 @@ class FinalRot
 : public BrSM
 {
   void entry() override {
-    currentState = BRState::BR_FINALROT;
+    currentState = BR_FINALROT;
 
     // Changement de trajectoire en rotation
     currentTrajectory = p_rotationTrajectory;
@@ -189,9 +189,9 @@ class FinalRot
     switch (e.goalType) {
 
       case GoalType::FINAL :
-        p_ros->logPrint(INFO, "Transition : FinalRot -> Arrived");
+        p_ros->logPrint(INFO, "Transition : FinalRot -> Ready");
 
-        transit<Arrived>();
+        transit<Ready>();
       break;
 
       default :
@@ -213,7 +213,7 @@ class BR_Idle
   void entry() override {
         digitalWrite(13, 1);
 
-    currentState = BRState::BR_IDLE;
+    currentState = BR_IDLE;
   }
 
   void react(BrUpdateEvent const & e) override {
@@ -318,5 +318,5 @@ Trajectory* BrSM::currentTrajectory = NULL;
 // ----------------------------------------------------------------------------
 // Initial state definition
 //
-BRState BrSM::currentState = BRState::BR_IDLE;
+BRState BrSM::currentState = BR_IDLE;
 FSM_INITIAL_STATE(BrSM, BR_Idle)
