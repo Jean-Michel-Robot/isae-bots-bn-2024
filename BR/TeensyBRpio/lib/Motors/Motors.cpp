@@ -21,7 +21,7 @@ void motors_init() {
 
 void sendMotorCommand(int motor_number, float velCmd) {
 
-    //TODO : transform velCMd into odrive command (nb_turn/s)
+    //TODO : transform velCmd into odrive command (nb_turn/s)
     // knowing the wheel diameter and the transmission ratio
 
     // float odrv_cmd = 2 * velCmd / 60.0;  // command between -255 and 255 (extreme values)

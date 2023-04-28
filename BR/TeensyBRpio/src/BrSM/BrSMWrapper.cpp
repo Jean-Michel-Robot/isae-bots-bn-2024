@@ -25,8 +25,9 @@ BrSMWrapper::BrSMWrapper() {
 
 }
 
-void BrSMWrapper::updateSM() {
+void BrSMWrapper::loop() {
 
+  // update SM
   brUpdateEvent.currentTime = micros();
   brSM.send_event(brUpdateEvent);
 }

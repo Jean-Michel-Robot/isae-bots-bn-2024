@@ -22,6 +22,13 @@ Asserv::Asserv(float k1, float k2, float k3) {
     m_state = ACTIVE;
 }
 
+
+void Asserv::setGains(float k1, float k2, float k3) {
+    m_k1 = k1;
+    m_k2 = k2;
+    m_k3 = k3;
+}
+
 void Asserv::updateError(Position2D trajectoryPointPos) {
 
     Position2D currentBotPosition = p_odos->getRobotPosition();

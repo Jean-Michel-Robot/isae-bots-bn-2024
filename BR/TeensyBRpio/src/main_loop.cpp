@@ -80,7 +80,7 @@ void loop() {
     p_blink->loop();
 
 
-    p_sm->updateSM();
+    p_sm->loop();
 
 
     // Periodic display for test

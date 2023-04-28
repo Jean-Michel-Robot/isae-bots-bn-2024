@@ -16,6 +16,7 @@
 #include "main_loop.hpp"
 
 #include "BrSM/BrSMWrapper.hpp"
+#include "Asserv.hpp"
 
 // init ROS object
 ROS::ROS()
@@ -48,7 +49,7 @@ void ROS::loop()
 }
 
 
-// callback to an order (TODO: for now just direct command)
+// callback to an order
 void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 { // goToCallBack
     // if (int(positionMsg.w) != 4) // has to be direct command
@@ -69,9 +70,8 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     e.order.theta = positionMsg.z;
     e.order.goalType = positionMsg.w;
 
-    
-
 }
+
 
 void ROS::logPrint(LogType logtype, String msg)
 {
@@ -106,11 +106,11 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 //   machineAEtatAsservInstance->manageNewOrder(Position2D(positionMsg.x,positionMsg.y,positionMsg.z),(MachineAEtatAsserv::GoalType) int(positionMsg.w));
 // }
 
-// void ROS::s_changeGainsPosition(const std_msgs::Float32MultiArray& gains)
-// {
-//   asservPositionTask->changeGains(gains.data[0], gains.data[1], gains.data[2], gains.data[3], gains.data[4], gains.data[5]);
-//   asservPositionTask->asservRAZ();
-// }
+void ROS::s_changeGains(const std_msgs::Float32MultiArray& gains)
+{
+  p_asserv->setGains(gains.data[0], gains.data[1], gains.data[2]);
+  //TODO RAZ de l'asserv ?
+}
 
 // void ROS::s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM)
 // {
@@ -128,18 +128,6 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 //     machineAEtatAsservInstance->getRampeOrientation()->setSpeed(speeds.data[1],timeFloat());
 // }
 
-// void ROS::s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains)
-// {
-//     machineAEtatAsservInstance->getRampePosition()->setAccDecc(gains.data[0], gains.data[1], gains.data[2]);
-//     machineAEtatAsservInstance->getRampeOrientation()->setAccDecc(gains.data[3], gains.data[4], gains.data[4]);
-// }
-
-
-// void ROS::s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains)
-// {
-//     machineAEtatAsservInstance->getRampePosition()->setAccDecc(gains.data[0], gains.data[1], gains.data[2], gains.data[3], gains.data[4], gains.data[5]);
-//     machineAEtatAsservInstance->getRampeOrientation()->setAccDecc(gains.data[6], gains.data[7],gains.data[7]);
-// }
 
 void ROS::sendCallback(CallbackHN callback)
 {
