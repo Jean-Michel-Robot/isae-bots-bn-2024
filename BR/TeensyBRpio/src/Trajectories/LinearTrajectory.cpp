@@ -32,7 +32,11 @@ void LinearTrajectory::setDest(OrderType order) {
 
 
 bool LinearTrajectory::detectEndRamp() {
-    return ( (Dtotale - d_current) < 0.5*currentSpeed*currentSpeed/accelParam );
+    // return ( (Dtotale - d_current) < 0.5*currentSpeed*currentSpeed/accelParam );
+
+    // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
+    return ( (Dtotale * (1 - s)) < 0.5*currentSpeed*currentSpeed/accelParam );
+    //TODO du coup detectEndRamp ne dépend pas de la trajectoire, la mettre dans Trajectory
 }
 
 

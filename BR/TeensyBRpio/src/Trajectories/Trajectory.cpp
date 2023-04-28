@@ -72,11 +72,8 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);
 
-    // Calcul de la distance parcourue en dt
-    d_current = currentSpeed * dt*0.000001;
-
-    // Ajout à la distance totale parcourue
-    d_parc = d_parc + d_current;
+    // Ajout de la distance parcourue en dt à la distance totale parcourue
+    d_parc = d_parc + currentSpeed * dt*0.000001;
 
     // Calcul de s comme la fraction de distance parcourue sur distance totale
     s = d_parc / Dtotale;
