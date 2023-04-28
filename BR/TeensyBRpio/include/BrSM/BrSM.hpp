@@ -54,6 +54,7 @@ class BrSM
 	* friend class Fsm;
 	*/
 public:
+	BrSM();
 
 	/* default reaction for unhandled events */
 	void react(tinyfsm::Event const &) { };

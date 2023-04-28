@@ -359,6 +359,7 @@ float BrSM::getCurrentTargetSpeed() {
 AxisStates BrSM::axisStates = {0};
 OrderType BrSM::currentOrder = {0};
 Trajectory* BrSM::currentTrajectory = NULL;
+Timer BrSM::recalTimer = Timer( millis() );
 
 // BrSM::current_state_ptr
 

@@ -1,4 +1,5 @@
 #include <Timer.hpp>
+#include "math.h"
 
 std::vector<Timer*> Timer::s_timerList;
 
