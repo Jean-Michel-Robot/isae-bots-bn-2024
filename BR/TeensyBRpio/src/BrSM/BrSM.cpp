@@ -26,6 +26,15 @@ class Forward;
 class FinalRot;
 class InitRot;
 
+
+// constructor
+BrSM::BrSM() {
+
+
+  // set timer lengths
+  recalTimer.setLength(RECAL_TIMER_LENGTH);
+}
+
 // ----------------------------------------------------------------------------
 // Transition functions
 //
@@ -211,8 +220,6 @@ class BR_Idle
 : public BrSM
 {
   void entry() override {
-        digitalWrite(13, 1);
-
     currentState = BR_IDLE;
   }
 
@@ -220,6 +227,7 @@ class BR_Idle
     // ne rien faire en Idle
   }
 
+  // We transition to the Ready state when notified by a BrGetReadyEvent
   void react(OrderEvent const & e) override {
 
     // store order
@@ -235,6 +243,43 @@ class BR_Idle
   }
 };
 
+
+// ----------------------------------------------------------------------------
+// State: BR_Recal
+//
+
+class BR_Recal
+: public BrSM
+{
+  void entry() override {
+    currentState = BR_RECAL;
+
+    recalTimer.start( millis() );
+  }
+
+  void react(BrUpdateEvent const & e) override {
+    /*
+    On avance/recule en asserv pendant un certain temps lié à la distance 
+    au mur à laquelle on pense être
+    Puis on recule en commande en bypassant l'asserv
+    Pendant tout le temps on surveille les bumpers :
+    - si un bumper s'active pendant la phase asserv on passe en phase commande
+    - si un bumper s'active en phase commande on réduit la commande de vitesse
+    de ce côté
+    - quand les deux bumpers sont activés on attend un peu avant de reset la 
+    position
+    */
+
+    if ( !recalTimer.isExpired( millis() ) &&
+     !m_switches[0]->isSwitchPressed() &&
+     !m_switches[1]->isSwitchPressed()) {  // condition pour reculer en asserv
+
+      //TODO reculer en asserv
+    }
+
+    // sinon on recule en commande et on analyse les bumpers
+  }
+};
 
 // ----------------------------------------------------------------------------
 // Base state: default implementations
@@ -274,8 +319,8 @@ void BrSM::react(BrUpdateEvent const & e) {
 
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
-    // Can mean that the trajectory is done
-    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ??
+    // Can mean that the trajectory is done if the asserv agrees
+    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ?? //FORTEST
 
       //Serial.println("Send goal reached event");
 
@@ -283,6 +328,8 @@ void BrSM::react(BrUpdateEvent const & e) {
       e.goalType = currentOrder.goalType;
       send_event(e);
     }
+
+    // otherwise we let the asserv stabilize close to the end point
   }
 }
 

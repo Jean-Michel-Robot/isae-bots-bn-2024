@@ -50,14 +50,15 @@ enum GoalType // type d'objectif recu par le haut niveau
 	TRANS = 1,             // point transitoire, sans orientation finale
 	ORIENT = 2,            // orientation seule sur place
 
-    RECAL = 3,
+    RECAL_FRONT = 3,       // recalage avant
+    RECAL_BACK = 4,        // recalage arrière
 
 	STOP  = 8,             // freinage d'urgence
 	RESET = 9,             // reset de la position odometrique
 	CONTROL = 10,          // controle en commande directe
 };
 
-enum CallbackHN // retour renvoyé vers le haut niveau
+enum CallbackHN // TODO retour renvoyé vers le haut niveau
 {
     OK_POS = 0,
     OK_TURN = 1,
@@ -88,11 +89,11 @@ public :
     static void s_goToCb(const geometry_msgs::Quaternion& positionMsg);
     static void s_debug(const std_msgs::Int16& debugMsg);
 
-    static void s_changeGainsPosition(const std_msgs::Float32MultiArray& gains);
-    static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
-    static void s_setSpeed(const std_msgs::Float32MultiArray& speeds);
-    static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
-    static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
+    static void s_changeGains(const std_msgs::Float32MultiArray& gains);
+    // static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
+    // static void s_setSpeed(const std_msgs::Float32MultiArray& speeds);
+    // static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
+    // static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
 
 
     std_msgs::Int32MultiArray m_odosTicks;
@@ -101,7 +102,7 @@ public :
 
 private :
     ros::Subscriber<geometry_msgs::Quaternion>   m_subOrder {ros::Subscriber<geometry_msgs::Quaternion>  ("nextPositionTeensy", s_goToCb)};
-    // ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsP{ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGainsPosition)};
+    ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsP{ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGains)};
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsM{ros::Subscriber<std_msgs::Float32MultiArray>("gainsMotor", s_changeGainsMotor)};
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subSpeed {ros::Subscriber<std_msgs::Float32MultiArray>("speedTeensyObjective", s_setSpeed)}; // on fixe la vitesse de la rampe d'avance
     // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc   {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters", s_changeAccDecRampe)};

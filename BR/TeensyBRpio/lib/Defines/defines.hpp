@@ -43,10 +43,13 @@
 #define DEFAULT_ROTATION_ACCEL_PARAM 0.2 // m/s^2 //TODO set
 
 
+/* RECALAGES */
+#define RECAL_TIMER_LENGTH 1.0 // s //TODO set
+
+
 /* PINS */
 #define ODRIVE_RX_PIN 0
 #define ODRIVE_TX_PIN 1
-
 
 
 

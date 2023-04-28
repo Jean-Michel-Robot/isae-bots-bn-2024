@@ -6,8 +6,10 @@
 #include <Events.hpp>
 
 #include <Arduino.h>
+#include <Timer.hpp>
 
 #include "Trajectories/Trajectory.hpp"
+#include <SwitchFiltered.hpp>
 
 // #include <ROS.hpp>
 
@@ -20,6 +22,7 @@
         BRSTATE(BR_FORWARD)  \
         BRSTATE(BR_FINALROT)   \
         BRSTATE(BR_READY)  \
+		BRSTATE(BR_RECAL) \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -91,7 +94,16 @@ protected:
 	static AxisStates axisStates;
 	static OrderType currentOrder;
 
+	static Timer recalTimer;
+
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
+
+	static SwitchFiltered m_switchLeft;
+	static SwitchFiltered m_switchRight;
+
+	//NOTE les switches ont été mis comme objets statiques de la BrSM
+	//ça marche bien si on ne les utilise que pour la SM
+	static SwitchFiltered* m_switches[2];  // 0 : right, 1 : left
 
 
 	static void setupTrajectory();
