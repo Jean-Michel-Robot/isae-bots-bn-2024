@@ -41,9 +41,16 @@ struct GoalSpeedChangeEvent : tinyfsm::Event
 	float newSpeed = 0;
 };
 
+struct BeginRampEvent : tinyfsm::Event
+{
+	float t0;
+};
+
 struct EndRampEvent : tinyfsm::Event {};  // Signale qu'il faut rediriger la rampe vers 0
 
-
+// Utilisé si la trajectoire est terminée mais que la rampe continue un peu
+// On fait alors un échelon de vitesse à 0 et on force la rampe en état Idle
+struct setRampToIdleEvent : tinyfsm::Event {};
 
 // for any SM ?
 struct UpdateEvent : tinyfsm::Event
@@ -56,9 +63,6 @@ struct BrUpdateEvent : tinyfsm::Event
 	uint32_t currentTime;
 };
 
-struct BeginRampEvent : tinyfsm::Event
-{
-	float t0;
-};
+
 
 #endif  // EVENTS_H

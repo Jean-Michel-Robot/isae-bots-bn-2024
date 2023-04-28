@@ -96,7 +96,16 @@ void Trajectory::updateTrajectory(uint32_t new_time)
         omega = 0.0;
 
 
-        //TODO rampe terminée, à envoyer à la SM
+        /*
+        En fait la terminaison de rampe se déclenche quand la vitesse est 
+        redevenue nulle, ce qui peut arriver de deux manières :
+        - depuis rampSM, on a descendu la vitesse en-dessous de 0
+        - depuis Trajectory, on a atteint s = 1 donc on est au bout de la 
+        trajectoire, on doit alors mettre la vitesse à 0
+
+        Ici on implémente la mise en Idle de rampSM si s a dépassé 1
+        */
+        rampSpeed.setToIdle(); //TOTEST
     }
 
     // Test phase finale de rampe

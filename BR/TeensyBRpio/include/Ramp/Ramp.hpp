@@ -30,7 +30,7 @@ public :
 
     void endRamp();
     bool isRampIdle();
-
+    void setToIdle();
 
     void changeGoalSpeed(float goalSpeed);
     void emergencyBrake();

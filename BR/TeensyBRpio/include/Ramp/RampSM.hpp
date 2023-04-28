@@ -53,6 +53,7 @@ public:
 	virtual void react(GoalSpeedChangeEvent const &);
 	virtual void react(EmergencyBrakeEvent const & e);
 	virtual void react(EndRampEvent const & e);
+	virtual void react(setRampToIdleEvent const &);
 
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */

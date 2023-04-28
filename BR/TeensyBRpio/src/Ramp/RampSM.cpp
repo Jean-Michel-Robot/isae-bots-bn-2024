@@ -198,6 +198,8 @@ class RampIdle
 {
   void entry() override {
     currentState = RampState::RAMP_IDLE;
+
+    currentSpeed = 0.0;
   }
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
@@ -290,6 +292,9 @@ void RampSM::react(EndRampEvent const &) {
 void RampSM::react(EmergencyBrakeEvent const &) {
 }
 
+void RampSM::react(setRampToIdleEvent const &) {
+  transit<RampIdle>();
+}
 
 // Variable initializations (so that every state knows what it is)
 
