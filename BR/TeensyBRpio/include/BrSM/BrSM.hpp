@@ -62,7 +62,9 @@ public:
 	virtual void react(OrderEvent        const &);
 	virtual void react(GoalReachedEvent const &);
 	virtual void react(ErrorEvent const &);
-	
+	virtual void react(BrGetReadyEvent const &);
+	virtual void react(BrSetToIdleEvent const &);
+
 	// Update function in states, can be overwritten
 	virtual void react(BrUpdateEvent const & e);
 

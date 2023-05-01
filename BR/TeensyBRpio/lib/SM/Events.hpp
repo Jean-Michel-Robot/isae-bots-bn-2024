@@ -33,6 +33,15 @@ struct ErrorEvent : tinyfsm::Event
 
 struct EmergencyBrakeEvent : tinyfsm::Event {};
 
+// Event pour armer les moteurs (les passer en closed_loop)
+// Éventuellement en faisant une calibration d'abord si besoin
+struct BrGetReadyEvent : tinyfsm::Event {};
+
+// Event pour désarmer les moteurs (les passer en Idle)
+//TODO peut se faire à n'importe quel moment en guise d'arrêt d'urgence ?
+struct BrSetToIdleEvent : tinyfsm::Event {};
+
+
 
 // for ramp SM
 
@@ -50,7 +59,7 @@ struct EndRampEvent : tinyfsm::Event {};  // Signale qu'il faut rediriger la ram
 
 // Utilisé si la trajectoire est terminée mais que la rampe continue un peu
 // On fait alors un échelon de vitesse à 0 et on force la rampe en état Idle
-struct setRampToIdleEvent : tinyfsm::Event {};
+struct SetRampToIdleEvent : tinyfsm::Event {};
 
 // for any SM ?
 struct UpdateEvent : tinyfsm::Event

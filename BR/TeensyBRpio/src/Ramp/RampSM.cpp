@@ -292,7 +292,7 @@ void RampSM::react(EndRampEvent const &) {
 void RampSM::react(EmergencyBrakeEvent const &) {
 }
 
-void RampSM::react(setRampToIdleEvent const &) {
+void RampSM::react(SetRampToIdleEvent const &) {
   transit<RampIdle>();
 }
 

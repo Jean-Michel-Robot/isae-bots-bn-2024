@@ -69,7 +69,7 @@ bool Ramp::isRampIdle() {
 }
 
 void Ramp::setToIdle() {
-    setRampToIdleEvent e;
+    SetRampToIdleEvent e;
     rampSM.send_event(e);
 }
 

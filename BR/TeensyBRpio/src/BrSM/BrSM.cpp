@@ -83,13 +83,26 @@ class Ready
   void react(OrderEvent const & e) override {
 
     // store order
-    this->currentOrder = e.order;
+    currentOrder = e.order;
+    p_ros->logPrint(INFO, "Order received : ("+String(currentOrder.x)+", "+
+                          String(currentOrder.y)+", "+String(currentOrder.theta)+
+                          ") with goalType "+String(currentOrder.goalType));
 
-    p_ros->logPrint(INFO, "Transition : Ready -> InitRot");
+    p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
 
     //TODO : check if both axis are running (closed loop state)
 
     transit<Forward>();  //FORTEST remettre initRot
+  }
+
+
+  void react(BrSetToIdleEvent const & e) override {
+
+    //TODO set motor speed to 0
+    //TODO set motor state to Idle
+
+    p_ros->logPrint(INFO, "BR Transition : Ready -> Idle");
+    transit<BR_Idle>();
   }
 };
 
@@ -116,13 +129,13 @@ class InitRot
     switch (e.goalType) {
 
       case GoalType::ORIENT :
-        p_ros->logPrint(INFO, "Transition : InitRot -> Ready");
+        p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
         
         transit<Ready>();
       break;
 
       case GoalType::TRANS :
-        p_ros->logPrint(INFO, "Transition : InitRot -> Forward");
+        p_ros->logPrint(INFO, "BR Transition : InitRot -> Forward");
 
         transit<Forward>();
       break;
@@ -157,13 +170,13 @@ class Forward
     switch (e.goalType) {
 
       case GoalType::TRANS :
-        p_ros->logPrint(INFO, "Transition : Forward -> Ready");
+        p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
 
         transit<Ready>();
       break;
 
       case GoalType::FINAL :
-        p_ros->logPrint(INFO, "Transition : Forward -> FinalRot");
+        p_ros->logPrint(INFO, "BR Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
       break;
@@ -198,7 +211,7 @@ class FinalRot
     switch (e.goalType) {
 
       case GoalType::FINAL :
-        p_ros->logPrint(INFO, "Transition : FinalRot -> Ready");
+        p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
 
         transit<Ready>();
       break;
@@ -227,20 +240,29 @@ class BR_Idle
     // ne rien faire en Idle
   }
 
-  // We transition to the Ready state when notified by a BrGetReadyEvent
-  void react(OrderEvent const & e) override {
+  void react(BrGetReadyEvent const & e) override {
 
-    // store order
-    this->currentOrder = e.order;
+    //TODO check if there is no motor error
+    //TODO Check is calibration is needed or not
+    p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
 
-    p_ros->logPrint(INFO, "Transition : Idle -> InitRot");
-
-    //TODO : check if both axis are running (closed loop state)
-
-    transit<Forward>();  // mettre une fonctions dans transit fait qu'elle est exécutée
-                         // après le exit() de l'état
-                         //FORTEST remttre a InitRot
+    transit<Ready>();
   }
+
+  // // We transition to the Ready state when notified by a BrGetReadyEvent
+  // void react(OrderEvent const & e) override {
+
+  //   // store order
+  //   this->currentOrder = e.order;
+
+  //   p_ros->logPrint(INFO, "Transition : Idle -> InitRot");
+
+  //   //TODO : check if both axis are running (closed loop state)
+
+  //   transit<Forward>();  // mettre une fonctions dans transit fait qu'elle est exécutée
+  //                        // après le exit() de l'état
+  //                        //FORTEST remttre a InitRot
+  // }
 };
 
 
@@ -286,15 +308,23 @@ class BR_Recal
 //
 
 void BrSM::react(OrderEvent const &) {
-  // std::cout << "Order event ignored" << std::endl;
+  p_ros->logPrint(DEBUG, "OrderEvent ignored");
 }
 
 void BrSM::react(GoalReachedEvent const &) {
-  // std::cout << "Objective reached event ignored" << std::endl;
+  p_ros->logPrint(DEBUG, "GoalReachedEvent ignored");
 }
 
 void BrSM::react(ErrorEvent const &) {
-  // std::cout << "Error event ignored" << std::endl;
+  p_ros->logPrint(DEBUG, "ErrorEvent ignored");
+}
+
+void BrSM::react(BrGetReadyEvent const &) {
+  p_ros->logPrint(DEBUG, "BrGetReadyEvent ignored");
+}
+
+void BrSM::react(BrSetToIdleEvent const &) {
+  p_ros->logPrint(DEBUG, "BrSetToIdleEvent ignored");
 }
 
 void BrSM::react(BrUpdateEvent const & e) {
