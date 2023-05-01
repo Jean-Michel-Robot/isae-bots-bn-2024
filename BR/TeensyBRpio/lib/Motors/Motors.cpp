@@ -1,6 +1,6 @@
 #include <Motors.hpp>
 
-#include "defines.hpp"
+#include <defines.hpp>
 
 
 // #include "main_loop.hpp"
@@ -23,21 +23,19 @@ void sendMotorCommand(int motor_number, float velCmd) {
 
     //TODO : transform velCmd into odrive command (nb_turn/s)
     // knowing the wheel diameter and the transmission ratio
-
-    // float odrv_cmd = 2 * velCmd / 60.0;  // command between -255 and 255 (extreme values)
     float odrv_cmd = velCmd*TRANSMISSION_RATIO/(PI*WHEEL_DIAMETER);
 
     // constrain the motor command for safety
     // if (abs(odrv_cmd) > 10) {
     //     p_ros->logPrint(ERROR, "Valeur de commande Odrive supérieure au seuil");
     // }
-    odrv_cmd = constrain(odrv_cmd, -10, 10);
+    odrv_cmd = constrain(odrv_cmd, -MAX_MOTOR_SPEED, MAX_MOTOR_SPEED);
     
-
-    if (motor_number == 1) {odrive.SetVelocity(motor_number, -odrv_cmd);}
+    // send value or its opposite because motors are symmetrical
+    if (motor_number == BR_LEFT) {odrive.SetVelocity(motor_number, -odrv_cmd);}
     else {odrive.SetVelocity(motor_number, odrv_cmd);}
 
-    // OR
+    //TOTEST with current feedforward
     // float current_feedforward = 0.0;
     // odrive.SetVelocity(motor_number, odrv_cmd, current_feedforward);
 

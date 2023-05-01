@@ -18,7 +18,6 @@ typedef struct OrderType
 struct OrderEvent : tinyfsm::Event
 {
 	OrderType order;
-	//NOTE : timestamp ?
 };
 
 struct GoalReachedEvent : tinyfsm::Event
@@ -34,7 +33,7 @@ struct ErrorEvent : tinyfsm::Event
 struct EmergencyBrakeEvent : tinyfsm::Event {};
 
 // Event pour armer les moteurs (les passer en closed_loop)
-// Éventuellement en faisant une calibration d'abord si besoin
+//TODO Éventuellement en faisant une calibration d'abord si besoin
 struct BrGetReadyEvent : tinyfsm::Event {};
 
 // Event pour désarmer les moteurs (les passer en Idle)

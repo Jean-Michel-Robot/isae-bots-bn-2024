@@ -9,6 +9,7 @@
 #include "Trajectories/LinearTrajectory.hpp"
 #include "Trajectories/RotationTrajectory.hpp"
 #include "OdosPosition.hpp"
+#include <Motors.hpp>
 
 #include "Asserv.hpp"
 
@@ -25,7 +26,8 @@ static const char *BrStateStr[] = {
 class Forward;
 class FinalRot;
 class InitRot;
-
+class BR_Recal;
+class BR_Idle;
 
 // constructor
 BrSM::BrSM() {
@@ -33,6 +35,10 @@ BrSM::BrSM() {
 
   // set timer lengths
   recalTimer.setLength(RECAL_TIMER_LENGTH);
+
+  // initialize switches
+  m_switches[BR_RIGHT] = new SwitchFiltered(BUMPER_RIGHT_PIN);
+  m_switches[BR_LEFT] = new SwitchFiltered(BUMPER_LEFT_PIN);
 }
 
 // ----------------------------------------------------------------------------
@@ -82,17 +88,35 @@ class Ready
 
   void react(OrderEvent const & e) override {
 
+    //TODO : check if both axis are running (closed loop state)
+
     // store order
     currentOrder = e.order;
     p_ros->logPrint(INFO, "Order received : ("+String(currentOrder.x)+", "+
                           String(currentOrder.y)+", "+String(currentOrder.theta)+
                           ") with goalType "+String(currentOrder.goalType));
 
-    p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
 
-    //TODO : check if both axis are running (closed loop state)
+    // Transition depending on the order goal type
+    switch (currentOrder.goalType) {
 
-    transit<Forward>();  //FORTEST remettre initRot
+      //TOTEST les switch cases
+      case ORIENT:
+      case TRANS:
+      case FINAL:
+        p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
+        transit<Forward>();  //FORTEST remettre initRot
+      break;
+
+      case RECAL_FRONT:
+      case RECAL_BACK:
+        p_ros->logPrint(INFO, "BR Transition : Ready -> Recal");
+        transit<BR_Recal>();
+      break;
+
+      default:
+        p_ros->logPrint(ERROR, "Order ignore because not recognized");
+    }
   }
 
 
@@ -276,6 +300,9 @@ class BR_Recal
   void entry() override {
     currentState = BR_RECAL;
 
+    // make sure we start using the asserv
+    isRecalInAsservPhase = true;
+
     recalTimer.start( millis() );
   }
 
@@ -292,14 +319,47 @@ class BR_Recal
     position
     */
 
-    if ( !recalTimer.isExpired( millis() ) &&
-     !m_switches[0]->isSwitchPressed() &&
-     !m_switches[1]->isSwitchPressed()) {  // condition pour reculer en asserv
+    if (isRecalInAsservPhase &&
+      (recalTimer.isExpired( millis() ) ||
+      m_switches[BR_RIGHT]->isSwitchPressed() ||
+      m_switches[BR_LEFT]->isSwitchPressed()) ) {  // condition pour passer en recul commande
 
-      //TODO reculer en asserv
+        isRecalInAsservPhase = false;
     }
 
+    if (isRecalInAsservPhase) {
+      // TODO reculer en asserv
+    }
+
+
     // sinon on recule en commande et on analyse les bumpers
+    float cmd_right = RECAL_SPEED;
+    float cmd_left = RECAL_SPEED;
+
+    if (m_switches[BR_RIGHT]->isSwitchPressed()) {
+        cmd_right = RECAL_SPEED / 3;
+    }
+    if (m_switches[BR_LEFT]->isSwitchPressed()) {
+        cmd_left = RECAL_SPEED / 3;
+    }
+
+    // if both bumpers are pressed we wait for a while and then transition
+    if (m_switches[BR_RIGHT]->isSwitchPressed() && 
+        m_switches[BR_LEFT]->isSwitchPressed()) {
+
+        //TODO
+
+        // stop motors (send command 0)
+        sendMotorCommand(BR_RIGHT, 0);
+        sendMotorCommand(BR_LEFT, 0);
+
+        //TODO reset position on axis
+
+        transit<Ready>();
+
+    // Send motor commands
+    sendMotorCommand(BR_RIGHT, cmd_right);
+    sendMotorCommand(BR_LEFT, cmd_left);
   }
 };
 
@@ -390,6 +450,8 @@ AxisStates BrSM::axisStates = {0};
 OrderType BrSM::currentOrder = {0};
 Trajectory* BrSM::currentTrajectory = NULL;
 Timer BrSM::recalTimer = Timer( millis() );
+bool BrSM::isRecalInAsservPhase = true;
+SwitchFiltered* BrSM::m_switches[2] = {NULL};
 
 // BrSM::current_state_ptr
 

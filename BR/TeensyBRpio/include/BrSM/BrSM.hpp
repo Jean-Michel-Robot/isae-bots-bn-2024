@@ -98,6 +98,7 @@ protected:
 	static OrderType currentOrder;
 
 	static Timer recalTimer;
+	static bool isRecalInAsservPhase;
 
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
 

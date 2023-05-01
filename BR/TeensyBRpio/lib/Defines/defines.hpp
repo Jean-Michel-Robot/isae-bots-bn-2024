@@ -5,6 +5,10 @@
 #define sign(value) (value > 0 ? 1 : -1)
 
 
+// defines to avoid wondering if 0 is left or right
+#define BR_RIGHT 0
+#define BR_LEFT 1
+
 /* ODOS*/
 
 #define ODOS_METHOD 1
@@ -33,6 +37,8 @@
 #define WHEEL_DIAMETER 0.06 // m
 #define TRANSMISSION_RATIO 1 // reduction factor
 
+#define MAX_MOTOR_SPEED 8 // turns/s
+
 
 /* TRAJECTOIRES */
 
@@ -45,13 +51,14 @@
 
 /* RECALAGES */
 #define RECAL_TIMER_LENGTH 1.0 // s //TODO set
-
+#define RECAL_SPEED 0.1 // m/s
 
 /* PINS */
 #define ODRIVE_RX_PIN 0
 #define ODRIVE_TX_PIN 1
 
-
+#define BUMPER_RIGHT_PIN 15 //TODO set
+#define BUMPER_LEFT_PIN 16 //TODO set
 
 
 #endif
