@@ -106,13 +106,13 @@ class Ready
       case FINAL:
         p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
         transit<Forward>();  //FORTEST remettre initRot
-      break;
+        break;
 
       case RECAL_FRONT:
       case RECAL_BACK:
         p_ros->logPrint(INFO, "BR Transition : Ready -> Recal");
         transit<BR_Recal>();
-      break;
+        break;
 
       default:
         p_ros->logPrint(ERROR, "Order ignore because not recognized");
@@ -360,6 +360,7 @@ class BR_Recal
     // Send motor commands
     sendMotorCommand(BR_RIGHT, cmd_right);
     sendMotorCommand(BR_LEFT, cmd_left);
+    }
   }
 };
 
