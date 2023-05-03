@@ -8,7 +8,8 @@
 
 enum AsservState{
     IDLE,
-    ACTIVE
+    ACTIVE,
+    BYPASSED
 };
 
 class Asserv
@@ -37,7 +38,7 @@ public:
     void updateError(Position2D trajectoryPointPos);
 
     // update la commande en recevant la consigne en vitesse (linéaire et angulaire)
-    void updateCommand(float vd, float omega_d);
+    void updateCommand(float vd, float omega_d, bool bypassAsserv=false);
 
     /* Set error position threshold
     x : m, y : m, tetha : rad
