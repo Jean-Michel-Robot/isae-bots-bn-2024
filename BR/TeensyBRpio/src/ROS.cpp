@@ -16,6 +16,7 @@
 #include "main_loop.hpp"
 
 #include "BrSM/BrSMWrapper.hpp"
+#include "Asserv.hpp"
 
 // init ROS object
 ROS::ROS()
@@ -32,6 +33,9 @@ ROS::ROS()
     m_nodeHandle.advertise(m_positionFeedback);
 
     m_nodeHandle.advertise(m_odosTicksPub);
+    m_nodeHandle.advertise(m_debugPub);
+
+  
     // m_nodeHandle.advertise(m_okFeedback);
     // m_nodeHandle.advertise(m_logTotale);
 
@@ -91,9 +95,16 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 {
   int res = debugMsg.data;
 
+  if (res == 0) {
+    OrderEvent orderEvent;
+    orderEvent.order = {.x = 2.0, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
+
+    p_sm->send_event(orderEvent);
+  }
+
   if (res == 1) {
     OrderEvent orderEvent;
-    orderEvent.order = {.x = 500, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
+    orderEvent.order = {.x = 0.0, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
 
     p_sm->send_event(orderEvent);
   }
@@ -132,11 +143,25 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 //   machineAEtatAsservInstance->manageNewOrder(Position2D(positionMsg.x,positionMsg.y,positionMsg.z),(MachineAEtatAsserv::GoalType) int(positionMsg.w));
 // }
 
-// void ROS::s_changeGainsPosition(const std_msgs::Float32MultiArray& gains)
-// {
-//   asservPositionTask->changeGains(gains.data[0], gains.data[1], gains.data[2], gains.data[3], gains.data[4], gains.data[5]);
-//   asservPositionTask->asservRAZ();
-// }
+void ROS::s_changeGains(const std_msgs::Float32MultiArray& gains)
+{
+  p_asserv->setGains(gains.data[0], gains.data[1], gains.data[2]);
+  //TODO RAZ de l'asserv ?
+}
+
+
+void ROS::sendDebug() {
+
+  Position2D pos = p_sm->currentTrajectory->getTrajectoryPoint();
+
+  m_debugVar.x = pos.x;
+  m_debugVar.y = pos.y;
+  m_debugVar.z = pos.theta;
+  m_debugVar.w = 0;
+
+
+  m_debugPub.publish(&m_debugVar);
+}
 
 // void ROS::s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM)
 // {

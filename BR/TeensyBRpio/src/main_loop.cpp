@@ -52,7 +52,7 @@ void setup() {
     // p_linearTrajectory->setDest(0.0, 0.0);
     // p_linearTrajectory->beginTrajectory( micros() );
 
-    p_asserv = new Asserv(1.0, 0.0, 0.0);  //TODO réglage des gains
+    p_asserv = new Asserv(10.0, 0.0, 0.0);  //TODO réglage des gains
 
     p_sm = new BrSMWrapper();
 
@@ -91,6 +91,7 @@ void loop() {
         // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
         //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        p_ros->sendDebug();
 
         loop_timer = millis();
     }

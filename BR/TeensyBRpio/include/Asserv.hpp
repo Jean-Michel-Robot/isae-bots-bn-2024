@@ -31,6 +31,8 @@ public:
 
     Asserv(float k1, float k2, float k3);
 
+    void setGains(float k1, float k2, float k3);
+
     // update l'erreur en recevant la position du point objectif actuel
     void updateError(Position2D trajectoryPointPos);
 
