@@ -38,7 +38,7 @@ BrSM::BrSM() {
 
 
   // set timer lengths
-  recalAsservTimer.setLength(RECAL_ASSERV_TIMER_LENGTH);
+  recalAsservTimer.setLength(RECAL_ASSERV_TIMEOUT);
 
   // initialize switches
   m_switches[BR_RIGHT] = new SwitchFiltered(BUMPER_RIGHT_PIN);
@@ -114,7 +114,7 @@ class Ready
 
       case RECAL_FRONT:
       case RECAL_BACK:
-        p_ros->logPrint(INFO, "BR Transition : Ready -> Recal");
+        p_ros->logPrint(INFO, "BR Transition : Ready -> RecalAsserv");
         transit<BR_RecalAsserv>();
         break;
 
@@ -296,6 +296,14 @@ class BR_RecalAsserv
     currentState = BR_RECAL_ASSERV;
 
     recalAsservTimer.start( millis() );
+
+    // Changement de trajectoire en linéaire
+    currentTrajectory = p_linearTrajectory;
+
+    // Changement de la vitesse en vitesse de recalage
+    currentTrajectory->setGoalSpeed(RECAL_SPEED);
+
+    setupTrajectory();
   }
 
   void react(BrUpdateEvent const & e) override {
@@ -311,14 +319,24 @@ class BR_RecalAsserv
     position
     */
 
-    if (recalAsservTimer.isExpired( millis() ) ||
+    // Timeout
+    if (recalAsservTimer.isExpired( millis() )) {
+      p_ros->logPrint(ERROR, "Timeout for Recal, transit to Ready");
+      transit<Ready>(); //TOTEST cette transition
+    }
+
+    Position2D robot_pos = p_odos->getRobotPosition();
+    float d = sqrt( (robot_pos.x-currentOrder.x)*(robot_pos.x-currentOrder.x)
+                  + (robot_pos.y-currentOrder.y)*(robot_pos.y-currentOrder.y) );
+
+    if (d < RECAL_DISTANCE ||  // distance to destination is short enough
       m_switches[BR_RIGHT]->isSwitchPressed() ||
       m_switches[BR_LEFT]->isSwitchPressed() ) {  // condition pour passer en recul commande
 
         transit<BR_RecalDetect>();
     }
 
-    // else we follow a linear trajectory backwards
+    // else we follow a linear trajectory backwards (theta is towards the rear)
 
     //TODO factoriser le code dans une fct (commun avec le default updateEvent)
     if (currentTrajectory == NULL) {
@@ -366,14 +384,13 @@ class BR_RecalDetect
         //TODO
 
         // stop motors (send command 0)
-        sendMotorCommand(BR_RIGHT, 0);
-        sendMotorCommand(BR_LEFT, 0);
+        p_asserv->updateCommand(0.0, 0.0, ASSERV_BYPASSED);
 
-        //TODO reset position on axis
+        //TODO reset position on axis if needed
 
         transit<Ready>();
 
-    // Send motor commands
+    // Send motor commands directly (right motor and left motor)
     sendMotorCommand(BR_RIGHT, cmd_right);
     sendMotorCommand(BR_LEFT, cmd_left);
     }

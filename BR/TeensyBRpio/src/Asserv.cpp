@@ -51,7 +51,7 @@ This function takes an input command and sends a command to the motors
   (the asserv can also be bypassed if the bypassAsserv argument is set to true)
 - If the asserv state is IDLE the command is not used and a command of zero is sent
 */
-void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv=false) {
+void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv=0) {
 
     // update trajectory
     // p_linearTrajectory->updateTrajectory( micros() );
@@ -60,20 +60,11 @@ void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv=false) {
 
 
     if(m_state == ACTIVE) {
-        
-        // get trajectory speed (linear and angular)
-        // m_target[0] = p_linearTrajectory->getTrajectoryLinearSpeed();
-        // m_target[1] = p_linearTrajectory->getTrajectoryAngularSpeed();
-
-        // float vd = m_target[0];
-        // float omega_d = m_target[1];
-
-        // // update error using trajectory
-        // this->updateError();
 
         /* En utilisant la formule qu'on sait pas d'où elle sort*/
         if(cos(m_errorPos.theta) == 0){
             // Protection div par 0 (ça peut servir)
+            p_ros->logPrint(ERROR, "Division by 0 in asserv");
             m_botSpeed[0] = 0;
             m_botSpeed[1] = 0;
         }
@@ -88,8 +79,8 @@ void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv=false) {
 
     }
 
-    else if (m_state == BYPASSED || bypassAsserv) {
-        
+    else if (m_state == BYPASSED || bypassAsserv == ASSERV_BYPASSED) {
+
         // asserv is bypassed and we directly feed the command
         m_leftWheelSpeed = vd + omega_d*WHEEL_DISTANCE/2;
         m_rightWheelSpeed = vd - omega_d*WHEEL_DISTANCE/2;

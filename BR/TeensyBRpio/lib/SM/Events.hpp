@@ -9,6 +9,7 @@
 //
 typedef struct OrderType
 {
+	//TODO refactor en Position2D + int
 	float x = 0.0;
 	float y = 0.0;
 	float theta = 0.0;

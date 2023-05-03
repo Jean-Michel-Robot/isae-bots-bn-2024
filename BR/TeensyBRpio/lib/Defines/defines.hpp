@@ -30,6 +30,7 @@
 #define DEFAULT_OBJECTIVE_THRESHOLD_Y      0.005 //m
 #define DEFAULT_OBJECTIVE_THRESHOLD_THETA  0.008 //rad (0.008 rad ~ .5 deg)
 
+#define ASSERV_BYPASSED 1  // to use if we want to bypass the asserv for one update
 
 
 /* COMMANDES MOTEUR */
@@ -50,8 +51,11 @@
 
 
 /* RECALAGES */
-#define RECAL_ASSERV_TIMER_LENGTH 1.0 // s //TODO set
+#define RECAL_ASSERV_TIMEOUT 10.0 // s //TODO set
 #define RECAL_SPEED 0.1 // m/s
+
+// distance below which we command the motors directly
+#define RECAL_DISTANCE 0.1 // m //TODO set
 
 /* PINS */
 #define ODRIVE_RX_PIN 0
