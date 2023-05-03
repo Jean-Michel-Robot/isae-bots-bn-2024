@@ -22,7 +22,9 @@
         BRSTATE(BR_FORWARD)  \
         BRSTATE(BR_FINALROT)   \
         BRSTATE(BR_READY)  \
-		BRSTATE(BR_RECAL) \
+		BRSTATE(BR_RECAL_ASSERV) \
+		BRSTATE(BR_RECAL_DETECT) \
+		BRSTATE(BR_EMERGENCYSTOP) \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -64,6 +66,7 @@ public:
 	virtual void react(ErrorEvent const &);
 	virtual void react(BrGetReadyEvent const &);
 	virtual void react(BrSetToIdleEvent const &);
+	virtual void react(BrEmergencyBrakeEvent const &);
 
 	// Update function in states, can be overwritten
 	virtual void react(BrUpdateEvent const & e);
@@ -97,8 +100,7 @@ protected:
 	static AxisStates axisStates;
 	static OrderType currentOrder;
 
-	static Timer recalTimer;
-	static bool isRecalInAsservPhase;
+	static Timer recalAsservTimer;
 
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
 

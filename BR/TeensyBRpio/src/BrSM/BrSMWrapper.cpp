@@ -1,6 +1,7 @@
 
 #include "BrSM/BrSMWrapper.hpp"
 
+#include "BrSM/BrSM.hpp"
 #include "ROS.hpp"
 #include "main_loop.hpp"
 

@@ -22,19 +22,23 @@ static const char *BrStateStr[] = {
     FOREACH_BRSTATE(GENERATE_STRING)
 };
 
-// forward declarations
+// forward declarations (all of them to have the list of states here)
+class Ready;
+class InitRot;
 class Forward;
 class FinalRot;
-class InitRot;
-class BR_Recal;
 class BR_Idle;
+class BR_RecalAsserv;
+class BR_RecalDetect;
+class BR_EmergencyStop;
+
 
 // constructor
 BrSM::BrSM() {
 
 
   // set timer lengths
-  recalTimer.setLength(RECAL_TIMER_LENGTH);
+  recalAsservTimer.setLength(RECAL_ASSERV_TIMER_LENGTH);
 
   // initialize switches
   m_switches[BR_RIGHT] = new SwitchFiltered(BUMPER_RIGHT_PIN);
@@ -105,13 +109,13 @@ class Ready
       case TRANS:
       case FINAL:
         p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
-        transit<Forward>();  //FORTEST remettre initRot
+        transit<InitRot>();  //FORTEST remettre InitRot
         break;
 
       case RECAL_FRONT:
       case RECAL_BACK:
         p_ros->logPrint(INFO, "BR Transition : Ready -> Recal");
-        transit<BR_Recal>();
+        transit<BR_RecalAsserv>();
         break;
 
       default:
@@ -169,7 +173,12 @@ class InitRot
         p_ros->logPrint(ERROR, "Wrong goal type in state InitRot");
     }
 
-  };
+  }
+
+  void react(BrEmergencyBrakeEvent const &) override {
+    // dont react to an emergency brake event in Idle
+  }
+
 };
 
 
@@ -267,43 +276,26 @@ class BR_Idle
   void react(BrGetReadyEvent const & e) override {
 
     //TODO check if there is no motor error
-    //TODO Check is calibration is needed or not
+    //TODO check is calibration is needed or not
     p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
 
     transit<Ready>();
   }
 
-  // // We transition to the Ready state when notified by a BrGetReadyEvent
-  // void react(OrderEvent const & e) override {
-
-  //   // store order
-  //   this->currentOrder = e.order;
-
-  //   p_ros->logPrint(INFO, "Transition : Idle -> InitRot");
-
-  //   //TODO : check if both axis are running (closed loop state)
-
-  //   transit<Forward>();  // mettre une fonctions dans transit fait qu'elle est exécutée
-  //                        // après le exit() de l'état
-  //                        //FORTEST remttre a InitRot
-  // }
 };
 
 
 // ----------------------------------------------------------------------------
-// State: BR_Recal
+// State: BR_RecalAsserv
 //
 
-class BR_Recal
+class BR_RecalAsserv
 : public BrSM
 {
   void entry() override {
-    currentState = BR_RECAL;
+    currentState = BR_RECAL_ASSERV;
 
-    // make sure we start using the asserv
-    isRecalInAsservPhase = true;
-
-    recalTimer.start( millis() );
+    recalAsservTimer.start( millis() );
   }
 
   void react(BrUpdateEvent const & e) override {
@@ -319,20 +311,44 @@ class BR_Recal
     position
     */
 
-    if (isRecalInAsservPhase &&
-      (recalTimer.isExpired( millis() ) ||
+    if (recalAsservTimer.isExpired( millis() ) ||
       m_switches[BR_RIGHT]->isSwitchPressed() ||
-      m_switches[BR_LEFT]->isSwitchPressed()) ) {  // condition pour passer en recul commande
+      m_switches[BR_LEFT]->isSwitchPressed() ) {  // condition pour passer en recul commande
 
-        isRecalInAsservPhase = false;
+        transit<BR_RecalDetect>();
     }
 
-    if (isRecalInAsservPhase) {
-      // TODO reculer en asserv
+    // else we follow a linear trajectory backwards
+
+    //TODO factoriser le code dans une fct (commun avec le default updateEvent)
+    if (currentTrajectory == NULL) {
+      p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
+      return;
     }
 
+    currentTrajectory->updateTrajectory( e.currentTime );
 
-    // sinon on recule en commande et on analyse les bumpers
+    p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
+
+    p_asserv->updateCommand(
+      currentTrajectory->getTrajectoryLinearSpeed(),
+      currentTrajectory->getTrajectoryAngularSpeed()
+    );
+
+  }
+};
+
+class BR_RecalDetect
+: public BrSM
+{
+  void entry() override {
+    currentState = BR_RECAL_DETECT;
+
+  }
+
+  void react(BrUpdateEvent const & e) override {
+
+    // On recule en commande et on analyse les bumpers
     float cmd_right = RECAL_SPEED;
     float cmd_left = RECAL_SPEED;
 
@@ -364,6 +380,23 @@ class BR_Recal
   }
 };
 
+
+
+class BR_EmergencyStop 
+: public BrSM
+{
+  void entry() override {
+    currentState = BR_EMERGENCYSTOP;
+
+  }
+
+  void react(BrUpdateEvent const & e) override {
+
+    //TODO
+  }
+};
+
+
 // ----------------------------------------------------------------------------
 // Base state: default implementations
 //
@@ -388,23 +421,33 @@ void BrSM::react(BrSetToIdleEvent const &) {
   p_ros->logPrint(DEBUG, "BrSetToIdleEvent ignored");
 }
 
+
+void BrSM::react(BrEmergencyBrakeEvent const &) {
+
+  p_ros->logPrint(WARN, "Received emergency brake signal, stopping");
+
+  // send signal to rampSM //TODO make it the same signal
+  EmergencyBrakeEvent emergencyBrakeEvent;
+  currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+
+  transit<BR_EmergencyStop>();
+}
+
 void BrSM::react(BrUpdateEvent const & e) {
 
-  uint32_t t = e.currentTime;
-
   if (currentTrajectory == NULL) {
-    //Serial.println("ERROR : pointer to current trajectory is NULL");
+    p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
     return;
   }
 
-  currentTrajectory->updateTrajectory(t);
+  currentTrajectory->updateTrajectory( e.currentTime );
 
   p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
   p_asserv->updateCommand(
     currentTrajectory->getTrajectoryLinearSpeed(),
-    currentTrajectory->getTrajectoryAngularSpeed());
-  //TODO update la commande des moteurs directement dans l'asserv
+    currentTrajectory->getTrajectoryAngularSpeed()
+  );
 
   
 
@@ -450,8 +493,7 @@ float BrSM::getCurrentTargetSpeed() {
 AxisStates BrSM::axisStates = {0};
 OrderType BrSM::currentOrder = {0};
 Trajectory* BrSM::currentTrajectory = NULL;
-Timer BrSM::recalTimer = Timer( millis() );
-bool BrSM::isRecalInAsservPhase = true;
+Timer BrSM::recalAsservTimer = Timer( millis() );
 SwitchFiltered* BrSM::m_switches[2] = {NULL};
 
 // BrSM::current_state_ptr

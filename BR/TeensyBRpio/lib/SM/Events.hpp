@@ -31,6 +31,8 @@ struct ErrorEvent : tinyfsm::Event
 };
 
 struct EmergencyBrakeEvent : tinyfsm::Event {};
+struct BrEmergencyBrakeEvent : tinyfsm::Event {}; //TODO make it the same event and dispatch it properly between the SMs
+
 
 // Event pour armer les moteurs (les passer en closed_loop)
 //TODO Éventuellement en faisant une calibration d'abord si besoin

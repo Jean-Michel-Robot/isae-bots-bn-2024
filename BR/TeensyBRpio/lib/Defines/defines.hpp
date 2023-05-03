@@ -26,9 +26,9 @@
 // y coord in robot frame of the tracking point (can be set to 0 if the point is centered)
 #define ASSERV_BETA 0.0 // m //TODO set
 
-#define OBJECTIVE_THRESHOLD_X      0.005 //m
-#define OBJECTIVE_THRESHOLD_Y      0.005 //m
-#define OBJECTIVE_THRESHOLD_THETA  0.008 //rad (0.008 rad ~ .5 deg)
+#define DEFAULT_OBJECTIVE_THRESHOLD_X      0.005 //m
+#define DEFAULT_OBJECTIVE_THRESHOLD_Y      0.005 //m
+#define DEFAULT_OBJECTIVE_THRESHOLD_THETA  0.008 //rad (0.008 rad ~ .5 deg)
 
 
 
@@ -50,7 +50,7 @@
 
 
 /* RECALAGES */
-#define RECAL_TIMER_LENGTH 1.0 // s //TODO set
+#define RECAL_ASSERV_TIMER_LENGTH 1.0 // s //TODO set
 #define RECAL_SPEED 0.1 // m/s
 
 /* PINS */
