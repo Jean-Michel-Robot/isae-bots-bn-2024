@@ -1,0 +1,15 @@
+/* POSITIONS */
+
+#define DOORS_LEFT_OPEN_POS    0
+#define DOORS_LEFT_CLOSED_POS  90
+#define DOORS_RIGHT_OPEN_POS   0
+#define DOORS_RIGHT_CLOSED_POS 90
+
+
+
+
+/* PINS */
+// TBD with elec
+
+#define DOORS_LEFT_PIN 1
+#define DOORS_RIGHT_PIN 1
