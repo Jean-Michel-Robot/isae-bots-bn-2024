@@ -29,6 +29,9 @@ class Doors{
 
         void setState(DoorsState);
 
+        void setup();
+        void loop();
+
 };
 
 class DoorsROS{
@@ -46,6 +49,9 @@ class DoorsROS{
         DoorsROS(Doors* m_p_doors, ros::NodeHandle* p_nh);
 
         static void subCallback(const std_msgs::Int16& stateVal);
+
+        void setup();
+        void loop();
         
 
 };

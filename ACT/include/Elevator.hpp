@@ -25,6 +25,7 @@ class Elevator{
 
         void setState(int state);
 
+        void setup();
         void loop();
 
 };
@@ -44,6 +45,9 @@ class ElevatorROS{
         ElevatorROS(Elevator* p_elevator, ros::NodeHandle* n_ph);
 
         static void subCallback(const std_msgs::Int16& stateVal);
+
+        void setup();
+        void loop();
 
 };
 
