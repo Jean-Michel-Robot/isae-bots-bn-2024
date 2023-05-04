@@ -33,7 +33,8 @@ void Doors::loop(){
     ;
 }
 
-
+Doors* DoorsROS::m_p_doors = NULL;
+ros::NodeHandle* DoorsROS::m_p_nh = NULL;
 
 DoorsROS::DoorsROS(Doors* p_doors, ros::NodeHandle* p_nh) :
     m_sub("/strat/doors", subCallback){

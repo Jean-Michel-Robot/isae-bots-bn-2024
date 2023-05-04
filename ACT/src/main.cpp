@@ -1,9 +1,32 @@
 #include <Arduino.h>
+#include <ros.h>
+
+#include "Elevator.hpp"
+#include "Doors.hpp"
+
+ros::NodeHandle nh;
+
+Doors doors = Doors();
+DoorsROS doorsROS = DoorsROS(&doors, &nh);
+
+Elevator elevator = Elevator();
+ElevatorROS elevatorROS = ElevatorROS(&elevator, &nh);
+
 
 void setup() {
-  // put your setup code here, to run once:
+
+  nh.initNode();
+
+  doorsROS.setup();
+  elevatorROS.setup();
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+  nh.spinOnce();
+
+  doorsROS.loop();
+  elevatorROS.loop();
+
 }

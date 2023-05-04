@@ -6,10 +6,6 @@
 #include <std_msgs/Int16.h>
 #include "a_define.hpp"
 
-
-
-
-
 class Elevator{
 
     private:

@@ -26,6 +26,9 @@ void Elevator::loop(){
     ;
 }
 
+Elevator* ElevatorROS::m_p_elevator = NULL;
+ros::NodeHandle* ElevatorROS::m_p_nh = NULL;
+
 ElevatorROS::ElevatorROS(Elevator* p_elevator, ros::NodeHandle* p_nh) : 
     m_sub("/strat/elevator", subCallback){
         m_p_elevator = p_elevator;
