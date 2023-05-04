@@ -1,3 +1,6 @@
+#ifndef DEFINES_HPP
+#define DEFINES_HPP
+
 /* POSITIONS */
 //TODO
 
@@ -9,11 +12,11 @@
 #define ELEV_STEP_ZERO 0
 #define ELEV_STEP_DIFF 10
 
+#define CLAMP_OPEN_POS   0
+#define CLAMP_CLOSED_POS 90
 
-
-
-
-
+#define CHERRY_UP_POS   0
+#define CHERRY_DOWN_POS 90
 
 
 /* PINS */
@@ -25,3 +28,9 @@
 #define MOTOR_INTERFACE_TYPE 1 //arduino connected to a stepper driver with 2 driver pins
 #define ELEV_DIR_PIN 2
 #define ELEV_STEP_PIN 3
+
+#define CLAMP_PIN 1
+
+#define CHERRY_PIN 1
+
+#endif
