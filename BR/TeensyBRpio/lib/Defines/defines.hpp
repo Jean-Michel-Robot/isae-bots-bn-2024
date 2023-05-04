@@ -21,7 +21,7 @@
 #define WHEEL_DISTANCE 0.25 //m
 
 // x coord in robot frame of the tracking point (should be strictly greater than 0)
-#define ASSERV_ALPHA 0.10 // m //TODO set
+#define ASSERV_ALPHA 0.10 // m //TODO set to the center of the cakes
 
 // y coord in robot frame of the tracking point (can be set to 0 if the point is centered)
 #define ASSERV_BETA 0.0 // m //TODO set

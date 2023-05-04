@@ -461,7 +461,8 @@ void BrSM::react(BrUpdateEvent const & e) {
 
   p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
-  p_asserv->updateCommand(
+  //TODO calculate speed of objective point in world coords
+  p_asserv->updateCommand_2(
     currentTrajectory->getTrajectoryLinearSpeed(),
     currentTrajectory->getTrajectoryAngularSpeed()
   );
