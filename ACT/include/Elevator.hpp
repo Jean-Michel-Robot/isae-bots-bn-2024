@@ -35,6 +35,9 @@ class ElevatorROS{
         static ros::NodeHandle* m_p_nh;
 
         ros::Subscriber<std_msgs::Int16> m_sub;
+        ros::Publisher m_pub_feedback;
+        std_msgs::Int16 m_msg_feedback;
+        
 
     public:
 
