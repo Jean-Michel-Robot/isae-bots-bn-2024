@@ -31,15 +31,15 @@ ros::NodeHandle* ElevatorROS::m_p_nh = NULL;
 
 ElevatorROS::ElevatorROS(Elevator* p_elevator, ros::NodeHandle* p_nh) : 
     m_sub("/strat/elevator", subCallback),
-    m_pub_feedback("/strat/elevator_feedback", &ElevatorROS::m_msg_feedback){
+    m_pub_feedback("/strat/elevator_feedback", &(ElevatorROS::m_msg_feedback)){
         m_p_elevator = p_elevator;
         m_p_nh = p_nh;
 }
 
 void ElevatorROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_elevator->setState(stateVal.data);
-    m_msg_feedback.data = 1;
-    m_pub_feedback.publish(&m_msg_feedback);
+    // m_msg_feedback.data = 1;
+    // m_pub_feedback.publish(&m_msg_feedback);
 
 }
 
