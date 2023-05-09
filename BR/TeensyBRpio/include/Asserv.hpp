@@ -63,10 +63,7 @@ public:
     void calculateSpeeds();
 
 
-
-private:
-
-
+    //TODO remettre en private
     Position2D currentRobotPos;
 
     float cmd_v, cmd_omega;
@@ -81,6 +78,13 @@ private:
     float m_outputMax = 0.0;
     float m_satuIntegrale = 0.0;
     float m_cmdDerivee[2] = {0.0};
+
+
+
+private:
+
+
+
 
     bool m_enableI = true;
     float m_N = 5.0;

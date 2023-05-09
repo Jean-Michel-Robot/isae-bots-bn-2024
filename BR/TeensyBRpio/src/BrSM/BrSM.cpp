@@ -409,8 +409,8 @@ class BR_RecalDetect
 
         //TODO
 
-        // stop motors (send command 0)
-        p_asserv->updateCommand(0.0, 0.0, ASSERV_BYPASSED);
+        // TODO stop motors (send command 0)
+        // p_asserv->updateCommand_2(0.0, 0.0, ASSERV_BYPASSED);
 
         //TODO reset position on axis if needed
 
@@ -533,7 +533,7 @@ float BrSM::getCurrentTargetSpeed() {
     return currentTrajectory->getTrajectoryAngularSpeed();
   }
   else {
-    p_ros->logPrint(ERROR, "ERROR : Unhandled trajectory type");
+    // p_ros->logPrint(ERROR, "ERROR : Unhandled trajectory type");
     return 0.0;
   }
 }

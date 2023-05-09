@@ -27,6 +27,7 @@ Asserv::Asserv(float Kp, float Ti, float Td) {
     currentRobotPos = Position2D(0.0, 0.0, 0.0);
     cmd_v = 0.0; cmd_omega = 0.0;
 
+    m_outputMax = 10;
 }
 
 
@@ -178,7 +179,7 @@ void Asserv::loop() {
 void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
 
 
-    if(m_state == ACTIVE) {
+    if (m_state == ACTIVE || true) {
 
         // il faut que la trajectoire et l'erreur soient update avant
 

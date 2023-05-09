@@ -25,6 +25,7 @@ ROS::ROS()
     // m_nodeHandle.subscribe(m_subGainsP);
     m_nodeHandle.subscribe(m_subOrder);
     m_nodeHandle.subscribe(m_subDebug);
+    m_nodeHandle.subscribe(m_subIdle);
     // m_nodeHandle.subscribe(m_subGainsM);
     // m_nodeHandle.subscribe(m_subAcc);
     // m_nodeHandle.subscribe(m_subAcc2);
@@ -117,8 +118,8 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 void ROS::logPrint(LogType logtype, String msg)
 {
 
-  Serial.println(msg);
-  return; //NOTE used to debug with serial interface
+  // Serial.println(msg);
+  // return; //NOTE used to debug with serial interface
 
   if (logtype == INFO) {m_nodeHandle.loginfo(msg.c_str());}
   else if (logtype == WARN) {m_nodeHandle.logwarn(msg.c_str());}
@@ -222,6 +223,25 @@ void ROS::sendCallback(CallbackHN callback)
 {
   m_callbackHN.data = callback;
   m_pubHN.publish( &m_callbackHN );
+}
+
+
+void ROS::s_idle(const std_msgs::Int16 &msg) {
+  
+
+  if (msg.data == 1) {
+    p_ros->logPrint(INFO, "Received get ready event");
+
+    BrGetReadyEvent brGetReadyEvent;
+    p_sm->send_event(brGetReadyEvent);
+  }
+
+  else if (msg.data == 0) {
+    p_ros->logPrint(INFO, "Received set to Idle event");
+
+    BrSetToIdleEvent brSetToIdleEvent;
+    p_sm->send_event(brSetToIdleEvent);    
+  }
 }
 
 // void ROS::sendOkTurn()

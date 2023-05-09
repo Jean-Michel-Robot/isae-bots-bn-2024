@@ -94,6 +94,7 @@ public :
     static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
     static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
 
+    static void s_idle(const std_msgs::Int16 &msg);
 
     std_msgs::Int32MultiArray m_odosTicks;
     ros::Publisher m_odosTicksPub{ros::Publisher("odos_count", &m_odosTicks)};
@@ -108,7 +109,9 @@ private :
         ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGains)
     };
 
-
+    ros::Subscriber<std_msgs::Int16> m_subIdle{
+        ros::Subscriber<std_msgs::Int16>("br/idle", s_idle)
+    };
 
     ros::Subscriber<std_msgs::Int16> m_subDebug {ros::Subscriber<std_msgs::Int16>("debug/BR", s_debug)};
 

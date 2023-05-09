@@ -29,9 +29,9 @@ BrSMWrapper* p_sm = NULL;
 
 void setup() {
 
-    Serial.begin(9600);
-    delay(500);
-    Serial.println("Setup");
+    // Serial.begin(9600);
+    // delay(500);
+    // Serial.println("Setup");
 
 
     motors_init();
@@ -54,7 +54,6 @@ void setup() {
 
     p_sm = new BrSMWrapper();
 
-    //Serial.println("Entering loop");
 }
 
 bool led_on = false;
@@ -75,17 +74,17 @@ void loop() {
 
     p_odos->loop();
 
-    // p_blink->loop();
+    p_blink->loop();
 
 
     p_sm->loop();
 
 
     // Periodic display for test
-    if (millis() - loop_timer > 100) {
+    if (millis() - loop_timer > 250) {
 
         if (p_sm->getCurrentState() != BR_IDLE) {
-            Serial.println("Speed : "+String(p_sm->getCurrentTargetSpeed()));
+            p_ros->logPrint(INFO, "Speed : "+String(p_sm->getCurrentTargetSpeed()));
             // //Serial.println(p_odos->getRobotPosition().toString());
             // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
             // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
@@ -93,14 +92,24 @@ void loop() {
             //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
             //p_ros->sendDebug();
 
-            Serial.println("s : "+String(p_sm->currentTrajectory->s));
+            p_ros->logPrint(INFO, "s : "+String(p_sm->currentTrajectory->s));
+
+            p_ros->logPrint(INFO, "Error : [" + String(p_asserv->error[0]) +
+                                      ", " + String(p_asserv->error[1]) + "]");
+
+            p_ros->logPrint(INFO, "Cmds : [" + String(p_asserv->cmd_coordspoint[0]) +
+                                      ", " + String(p_asserv->cmd_coordspoint[1]) + "]");
+
+            p_ros->logPrint(INFO, "Cmd R : " + String(p_asserv->m_rightWheelSpeed) +
+                                      " | Cmd L : " + String(p_asserv->m_leftWheelSpeed));
         }
 
 
         loop_timer = millis();
     }
 
-    // return;
+
+    return;
 
     // Commands for debugging
     if (Serial.available()) {

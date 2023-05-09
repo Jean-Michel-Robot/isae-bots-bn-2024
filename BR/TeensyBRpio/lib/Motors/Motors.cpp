@@ -30,7 +30,8 @@ void sendMotorCommand(int motor_number, float velCmd) {
     //     p_ros->logPrint(ERROR, "Valeur de commande Odrive supérieure au seuil");
     // }
     odrv_cmd = constrain(odrv_cmd, -MAX_MOTOR_SPEED, MAX_MOTOR_SPEED);
-    
+
+
     // send value or its opposite because motors are symmetrical
     if (motor_number == BR_LEFT) {odrive.SetVelocity(motor_number, -odrv_cmd);}
     else {odrive.SetVelocity(motor_number, odrv_cmd);}
