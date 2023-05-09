@@ -187,7 +187,7 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
 
 
         // conversion en vitesse des roues
-        m_leftWheelSpeed = cmd_v + cmd_omega*WHEEL_DISTANCE/2; 
+        m_leftWheelSpeed = cmd_v + cmd_omega*WHEEL_DISTANCE/2;
         m_rightWheelSpeed = cmd_v - cmd_omega*WHEEL_DISTANCE/2;
 
     }

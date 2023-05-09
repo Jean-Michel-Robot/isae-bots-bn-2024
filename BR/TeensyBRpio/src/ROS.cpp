@@ -66,6 +66,7 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     case GoalType::RECAL_FRONT:
 
     case GoalType::CONTROL:
+    {
 
       OrderEvent orderEvent;
 
@@ -76,9 +77,11 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 
       p_sm->send_event(orderEvent);
       break;
+    }
 
 
     case GoalType::RESET:
+    {
 
       ResetPosEvent resetPosEvent;
       resetPosEvent.x = positionMsg.x;
@@ -87,14 +90,17 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 
       p_sm->send_event(resetPosEvent);
       break;
+    }
 
 
     case GoalType::STOP:
+    {
 
       EmergencyBrakeEvent emergencyBrakeEvent;
 
       p_sm->send_event(emergencyBrakeEvent);
       break;
+    }
 
 
     default:

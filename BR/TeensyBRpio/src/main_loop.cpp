@@ -29,11 +29,9 @@ BrSMWrapper* p_sm = NULL;
 
 void setup() {
 
-    // Serial.begin(9600);
-
-    // delay(500);
-
-    //Serial.println("Setup");
+    Serial.begin(9600);
+    delay(500);
+    Serial.println("Setup");
 
 
     motors_init();
@@ -77,7 +75,7 @@ void loop() {
 
     p_odos->loop();
 
-    p_blink->loop();
+    // p_blink->loop();
 
 
     p_sm->loop();
@@ -85,7 +83,7 @@ void loop() {
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
-        //Serial.println(p_sm->getCurrentTargetSpeed());
+        Serial.println(p_sm->getCurrentTargetSpeed());
         // //Serial.println(p_odos->getRobotPosition().toString());
         // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
         // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
@@ -95,7 +93,7 @@ void loop() {
         loop_timer = millis();
     }
 
-    return;
+    // return;
 
     // Commands for debugging
     if (Serial.available()) {
@@ -103,6 +101,15 @@ void loop() {
 
         if (c == 't') {
             //Serial.println("Test input");
+        }
+
+        else if (c == 'r') {
+            p_ros->logPrint(INFO, "Received get ready event");
+
+            delay(500);
+
+            BrGetReadyEvent brGetReadyEvent;
+            p_sm->send_event(brGetReadyEvent);    
         }
 
         else if (c == 'o') {

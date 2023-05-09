@@ -82,7 +82,7 @@ class Ready
     currentState = BR_READY;
 
     // send callback to HN
-    p_ros->sendCallback(OK_POS);
+    // p_ros->sendCallback(OK_POS);  //TODO implement
   }
 
   void react(BrUpdateEvent const & e) override {
@@ -165,13 +165,13 @@ class InitRot
         p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
         
         transit<Ready>();
-      break;
+        break;
 
       case GoalType::TRANS :
         p_ros->logPrint(INFO, "BR Transition : InitRot -> Forward");
 
         transit<Forward>();
-      break;
+        break;
 
       default :
         // error
@@ -216,13 +216,13 @@ class Forward
         p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
 
         transit<Ready>();
-      break;
+        break;
 
       case GoalType::FINAL :
         p_ros->logPrint(INFO, "BR Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
-      break;
+        break;
 
       default :
         // error
@@ -262,7 +262,7 @@ class FinalRot
         p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
 
         transit<Ready>();
-      break;
+        break;
 
       default :
         // error
@@ -288,11 +288,13 @@ class BR_Idle
     // ne rien faire en Idle
   }
 
-  void react(BrGetReadyEvent const & e) override {
+  void react(BrGetReadyEvent const &) override {
 
     //TODO check if there is no motor error
     //TODO check is calibration is needed or not
     p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
+
+    delay(500);
 
     transit<Ready>();
   }
