@@ -119,7 +119,7 @@ class Ready
         break;
 
       default:
-        p_ros->logPrint(ERROR, "Order ignore because not recognized");
+        p_ros->logPrint(ERROR, "Order ignored because not recognized");
     }
   }
 
@@ -154,7 +154,12 @@ class InitRot
 
   void react(GoalReachedEvent const & e) override {
 
-    switch (e.goalType) {
+    // Check the goalType
+    if (e.goalType != currentOrder.goalType) {
+      p_ros->logPrint(ERROR, "Goal type does not match in state InitRot");
+    }
+
+    switch (currentOrder.goalType) {
 
       case GoalType::ORIENT :
         p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
@@ -200,7 +205,12 @@ class Forward
 
   void react(GoalReachedEvent const & e) override {
 
-    switch (e.goalType) {
+    // Check the goalType
+    if (e.goalType != currentOrder.goalType) {
+      p_ros->logPrint(ERROR, "Goal type does not match in state Forward");
+    }
+
+    switch (currentOrder.goalType) {
 
       case GoalType::TRANS :
         p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
@@ -241,7 +251,12 @@ class FinalRot
 
   void react(GoalReachedEvent const & e) override {
 
-    switch (e.goalType) {
+    // Check the goalType
+    if (e.goalType != currentOrder.goalType) {
+      p_ros->logPrint(ERROR, "Goal type does not match in state FinalRot");
+    }
+
+    switch (currentOrder.goalType) {
 
       case GoalType::FINAL :
         p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
@@ -348,9 +363,8 @@ class BR_RecalAsserv
 
     p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
-    p_asserv->updateCommand(
-      currentTrajectory->getTrajectoryLinearSpeed(),
-      currentTrajectory->getTrajectoryAngularSpeed()
+    p_asserv->updateCommand_2(
+      currentTrajectory->getTrajectoryAbsoluteSpeed()
     );
 
   }
@@ -461,10 +475,8 @@ void BrSM::react(BrUpdateEvent const & e) {
 
   p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
 
-  //TODO calculate speed of objective point in world coords
   p_asserv->updateCommand_2(
-    currentTrajectory->getTrajectoryLinearSpeed(),
-    currentTrajectory->getTrajectoryAngularSpeed()
+    currentTrajectory->getTrajectoryAbsoluteSpeed()
   );
 
   

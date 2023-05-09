@@ -73,7 +73,7 @@ private:
 
     double error[2] = {0.0};
     float cmd_coordspoint[2] = {0.0};  // xpoint, ypoint dans le repère table
-    float xpointd, ypointd;  // vitesse du point objectif dans les coords table
+    float xpointd, ypointd;  // vitesse du point objectif dans le repère table
 
     double m_sumIntegral[2] = {0.0};
     double m_lastMesuredError[2] = {0.0};

@@ -31,13 +31,6 @@ void RotationTrajectory::setDest(OrderType order) {
 }
 
 
-bool RotationTrajectory::detectEndRamp() {
-    
-    // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
-    return ( (Dtotale * (1 - s)) < 0.5*currentSpeed*currentSpeed/accelParam );
-    //TODO du coup detectEndRamp ne dépend pas de la trajectoire, la mettre dans Trajectory
-}
-
 
 void RotationTrajectory::updateTrajectoryState() {
 
@@ -64,6 +57,6 @@ void RotationTrajectory::updateTrajectoryState() {
 
 
     // Update des vitesses absolues du goal point en rotation
-    ppoint_d[0] = 0.0;
-    ppoint_d[1] = 0.0;
+    ppoint_d[0] = -omega * ASSERV_ALPHA*sin(theta);
+    ppoint_d[1] = omega * ASSERV_ALPHA*cos(theta);
 }

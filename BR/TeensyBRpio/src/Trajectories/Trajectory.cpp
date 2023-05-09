@@ -26,9 +26,6 @@ Trajectory::Trajectory()
 Trajectory::~Trajectory() {
 }
 
-bool Trajectory::detectEndRamp() {
-    return false;
-}
 
 // The trajectory is active when the rampSpeed is not Idle
 bool Trajectory::isTrajectoryActive() {
@@ -129,7 +126,8 @@ Position2D Trajectory::getTrajectoryPoint() {
 
     // transform coordinates to the asserv tracking point frame
     float x_p = x + ASSERV_ALPHA*cos(theta);
-    float y_p = y + ASSERV_BETA*sin(theta);
+    float y_p = y + ASSERV_ALPHA*sin(theta);
+    //TODO this assumes that ASSERV_BETA is zero
     
     return Position2D(x_p, y_p, theta);
 }
