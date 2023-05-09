@@ -38,8 +38,6 @@ public:
 
     void setGains(float Kp, float Ti, float Td);
 
-    void setGains(float k1, float k2, float k3);
-
     // update l'erreur en recevant la position du point objectif actuel
     void updateError(Position2D trajectoryPointPos);
 

@@ -83,13 +83,19 @@ void loop() {
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
-        Serial.println(p_sm->getCurrentTargetSpeed());
-        // //Serial.println(p_odos->getRobotPosition().toString());
-        // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
-        // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-        //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
-        //p_ros->sendDebug();
+        if (p_sm->getCurrentState() != BR_IDLE) {
+            Serial.println("Speed : "+String(p_sm->getCurrentTargetSpeed()));
+            // //Serial.println(p_odos->getRobotPosition().toString());
+            // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
+            // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
+
+            //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+            //p_ros->sendDebug();
+
+            Serial.println("s : "+String(p_sm->currentTrajectory->s));
+        }
+
 
         loop_timer = millis();
     }
