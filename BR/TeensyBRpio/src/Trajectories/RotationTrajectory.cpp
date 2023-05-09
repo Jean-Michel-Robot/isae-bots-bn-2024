@@ -64,7 +64,6 @@ void RotationTrajectory::updateTrajectoryState() {
 
 
     // Update des vitesses absolues du goal point en rotation
-    xpoint = V*cos(theta);
-    ypoint = V*sin(theta);
-
+    ppoint_d[0] = 0.0;
+    ppoint_d[1] = 0.0;
 }

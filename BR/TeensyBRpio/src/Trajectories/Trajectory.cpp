@@ -105,9 +105,19 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     }
 
     // Application des équations paramétriques avec s
-    // et attribution des vitesses (linéaire et angulaire)
+    // et attribution des vitesses (relatives et absolues)
+    // Cette fonction dépend du type de trajectoire
     updateTrajectoryState();
 }
+
+
+bool Trajectory::detectEndRamp() {
+
+    // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
+    return ( Dtotale * (1 - s) < 0.5*currentSpeed*currentSpeed/accelParam );
+}
+
+
 
 void Trajectory::setGoalSpeed(float goalSpeed) {
     this->goalSpeed = goalSpeed;
@@ -134,16 +144,15 @@ float Trajectory::getTrajectoryAngularSpeed() {
 
 // returns an array of floats [xpoint, ypoint]
 float* Trajectory::getTrajectoryAbsoluteSpeed() {
-    float speed[2] = {xpoint, ypoint};
-    return speed;
+    return ppoint_d;
 }
 
 
 // default def
 void Trajectory::updateTrajectoryState() {
-    //Serial.println("ERROR : default implementation of updateTrajectoryState");
+    p_ros->logPrint(ERROR, "Shouldn't use default implementation of updateTrajectoryState");
 }
 
 void Trajectory::setDest(OrderType order) {
-    //Serial.println("ERROR : default implementation of setDest");
+    p_ros->logPrint(ERROR, "Shouldn't use default implementation of setDest");
 }

@@ -24,8 +24,6 @@ public :
 
     virtual void setDest(OrderType order);
 
-    virtual bool detectEndRamp();
-
     virtual void updateTrajectoryState();  // variables x, y, theta, V, omega
 
 
@@ -41,8 +39,10 @@ public :
     Position2D getTrajectoryPoint();
     float getTrajectoryLinearSpeed();
     float getTrajectoryAngularSpeed();
-    
+
     float* getTrajectoryAbsoluteSpeed();
+
+    bool detectEndRamp();
 
     bool isTrajectoryActive();
 
@@ -58,8 +58,8 @@ public :
 
     // état du point objectif
     float x, y, theta;  // position du point en absolu
-    float V, omega;  // vitesse de point en relatif (linéaire et angulaire)
-    float xpoint, ypoint;  // vitesse de point en absolu
+    float V, omega;  // vitesse du point en relatif (linéaire et angulaire)
+    float ppoint_d[2] = {0.0};  // vitesse du point en absolu
 
     float x0, y0, theta0;  // point objectif initial
 
