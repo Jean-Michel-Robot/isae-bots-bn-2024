@@ -67,7 +67,12 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);
 
-    // TOTEST Update de s par l'ajout d'une fraction de la distance totale parcourue
+    if (Dtotale == 0.0) {
+        p_ros->logPrint(FATAL, "Dtotale is zero in updateTrajectory");
+        return;
+    }
+    
+    // TOTEST Update de s par l'ajout d'une fraction de la distance totale parcourue    
     s = s + (currentSpeed * dt*0.000001) / Dtotale;
 
     // Test s >= 1 (rampe terminee)

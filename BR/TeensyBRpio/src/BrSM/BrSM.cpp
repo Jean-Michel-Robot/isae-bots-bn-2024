@@ -66,6 +66,16 @@ void BrSM::setupTrajectory() {
   // Set destination using order info
   currentTrajectory->setDest( currentOrder );
 
+  // si Dtotale vaut 0 (ou est proche de 0) c'est que l'ordre peut être ignoré
+  // (pas besoin de se déplacer pour une trajectoire super courte)
+  // On ignore alors l'étape et on passe à la suite en envoyant un GoalReachedEvent
+  if (currentTrajectory->Dtotale < EPSILON_DTOTALE) {
+    p_ros->logPrint(WARN, "Trajectory ignored car Dtotale is too small");
+    GoalReachedEvent goalReachedEvent;
+    goalReachedEvent.goalType = currentOrder.goalType;
+    return;  // on ne lance pas la trajectoire
+  }
+
   // Begin trajectory
   currentTrajectory->beginTrajectory( micros() );
 }
@@ -149,6 +159,7 @@ class InitRot
     currentTrajectory = p_rotationTrajectory;
 
     setupTrajectory();
+
   }
 
 
@@ -293,8 +304,6 @@ class BR_Idle
     //TODO check if there is no motor error
     //TODO check is calibration is needed or not
     p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
-
-    delay(500);
 
     transit<Ready>();
   }

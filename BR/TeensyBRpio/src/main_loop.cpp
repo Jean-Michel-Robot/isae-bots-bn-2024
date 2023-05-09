@@ -88,7 +88,8 @@ void loop() {
         // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
         // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-        //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        // Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        Serial.println(p_sm->currentTrajectory->s);
 
         loop_timer = millis();
     }
@@ -100,13 +101,11 @@ void loop() {
         char c = Serial.read();
 
         if (c == 't') {
-            //Serial.println("Test input");
+            Serial.println("Test input");
         }
 
         else if (c == 'r') {
             p_ros->logPrint(INFO, "Received get ready event");
-
-            delay(500);
 
             BrGetReadyEvent brGetReadyEvent;
             p_sm->send_event(brGetReadyEvent);    
@@ -116,9 +115,9 @@ void loop() {
             //Serial.println("Received order request");
 
             OrderEvent orderEvent;
-            orderEvent.order.x = 100;
-            orderEvent.order.y = 200;
-            orderEvent.order.theta = 1.57;
+            orderEvent.order.x = 0.5;
+            orderEvent.order.y = 0.0;
+            orderEvent.order.theta = 0.0;
             orderEvent.order.goalType = GoalType::TRANS;  // on essaie direct le depl linéaire
 
             p_sm->send_event(orderEvent);

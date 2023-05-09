@@ -21,7 +21,7 @@
 #define WHEEL_DISTANCE 0.25 //m
 
 // x coord in robot frame of the tracking point (should be strictly greater than 0)
-#define ASSERV_ALPHA 0.10 // m //TODO set to the center of the cakes
+#define ASSERV_ALPHA 0.15 // m //TODO set to the center of the cakes
 
 // y coord in robot frame of the tracking point (can be set to 0 if the point is centered)
 #define ASSERV_BETA 0.0 // m //TODO set
@@ -48,6 +48,9 @@
 
 #define DEFAULT_LINEAR_ACCEL_PARAM 0.2 // m/s^2 //TODO set
 #define DEFAULT_ROTATION_ACCEL_PARAM 0.2 // m/s^2 //TODO set
+
+// longueur de trajectoire en-dessous de laquelle on ignore la trajectore
+#define EPSILON_DTOTALE 0.001 // m
 
 
 /* RECALAGES */
