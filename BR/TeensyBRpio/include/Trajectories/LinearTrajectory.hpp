@@ -19,7 +19,6 @@ private:
     // pour le déplacement linéaire c'est juste la position de fin
     float xdest, ydest;
 
-    bool detectEndRamp() override;
     void updateTrajectoryState() override;
     
 

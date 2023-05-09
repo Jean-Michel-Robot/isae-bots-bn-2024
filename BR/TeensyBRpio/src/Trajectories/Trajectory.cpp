@@ -15,7 +15,6 @@ Trajectory::Trajectory()
     x0 = 0.0; y0 = 0.0; theta0 = 0.0;
 
     currentSpeed = 0.0;
-    d_current = 0.0;
     Dtotale = 0.0;
 
     trajectoryType = TrajectoryType::TRAJ_UNDEF;
@@ -27,9 +26,6 @@ Trajectory::Trajectory()
 Trajectory::~Trajectory() {
 }
 
-bool Trajectory::detectEndRamp() {
-    return false;
-}
 
 // The trajectory is active when the rampSpeed is not Idle
 bool Trajectory::isTrajectoryActive() {
@@ -48,8 +44,8 @@ void Trajectory::beginTrajectory(uint32_t t0) {
     x = x0; y = y0; theta = theta0;
 
     current_time = t0;
-    d_parc = 0.0;
     currentSpeed = 0.0;  // une trajectoire commence toujours à vitesse nulle
+    s = 0;  // on commence au début de la trajectoire
 
     rampSpeed.beginRamp(t0, goalSpeed);
 }
@@ -72,15 +68,13 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);
 
-    // Calcul de la distance parcourue en dt
-    d_current = currentSpeed * dt*0.000001;
+    if (Dtotale == 0.0) { //TODO make it so that never happens (no update when Dtotale is small)
+        p_ros->logPrint(ERROR, "Dtotale is zero in updateTrajectory");
+        return;
+    }
 
-    // Ajout à la distance totale parcourue
-    d_parc = d_parc + d_current;
-
-    // Calcul de s comme la fraction de distance parcourue sur distance totale
-    s = d_parc / Dtotale;
-
+    // TOTEST Update de s par l'ajout d'une fraction de la distance totale parcourue    
+    s = s + (currentSpeed * dt*0.000001) / Dtotale;
 
     // Test s >= 1 (rampe terminee)
     if (s >= 1) {
@@ -96,7 +90,16 @@ void Trajectory::updateTrajectory(uint32_t new_time)
         omega = 0.0;
 
 
-        //TODO rampe terminée, à envoyer à la SM
+        /*
+        En fait la terminaison de rampe se déclenche quand la vitesse est 
+        redevenue nulle, ce qui peut arriver de deux manières :
+        - depuis rampSM, on a descendu la vitesse en-dessous de 0
+        - depuis Trajectory, on a atteint s = 1 donc on est au bout de la 
+        trajectoire, on doit alors mettre la vitesse à 0
+
+        Ici on implémente la mise en Idle de rampSM si s a dépassé 1
+        */
+        rampSpeed.setToIdle(); //TOTEST
     }
 
     // Test phase finale de rampe
@@ -105,9 +108,19 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     }
 
     // Application des équations paramétriques avec s
-    // et attribution des vitesses (linéaire et angulaire)
+    // et attribution des vitesses (relatives et absolues)
+    // Cette fonction dépend du type de trajectoire
     updateTrajectoryState();
 }
+
+
+bool Trajectory::detectEndRamp() {
+
+    // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
+    return ( Dtotale * (1 - s) < 0.5*currentSpeed*currentSpeed/accelParam );
+}
+
+
 
 void Trajectory::setGoalSpeed(float goalSpeed) {
     this->goalSpeed = goalSpeed;
@@ -119,7 +132,8 @@ Position2D Trajectory::getTrajectoryPoint() {
 
     // transform coordinates to the asserv tracking point frame
     float x_p = x + ASSERV_ALPHA*cos(theta);
-    float y_p = y + ASSERV_BETA*sin(theta);
+    float y_p = y + ASSERV_ALPHA*sin(theta);
+    //TODO this assumes that ASSERV_BETA is zero
     
     return Position2D(x_p, y_p, theta);
 }
@@ -132,12 +146,17 @@ float Trajectory::getTrajectoryAngularSpeed() {
     return omega;
 }
 
+// returns an array of floats [xpoint, ypoint]
+float* Trajectory::getTrajectoryAbsoluteSpeed() {
+    return ppoint_d;
+}
+
 
 // default def
 void Trajectory::updateTrajectoryState() {
-    //Serial.println("ERROR : default implementation of updateTrajectoryState");
+    p_ros->logPrint(ERROR, "Shouldn't use default implementation of updateTrajectoryState");
 }
 
 void Trajectory::setDest(OrderType order) {
-    //Serial.println("ERROR : default implementation of setDest");
+    p_ros->logPrint(ERROR, "Shouldn't use default implementation of setDest");
 }

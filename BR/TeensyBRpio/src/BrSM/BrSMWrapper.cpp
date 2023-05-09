@@ -1,6 +1,7 @@
 
 #include "BrSM/BrSMWrapper.hpp"
 
+#include "BrSM/BrSM.hpp"
 #include "ROS.hpp"
 #include "main_loop.hpp"
 
@@ -25,8 +26,9 @@ BrSMWrapper::BrSMWrapper() {
 
 }
 
-void BrSMWrapper::updateSM() {
+void BrSMWrapper::loop() {
 
+  // update SM
   brUpdateEvent.currentTime = micros();
   brSM.send_event(brUpdateEvent);
 }

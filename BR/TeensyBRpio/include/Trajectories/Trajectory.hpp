@@ -24,8 +24,6 @@ public :
 
     virtual void setDest(OrderType order);
 
-    virtual bool detectEndRamp();
-
     virtual void updateTrajectoryState();  // variables x, y, theta, V, omega
 
 
@@ -33,7 +31,7 @@ public :
 
     void beginTrajectory(uint32_t t0);
 
-    void updateTrajectory(uint32_t current_time);
+    void updateTrajectory(uint32_t new_time);
 
     void setRobotPos(Position2D pos);
 
@@ -41,6 +39,10 @@ public :
     Position2D getTrajectoryPoint();
     float getTrajectoryLinearSpeed();
     float getTrajectoryAngularSpeed();
+
+    float* getTrajectoryAbsoluteSpeed();
+
+    bool detectEndRamp();
 
     bool isTrajectoryActive();
 
@@ -50,16 +52,19 @@ public :
     uint32_t current_time;
     uint32_t t0;
 
-    float goalSpeed;
-    float currentSpeed;  // vitesse de la rampe, interprétée comme linéaire ou comme angulaire
-    float accelParam;
+    float goalSpeed;  // vitesse de consigne que la rampe essaye d'atteindre
+    float currentSpeed;  // vitesse actuelle de la rampe, interprétée comme linéaire ou comme angulaire
+    float accelParam;  // accélération qui définit la pente de la rampe
 
-    float x, y, theta, V, omega;
-    float x0, y0, theta0;  // valable pour n'importe quelle trajectoire
+    // état du point objectif
+    float x, y, theta;  // position du point en absolu
+    float V, omega;  // vitesse du point en relatif (linéaire et angulaire)
+    float ppoint_d[2] = {0.0};  // vitesse du point en absolu
 
-    float Dtotale;
-    float s;
-    float d_current, d_parc;
+    float x0, y0, theta0;  // point objectif initial
+
+    float Dtotale;  // longueur de la trajectoire, calculée à son setup
+    float s;  // paramètre de la trajectoire, compris entre 0 et 1
 
     TrajectoryType trajectoryType;
 

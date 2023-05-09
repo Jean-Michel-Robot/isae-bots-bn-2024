@@ -18,7 +18,6 @@ private:
     // pour le déplacement linéaire c'est juste la position de fin
     float thetaDest;
 
-    bool detectEndRamp() override;
     void updateTrajectoryState() override;
     
 };

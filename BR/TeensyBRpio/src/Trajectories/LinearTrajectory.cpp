@@ -31,11 +31,6 @@ void LinearTrajectory::setDest(OrderType order) {
 }
 
 
-bool LinearTrajectory::detectEndRamp() {
-    return ( (Dtotale - d_current) < 0.5*currentSpeed*currentSpeed/accelParam );
-}
-
-
 
 void LinearTrajectory::updateTrajectoryState() {
 
@@ -45,5 +40,10 @@ void LinearTrajectory::updateTrajectoryState() {
 
     V = currentSpeed;
     omega = 0.0;
-    
+
+    // Update des vitesses absolues du goal point en linéaire
+    ppoint_d[0] = V*cos(theta);
+    ppoint_d[1] = V*sin(theta);
 }
+
+

@@ -12,7 +12,7 @@ class BrSMWrapper : public BrSM
 public :
     BrSMWrapper();
 
-    void updateSM();
+    void loop();
 
     int test;
 

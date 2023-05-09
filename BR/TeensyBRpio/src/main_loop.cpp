@@ -29,11 +29,9 @@ BrSMWrapper* p_sm = NULL;
 
 void setup() {
 
-    // Serial.begin(9600);
-
-    // delay(500);
-
-    //Serial.println("Setup");
+    Serial.begin(9600);
+    delay(500);
+    Serial.println("Setup");
 
 
     motors_init();
@@ -77,42 +75,49 @@ void loop() {
 
     p_odos->loop();
 
-    p_blink->loop();
+    // p_blink->loop();
 
 
-    p_sm->updateSM();
+    p_sm->loop();
 
 
     // Periodic display for test
     if (millis() - loop_timer > 100) {
-        //Serial.println(p_sm->getCurrentTargetSpeed());
+        Serial.println(p_sm->getCurrentTargetSpeed());
         // //Serial.println(p_odos->getRobotPosition().toString());
         // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
         // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
         //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
-        p_ros->sendDebug();
+        //p_ros->sendDebug();
 
         loop_timer = millis();
     }
 
-    return;
+    // return;
 
     // Commands for debugging
     if (Serial.available()) {
         char c = Serial.read();
 
         if (c == 't') {
-            //Serial.println("Test input");
+            Serial.println("Test input");
+        }
+
+        else if (c == 'r') {
+            p_ros->logPrint(INFO, "Received get ready event");
+
+            BrGetReadyEvent brGetReadyEvent;
+            p_sm->send_event(brGetReadyEvent);    
         }
 
         else if (c == 'o') {
             //Serial.println("Received order request");
 
             OrderEvent orderEvent;
-            orderEvent.order.x = 100;
-            orderEvent.order.y = 200;
-            orderEvent.order.theta = 1.57;
+            orderEvent.order.x = 0.5;
+            orderEvent.order.y = 0.0;
+            orderEvent.order.theta = 0.0;
             orderEvent.order.goalType = GoalType::TRANS;  // on essaie direct le depl linéaire
 
             p_sm->send_event(orderEvent);

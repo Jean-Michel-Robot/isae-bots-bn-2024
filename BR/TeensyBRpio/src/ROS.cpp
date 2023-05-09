@@ -9,10 +9,10 @@
 // #include "u_ROS.h"
 // #include "v_Logger.h"
 // #include "z_Setup_Loop.h"
+#include "ROS.hpp"
 
 #include <Motors.hpp>
 
-#include "ROS.hpp"
 #include "main_loop.hpp"
 
 #include "BrSM/BrSMWrapper.hpp"
@@ -52,36 +52,74 @@ void ROS::loop()
 }
 
 
-// callback to an order (TODO: for now just direct command)
+// callback to an order
 void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
-{ // goToCallBack
-    // if (int(positionMsg.w) != 4) // has to be direct command
-    //     return;
-        
-    // float cmd_M0 = positionMsg.x;
-    // float cmd_M1 = positionMsg.y;
+{
 
-    // sendMotorCommand(0, cmd_M0);
-    // sendMotorCommand(1, cmd_M1);
+  int goalType = (int) positionMsg.w;
 
-    // if (abs(cmd_M0) > 30 || abs(cmd_M1) > 30) {digitalWrite(LED_BUILTIN, HIGH);}
-    // else {digitalWrite(LED_BUILTIN, LOW);}
+  // Action depending on goal type
+  switch (goalType) {
 
-    OrderEvent e;
-    e.order.x = positionMsg.x;
-    e.order.y = positionMsg.y;
-    e.order.theta = positionMsg.z;
-    e.order.goalType = positionMsg.w;
+    case GoalType::FINAL:
+    case GoalType::TRANS:
+    case GoalType::ORIENT:
 
-    
+    case GoalType::RECAL_BACK:
+    case GoalType::RECAL_FRONT:
+
+    case GoalType::CONTROL:
+    {
+
+      OrderEvent orderEvent;
+
+      orderEvent.order.x = positionMsg.x;
+      orderEvent.order.y = positionMsg.y;
+      orderEvent.order.theta = positionMsg.z;
+      orderEvent.order.goalType = positionMsg.w;
+
+      p_sm->send_event(orderEvent);
+      break;
+    }
+
+
+    case GoalType::RESET:
+    {
+
+      ResetPosEvent resetPosEvent;
+      resetPosEvent.x = positionMsg.x;
+      resetPosEvent.y = positionMsg.y;
+      resetPosEvent.theta = positionMsg.z;
+
+      p_sm->send_event(resetPosEvent);
+      break;
+    }
+
+
+    case GoalType::STOP:
+    {
+
+      EmergencyBrakeEvent emergencyBrakeEvent;
+
+      p_sm->send_event(emergencyBrakeEvent);
+      break;
+    }
+
+
+    default:
+      // order ignored
+      break;
+  }
 
 }
+
 
 void ROS::logPrint(LogType logtype, String msg)
 {
 
-  // Serial.println(msg);
-  // return; //NOTE deactivated to debug with serial interface
+  Serial.println(msg);
+  return; //NOTE used to debug with serial interface
+
   if (logtype == INFO) {m_nodeHandle.loginfo(msg.c_str());}
   else if (logtype == WARN) {m_nodeHandle.logwarn(msg.c_str());}
   else if (logtype == ERROR) {m_nodeHandle.logerror(msg.c_str());}
@@ -179,29 +217,17 @@ void ROS::sendDebug() {
 //     machineAEtatAsservInstance->getRampeOrientation()->setSpeed(speeds.data[1],timeFloat());
 // }
 
-// void ROS::s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains)
-// {
-//     machineAEtatAsservInstance->getRampePosition()->setAccDecc(gains.data[0], gains.data[1], gains.data[2]);
-//     machineAEtatAsservInstance->getRampeOrientation()->setAccDecc(gains.data[3], gains.data[4], gains.data[4]);
-// }
 
-
-// void ROS::s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains)
-// {
-//     machineAEtatAsservInstance->getRampePosition()->setAccDecc(gains.data[0], gains.data[1], gains.data[2], gains.data[3], gains.data[4], gains.data[5]);
-//     machineAEtatAsservInstance->getRampeOrientation()->setAccDecc(gains.data[6], gains.data[7],gains.data[7]);
-// }
-
-// void ROS::sendOkPos()
-// {
-//   m_feedbackOk.data = 1;
-//   m_okFeedback.publish( &m_feedbackOk );
-// }
+void ROS::sendCallback(CallbackHN callback)
+{
+  m_callbackHN.data = callback;
+  m_pubHN.publish( &m_callbackHN );
+}
 
 // void ROS::sendOkTurn()
 // {
-//   m_feedbackOk.data = 2;
-//   m_okFeedback.publish( &m_feedbackOk );
+//   m_callbackHN.data = 2;
+//   m_pubHN.publish( &m_callbackHN );
 // }
 
 // void ROS::confirmMarcheArriere()
@@ -232,22 +258,12 @@ void ROS::sendDebug() {
 
 void ROS::sendCurrentPosition(Position2D position)
 {
-//   m_feedbackPosition.x = odosPositionTask->getRobotPosition().x;
-//   m_feedbackPosition.y = odosPositionTask->getRobotPosition().y;
-//   m_feedbackPosition.theta = odosPositionTask->getRobotPosition().theta;
-//   m_positionFeedback.publish( &m_feedbackPosition );
-
     m_feedbackPosition.x = position.x;
     m_feedbackPosition.y = position.y;
     m_feedbackPosition.theta = position.theta;
     m_positionFeedback.publish( &m_feedbackPosition );
-
 }
 
-// void ROS::logPrint(String msg)
-// {
-//   m_nodeHandle.loginfo(msg.c_str());
-// }
 
 // void ROS::publishFullLogs()
 // {

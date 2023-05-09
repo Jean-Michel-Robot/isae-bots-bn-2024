@@ -31,11 +31,6 @@ void RotationTrajectory::setDest(OrderType order) {
 }
 
 
-bool RotationTrajectory::detectEndRamp() {
-    return ( (Dtotale - d_current) < 0.5*currentSpeed*currentSpeed/accelParam );
-}
-
-
 
 void RotationTrajectory::updateTrajectoryState() {
 
@@ -59,5 +54,9 @@ void RotationTrajectory::updateTrajectoryState() {
 
     V = 0.0;
     omega = currentSpeed;
-    
+
+
+    // Update des vitesses absolues du goal point en rotation
+    ppoint_d[0] = -omega * ASSERV_ALPHA*sin(theta);
+    ppoint_d[1] = omega * ASSERV_ALPHA*cos(theta);
 }

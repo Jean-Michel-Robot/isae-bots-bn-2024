@@ -72,3 +72,17 @@ La SM peut alors transitionner
 
 
 **L'asserv ne s'occupe pas de la trajectoire, que du suivi du point**
+
+
+# Fonctions à implémenter à l'avance
+
+- possibilité de reset la MAE
+- passage d'un order à un autre
+- passage des moteurs en Idle ou en closed_loop (closed_loop que en match)
+- réception des infos du HN au début du match (start_pos, vitesse de départ ?)
+- mise en erreur si l'erreur de l'asserv devient trop élevée
+
+# Pour du debug
+
+- affichage du point objectif sur l'interface
+

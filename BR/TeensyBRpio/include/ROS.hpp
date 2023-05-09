@@ -41,16 +41,38 @@ enum LogType
     DEBUG = 4,
 };
 
+
+enum GoalType // type d'objectif recu par le haut niveau
+{ 
+	UNVALID_GOALTYPE = -1, // sert a rejeter les valeurs non conformes
+
+	FINAL = 0,             // point final, avec orientation
+	TRANS = 1,             // point transitoire, sans orientation finale
+	ORIENT = 2,            // orientation seule sur place
+
+    RECAL_FRONT = 3,       // recalage avant
+    RECAL_BACK = 4,        // recalage arrière
+
+	STOP  = 8,             // freinage d'urgence
+	RESET = 9,             // reset de la position odometrique
+	CONTROL = 10,          // controle en commande directe
+};
+
+enum CallbackHN // TODO retour renvoyé vers le haut niveau
+{
+    OK_POS = 0,
+    OK_TURN = 1,
+    OK_RECAL = 2,
+
+    ERROR_ASSERV = 3,
+};
+
 class ROS
 {
 public :
     ROS();
-    void sendOkPos();
-    void sendOkTurn();
-    void errorAsserv(String details);
-    void errorAsservNotSet(String details);
+    void sendCallback(CallbackHN callback);
     void logPrint(LogType logtype, String msg);
-    void publishFullLogs();
     void sendCurrentPosition(Position2D position);
 
     void sendDebug();
@@ -61,8 +83,8 @@ public :
     // void confirmMarcheArriere();
     // void confirmMarcheAvant();
 
-    //callback sur les subscriber ROS
-    // de plus l'utilisation en callback impose de les déclarer statique
+    // callback sur les subscriber ROS
+    // l'utilisation en callback impose de les déclarer statique
     static void s_goToCb(const geometry_msgs::Quaternion& positionMsg);
     static void s_debug(const std_msgs::Int16& debugMsg);
 
@@ -78,12 +100,13 @@ public :
 
 
 private :
-    ros::Subscriber<geometry_msgs::Quaternion>   m_subOrder {ros::Subscriber<geometry_msgs::Quaternion>  ("nextPositionTeensy", s_goToCb)};
-    ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsP{ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGains)};
-    // ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsM{ros::Subscriber<std_msgs::Float32MultiArray>("gainsMotor", s_changeGainsMotor)};
-    // ros::Subscriber<std_msgs::Float32MultiArray> m_subSpeed {ros::Subscriber<std_msgs::Float32MultiArray>("speedTeensyObjective", s_setSpeed)}; // on fixe la vitesse de la rampe d'avance
-    // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc   {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters", s_changeAccDecRampe)};
-    // ros::Subscriber<std_msgs::Float32MultiArray> m_subAcc2  {ros::Subscriber<std_msgs::Float32MultiArray>("dynamicParameters2", s_changeAccDecRampePrecise)};
+    ros::Subscriber<geometry_msgs::Quaternion>   m_subOrder {
+        ros::Subscriber<geometry_msgs::Quaternion>  ("nextPositionTeensy", s_goToCb)
+    };
+
+    ros::Subscriber<std_msgs::Float32MultiArray> m_subGainsP{
+        ros::Subscriber<std_msgs::Float32MultiArray>("gains", s_changeGains)
+    };
 
 
 
@@ -98,8 +121,8 @@ private :
     
 
 
-    // std_msgs::Int16 m_feedbackOk;
-    // ros::Publisher m_okFeedback{ros::Publisher("okPosition", &m_feedbackOk)};
+    std_msgs::Int16 m_callbackHN;
+    ros::Publisher m_pubHN{ros::Publisher("okPosition", &m_callbackHN)};
 
     // std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
     // ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};

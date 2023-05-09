@@ -6,8 +6,10 @@
 #include <Events.hpp>
 
 #include <Arduino.h>
+#include <Timer.hpp>
 
 #include "Trajectories/Trajectory.hpp"
+#include <SwitchFiltered.hpp>
 
 // #include <ROS.hpp>
 
@@ -19,7 +21,10 @@
         BRSTATE(BR_INITROT)   \
         BRSTATE(BR_FORWARD)  \
         BRSTATE(BR_FINALROT)   \
-        BRSTATE(BR_ARRIVED)  \
+        BRSTATE(BR_READY)  \
+		BRSTATE(BR_RECAL_ASSERV) \
+		BRSTATE(BR_RECAL_DETECT) \
+		BRSTATE(BR_EMERGENCYSTOP) \
 
 #define GENERATE_ENUM(ENUM) ENUM,
 #define GENERATE_STRING(STRING) #STRING,
@@ -29,18 +34,6 @@ enum BRState {
 };
 
 
-//TODO : mettre autre part
-enum GoalType { // type d'objectif recu par le haut niveau
-	UNVALID_GOALTYPE = -1, // sert a rejeter les valeurs non conformes
-
-	FINAL = 0,             // point final, avec orientation
-	TRANS = 1,             // point transitoire, sans orientation finale
-	ORIENT = 2,            // orientation seule sur place
-
-	STOP  = 8,             // freinage d'urgence
-	RESET = 9,             // reset de la position odometrique
-	CONTROL = 10,          // controle en commande directe
-};
 
 typedef struct AxisStates {
 	int state_ax0;
@@ -63,6 +56,7 @@ class BrSM
 	* friend class Fsm;
 	*/
 public:
+	BrSM();
 
 	/* default reaction for unhandled events */
 	void react(tinyfsm::Event const &) { };
@@ -70,8 +64,12 @@ public:
 	virtual void react(OrderEvent        const &);
 	virtual void react(GoalReachedEvent const &);
 	virtual void react(ErrorEvent const &);
-	
-	// Update function in states, can be overwritten
+	virtual void react(BrGetReadyEvent const &);
+	virtual void react(BrSetToIdleEvent const &);
+	virtual void react(BrEmergencyBrakeEvent const &);
+	virtual void react(ResetPosEvent const &);
+
+	// Update function in states, common but can be overwritten
 	virtual void react(BrUpdateEvent const & e);
 
 
@@ -103,7 +101,16 @@ protected:
 	static AxisStates axisStates;
 	static OrderType currentOrder;
 
+	static Timer recalAsservTimer;
+
 	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
+
+	static SwitchFiltered m_switchLeft;
+	static SwitchFiltered m_switchRight;
+
+	//NOTE les switches ont été mis comme objets statiques de la BrSM
+	//ça marche bien si on ne les utilise que pour la SM
+	static SwitchFiltered* m_switches[2];  // 0 : right, 1 : left
 
 
 	static void setupTrajectory();
