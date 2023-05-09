@@ -5,6 +5,7 @@
 #define ULTRASONIC_HPP
 
 #include <ros.h>
+#include <geometry_msgs/Point.h>
 
 enum class UltrasonicState{
     IDLE,
@@ -46,15 +47,17 @@ class UltrasonicROS{
         Ultrasonic* m_p_right_ultrasonic;
 
         ros::NodeHandle* m_p_nh;
+        ros::Publisher m_pub;
+        geometry_msgs::Point m_distance_msg;
 
-        ros::Publisher* m_pub;
-        
-
+        unsigned long m_timer_pub;
 
     public:
 
+        UltrasonicROS(Ultrasonic* p_left_ultrasionic, Ultrasonic* p_right_ultrasionic, ros::NodeHandle* p_nh);
 
-
+        void setup();
+        void loop();
 
 };
 

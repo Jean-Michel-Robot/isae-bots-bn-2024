@@ -7,6 +7,10 @@ Ultrasonic::Ultrasonic(int trig_pin,int echo_pin){
     m_trig_pin = trig_pin;
     m_echo_pin = echo_pin;
     m_state = UltrasonicState::IDLE;
+
+    m_timer_us = micros();
+    m_start_measure_timer_ms = millis();
+
 }
 
 float Ultrasonic::getLastMeasure(){
@@ -43,4 +47,37 @@ void Ultrasonic::loop(){
         }
     }
 }
+
+UltrasonicROS::UltrasonicROS(Ultrasonic* p_left_ultrasionic, Ultrasonic* p_right_ultrasionic, ros::NodeHandle* p_nh) :
+    m_pub("ulrasonicDistances",&m_distance_msg){
+    
+    m_p_left_ultrasonic = p_left_ultrasionic;
+    m_p_right_ultrasonic = p_right_ultrasionic;
+
+    m_p_nh = p_nh;
+
+    m_timer_pub = millis();
+}
+
+void UltrasonicROS::setup(){  
+
+    m_p_left_ultrasonic->setup();
+    m_p_right_ultrasonic->setup();
+
+    m_p_nh->advertise(m_pub);
+}
+
+void UltrasonicROS::loop(){
+
+    m_p_left_ultrasonic->loop();
+    m_p_right_ultrasonic->loop();
+
+    if(millis() - m_timer_pub > ULTRASONIC_MEASURE_INTERVAL){
+        m_distance_msg.x = (int)m_p_left_ultrasonic->getLastMeasure();
+        m_distance_msg.y = (int)m_p_right_ultrasonic->getLastMeasure();
+        m_pub.publish(&m_distance_msg);
+    }
+}
+
+
 

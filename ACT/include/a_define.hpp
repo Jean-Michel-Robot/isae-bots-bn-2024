@@ -12,11 +12,11 @@
 #define ELEV_STEP_ZERO 0
 #define ELEV_STEP_DIFF 10
 
-#define CLAMP_OPEN_POS   0
-#define CLAMP_CLOSED_POS 90
+#define CLAMP_OPEN_POS   50
+#define CLAMP_CLOSED_POS 60
 
-#define CHERRY_UP_POS   0
-#define CHERRY_DOWN_POS 90
+#define CHERRY_UP_POS   40
+#define CHERRY_DOWN_POS 60
 
 
 /* PINS */
