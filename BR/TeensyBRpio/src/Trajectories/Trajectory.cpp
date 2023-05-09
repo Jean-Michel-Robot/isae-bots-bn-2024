@@ -15,7 +15,6 @@ Trajectory::Trajectory()
     x0 = 0.0; y0 = 0.0; theta0 = 0.0;
 
     currentSpeed = 0.0;
-    d_current = 0.0;
     Dtotale = 0.0;
 
     trajectoryType = TrajectoryType::TRAJ_UNDEF;
@@ -48,7 +47,6 @@ void Trajectory::beginTrajectory(uint32_t t0) {
     x = x0; y = y0; theta = theta0;
 
     current_time = t0;
-    d_parc = 0.0;
     currentSpeed = 0.0;  // une trajectoire commence toujours à vitesse nulle
 
     rampSpeed.beginRamp(t0, goalSpeed);
@@ -72,12 +70,8 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);
 
-    // Ajout de la distance parcourue en dt à la distance totale parcourue
-    d_parc = d_parc + currentSpeed * dt*0.000001;
-
-    // Calcul de s comme la fraction de distance parcourue sur distance totale
-    s = d_parc / Dtotale;
-
+    // TOTEST Update de s par l'ajout d'une fraction de la distance totale parcourue
+    s = s + (currentSpeed * dt*0.000001) / Dtotale;
 
     // Test s >= 1 (rampe terminee)
     if (s >= 1) {
@@ -136,6 +130,12 @@ float Trajectory::getTrajectoryLinearSpeed() {
 
 float Trajectory::getTrajectoryAngularSpeed() {
     return omega;
+}
+
+// returns an array of floats [xpoint, ypoint]
+float* Trajectory::getTrajectoryAbsoluteSpeed() {
+    float speed[2] = {xpoint, ypoint};
+    return speed;
 }
 
 

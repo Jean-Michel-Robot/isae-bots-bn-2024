@@ -35,7 +35,7 @@ bool LinearTrajectory::detectEndRamp() {
     // return ( (Dtotale - d_current) < 0.5*currentSpeed*currentSpeed/accelParam );
 
     // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
-    return ( (Dtotale * (1 - s)) < 0.5*currentSpeed*currentSpeed/accelParam );
+    return ( Dtotale * (1 - s) < 0.5*currentSpeed*currentSpeed/accelParam );
     //TODO du coup detectEndRamp ne dépend pas de la trajectoire, la mettre dans Trajectory
 }
 
@@ -49,5 +49,10 @@ void LinearTrajectory::updateTrajectoryState() {
 
     V = currentSpeed;
     omega = 0.0;
-    
+
+    // Update des vitesses absolues du goal point en linéaire
+    xpoint = V*cos(theta);
+    ypoint = V*sin(theta);
 }
+
+
