@@ -45,6 +45,7 @@ void Trajectory::beginTrajectory(uint32_t t0) {
 
     current_time = t0;
     currentSpeed = 0.0;  // une trajectoire commence toujours à vitesse nulle
+    s = 0;  // on commence au début de la trajectoire
 
     rampSpeed.beginRamp(t0, goalSpeed);
 }
@@ -67,11 +68,11 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     // On récupère et on stocke V(t) de la rampe
     currentSpeed = rampSpeed.updateRamp(current_time);
 
-    if (Dtotale == 0.0) {
-        p_ros->logPrint(FATAL, "Dtotale is zero in updateTrajectory");
+    if (Dtotale == 0.0) { //TODO make it so that never happens (no update when Dtotale is small)
+        p_ros->logPrint(ERROR, "Dtotale is zero in updateTrajectory");
         return;
     }
-    
+
     // TOTEST Update de s par l'ajout d'une fraction de la distance totale parcourue    
     s = s + (currentSpeed * dt*0.000001) / Dtotale;
 

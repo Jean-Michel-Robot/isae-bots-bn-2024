@@ -70,9 +70,10 @@ void BrSM::setupTrajectory() {
   // (pas besoin de se déplacer pour une trajectoire super courte)
   // On ignore alors l'étape et on passe à la suite en envoyant un GoalReachedEvent
   if (currentTrajectory->Dtotale < EPSILON_DTOTALE) {
-    p_ros->logPrint(WARN, "Trajectory ignored car Dtotale is too small");
-    GoalReachedEvent goalReachedEvent;
-    goalReachedEvent.goalType = currentOrder.goalType;
+    p_ros->logPrint(WARN, "Trajectory ignored because Dtotale is too small");
+    // GoalReachedEvent goalReachedEvent;
+    // goalReachedEvent.goalType = currentOrder.goalType;
+    // send_event(goalReachedEvent);
     return;  // on ne lance pas la trajectoire
   }
 

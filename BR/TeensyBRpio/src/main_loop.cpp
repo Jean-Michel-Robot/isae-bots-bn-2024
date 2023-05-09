@@ -89,7 +89,7 @@ void loop() {
         // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
         // Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
-        Serial.println(p_sm->currentTrajectory->s);
+        Serial.println("s : "+String(p_sm->currentTrajectory->s));
 
         loop_timer = millis();
     }
