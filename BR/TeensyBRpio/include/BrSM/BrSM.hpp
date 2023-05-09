@@ -67,8 +67,9 @@ public:
 	virtual void react(BrGetReadyEvent const &);
 	virtual void react(BrSetToIdleEvent const &);
 	virtual void react(BrEmergencyBrakeEvent const &);
+	virtual void react(ResetPosEvent const &);
 
-	// Update function in states, can be overwritten
+	// Update function in states, common but can be overwritten
 	virtual void react(BrUpdateEvent const & e);
 
 

@@ -51,24 +51,56 @@ void ROS::loop()
 
 // callback to an order
 void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
-{ // goToCallBack
-    // if (int(positionMsg.w) != 4) // has to be direct command
-    //     return;
-        
-    // float cmd_M0 = positionMsg.x;
-    // float cmd_M1 = positionMsg.y;
+{
 
-    // sendMotorCommand(0, cmd_M0);
-    // sendMotorCommand(1, cmd_M1);
+  int goalType = (int) positionMsg.w;
 
-    // if (abs(cmd_M0) > 30 || abs(cmd_M1) > 30) {digitalWrite(LED_BUILTIN, HIGH);}
-    // else {digitalWrite(LED_BUILTIN, LOW);}
+  // Action depending on goal type
+  switch (goalType) {
 
-    OrderEvent e;
-    e.order.x = positionMsg.x;
-    e.order.y = positionMsg.y;
-    e.order.theta = positionMsg.z;
-    e.order.goalType = positionMsg.w;
+    case GoalType::FINAL:
+    case GoalType::TRANS:
+    case GoalType::ORIENT:
+
+    case GoalType::RECAL_BACK:
+    case GoalType::RECAL_FRONT:
+
+    case GoalType::CONTROL:
+
+      OrderEvent orderEvent;
+
+      orderEvent.order.x = positionMsg.x;
+      orderEvent.order.y = positionMsg.y;
+      orderEvent.order.theta = positionMsg.z;
+      orderEvent.order.goalType = positionMsg.w;
+
+      p_sm->send_event(orderEvent);
+      break;
+
+
+    case GoalType::RESET:
+
+      ResetPosEvent resetPosEvent;
+      resetPosEvent.x = positionMsg.x;
+      resetPosEvent.y = positionMsg.y;
+      resetPosEvent.theta = positionMsg.z;
+
+      p_sm->send_event(resetPosEvent);
+      break;
+
+
+    case GoalType::STOP:
+
+      EmergencyBrakeEvent emergencyBrakeEvent;
+
+      p_sm->send_event(emergencyBrakeEvent);
+      break;
+
+
+    default:
+      // order ignored
+      break;
+  }
 
 }
 
@@ -76,8 +108,9 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 void ROS::logPrint(LogType logtype, String msg)
 {
 
-  // Serial.println(msg);
-  // return; //NOTE deactivated to debug with serial interface
+  Serial.println(msg);
+  return; //NOTE used to debug with serial interface
+
   if (logtype == INFO) {m_nodeHandle.loginfo(msg.c_str());}
   else if (logtype == WARN) {m_nodeHandle.logwarn(msg.c_str());}
   else if (logtype == ERROR) {m_nodeHandle.logerror(msg.c_str());}

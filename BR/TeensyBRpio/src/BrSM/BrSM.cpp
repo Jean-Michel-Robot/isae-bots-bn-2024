@@ -452,6 +452,13 @@ void BrSM::react(BrSetToIdleEvent const &) {
   p_ros->logPrint(DEBUG, "BrSetToIdleEvent ignored");
 }
 
+// For now we always take the reset position event
+void BrSM::react(ResetPosEvent const & e) {
+  p_ros->logPrint(INFO, "Received reset position event, resetting it");
+
+  p_odos->setPosition( Position2D(e.x, e.y, e.theta) );
+}
+
 
 void BrSM::react(BrEmergencyBrakeEvent const &) {
 

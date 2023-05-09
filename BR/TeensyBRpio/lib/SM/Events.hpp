@@ -26,6 +26,14 @@ struct GoalReachedEvent : tinyfsm::Event
 	int goalType = 0;
 };
 
+// Event pour reset la pos des odos
+struct ResetPosEvent : tinyfsm::Event
+{
+	float x = 0.0;
+	float y = 0.0;
+	float theta = 0.0;
+};
+
 struct ErrorEvent : tinyfsm::Event
 {
 	int errorCode = 0;
