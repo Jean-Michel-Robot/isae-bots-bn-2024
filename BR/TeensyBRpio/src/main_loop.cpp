@@ -5,6 +5,7 @@
 
 #include <Motors.hpp>
 #include <LED.hpp>
+#include <Logger.h>
 
 
 #include "ROS.hpp"
@@ -26,6 +27,8 @@ RotationTrajectory* p_rotationTrajectory = NULL;
 
 Asserv* p_asserv = NULL;
 BrSMWrapper* p_sm = NULL;
+
+Logger* p_logger = NULL;
 
 void setup() {
 
@@ -70,7 +73,6 @@ void loop() {
 
     // uint32_t t = micros();
 
-    p_ros->loop();
 
     p_odos->loop();
 
@@ -80,33 +82,72 @@ void loop() {
     p_sm->loop();
 
 
-    // Periodic display for test
-    if (millis() - loop_timer > 250) {
+    // Log update
+    if (millis() - loop_timer > LOG_PERIOD) {
 
-        if (p_sm->getCurrentState() != BR_IDLE) {
-            p_ros->logPrint(INFO, "Speed : "+String(p_sm->getCurrentTargetSpeed()));
-            // //Serial.println(p_odos->getRobotPosition().toString());
-            // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
-            // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
+        // if (p_sm->getCurrentState() != BR_IDLE) {
+        //     p_ros->logPrint(INFO, "Speed : "+String(p_sm->getCurrentTargetSpeed()));
+        //     // //Serial.println(p_odos->getRobotPosition().toString());
+        //     // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
+        //     // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-            //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
-            //p_ros->sendDebug();
+        //     //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        //     //p_ros->sendDebug();
 
-            p_ros->logPrint(INFO, "s : "+String(p_sm->currentTrajectory->s));
+        //     p_ros->logPrint(INFO, "s : "+String(p_sm->currentTrajectory->s));
 
-            p_ros->logPrint(INFO, "Error : [" + String(p_asserv->error[0]) +
-                                      ", " + String(p_asserv->error[1]) + "]");
+        //     p_ros->logPrint(INFO, "Error : [" + String(p_asserv->error[0]) +
+        //                               ", " + String(p_asserv->error[1]) + "]");
 
-            p_ros->logPrint(INFO, "Cmds : [" + String(p_asserv->cmd_coordspoint[0]) +
-                                      ", " + String(p_asserv->cmd_coordspoint[1]) + "]");
+        //     p_ros->logPrint(INFO, "Cmds : [" + String(p_asserv->cmd_coordspoint[0]) +
+        //                               ", " + String(p_asserv->cmd_coordspoint[1]) + "]");
 
-            p_ros->logPrint(INFO, "Cmd R : " + String(p_asserv->m_rightWheelSpeed) +
-                                      " | Cmd L : " + String(p_asserv->m_leftWheelSpeed));
+        //     p_ros->logPrint(INFO, "Cmd R : " + String(p_asserv->m_rightWheelSpeed) +
+        //                               " | Cmd L : " + String(p_asserv->m_leftWheelSpeed));
+        // }
+
+        Logger::setFieldValue(millis(), Logger::currentTime);
+
+        Position2D robotPos = p_odos->getRobotPosition();
+        Logger::setFieldValue(robotPos.x, Logger::robotPosX);
+        Logger::setFieldValue(robotPos.y, Logger::robotPosY);
+        Logger::setFieldValue(robotPos.theta, Logger::robotPosTheta);
+
+        Position2D goalPos = p_sm->currentTrajectory->getTrajectoryPoint();
+        Logger::setFieldValue(goalPos.x, Logger::goalPointPosX);
+        Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
+        Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);
+
+        Logger::setFieldValue(p_sm->currentTrajectory->s, Logger::trajectoryS);
+
+        if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
+            Logger::setFieldValue(p_sm->currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
+            Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
+       }
+        else if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
+            Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
+            Logger::setFieldValue(p_sm->currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
         }
+
+        Logger::setFieldValue(p_asserv->error[0], Logger::asservErrorX);
+        Logger::setFieldValue(p_asserv->error[1], Logger::asservErrorY);
+
+        Logger::setFieldValue(p_asserv->cmd_v, Logger::commandV);
+        Logger::setFieldValue(p_asserv->cmd_omega, Logger::commandOmega);
+
+        Logger::setFieldValue(p_asserv->m_rightWheelSpeed, Logger::commandeMotorR);
+        Logger::setFieldValue(p_asserv->m_leftWheelSpeed, Logger::commandeMotorL);
+
+        Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentSpeed(), Logger::rampSpeed);
+        Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentState(), Logger::rampState);
+        Logger::setFieldValue(p_sm->getCurrentState(), Logger::BrState);
+
 
 
         loop_timer = millis();
     }
+
+    p_ros->loop();
 
 
     return;

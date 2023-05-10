@@ -74,6 +74,7 @@ public :
     void sendCallback(CallbackHN callback);
     void logPrint(LogType logtype, String msg);
     void sendCurrentPosition(Position2D position);
+    void publishFullLogs();
 
     void sendDebug();
 
@@ -127,8 +128,8 @@ private :
     std_msgs::Int16 m_callbackHN;
     ros::Publisher m_pubHN{ros::Publisher("okPosition", &m_callbackHN)};
 
-    // std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
-    // ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
+    std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
+    ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
 
     ros::NodeHandle m_nodeHandle;
 };

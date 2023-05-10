@@ -68,5 +68,8 @@
 #define BUMPER_LEFT_PIN 16 //TODO set
 
 
+/* LOG */
+#define LOG_PERIOD 100 // ms
+
 #endif
 

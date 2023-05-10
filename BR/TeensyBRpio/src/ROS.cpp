@@ -12,6 +12,7 @@
 #include "ROS.hpp"
 
 #include <Motors.hpp>
+#include <Logger.h>
 
 #include "main_loop.hpp"
 
@@ -48,7 +49,7 @@ ROS::ROS()
 
 void ROS::loop()
 {
-//   publishFullLogs();
+  publishFullLogs();
   m_nodeHandle.spinOnce(); // boucle ros
 }
 
@@ -285,15 +286,17 @@ void ROS::sendCurrentPosition(Position2D position)
 }
 
 
-// void ROS::publishFullLogs()
-// {
-//   static float lastTime = 0.0;
-//   unsigned long time = micros();
-//   if (time - lastTime > 4e4) { // on envoie tous les 20 ms
-//     float* tab = Logger::getArrayOfValues();
-//     m_logTotalArray.data = tab;
-//     m_logTotalArray.data_length = Logger::NbOfFields;
-//     m_logTotale.publish(&m_logTotalArray);
-//     lastTime = time;
-//   }
-// }
+void ROS::publishFullLogs()
+{
+  static uint32_t lastTime = 0.0;
+
+  uint32_t time = millis();
+
+  if (time - lastTime > LOG_PERIOD) {
+    float* tab = Logger::getArrayOfValues();
+    m_logTotalArray.data = tab;
+    m_logTotalArray.data_length = Logger::NbOfFields;
+    m_logTotale.publish(&m_logTotalArray);
+    lastTime = time;
+  }
+}
