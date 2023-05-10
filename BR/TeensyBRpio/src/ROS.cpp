@@ -39,7 +39,7 @@ ROS::ROS()
 
   
     // m_nodeHandle.advertise(m_okFeedback);
-    // m_nodeHandle.advertise(m_logTotale);
+    m_nodeHandle.advertise(m_logTotale);
 
     m_nodeHandle.getHardware()->setBaud(250000);
 }

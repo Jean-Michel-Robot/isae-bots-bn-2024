@@ -120,7 +120,11 @@ void loop() {
 
         Logger::setFieldValue(p_sm->currentTrajectory->s, Logger::trajectoryS);
 
-        if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
+        if (p_sm->currentTrajectory == NULL) {
+            Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
+            Logger::setFieldValue(0.0, Logger::goalSpeedAngular);            
+        }
+        else if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
             Logger::setFieldValue(p_sm->currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
             Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
        }
@@ -138,11 +142,16 @@ void loop() {
         Logger::setFieldValue(p_asserv->m_rightWheelSpeed, Logger::commandeMotorR);
         Logger::setFieldValue(p_asserv->m_leftWheelSpeed, Logger::commandeMotorL);
 
-        Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentSpeed(), Logger::rampSpeed);
-        Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentState(), Logger::rampState);
+        if (p_sm->currentTrajectory == NULL) {
+            Logger::setFieldValue(0.0, Logger::rampSpeed);
+            Logger::setFieldValue(0.0, Logger::rampState);
+        }
+        else {
+            Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentSpeed(), Logger::rampSpeed);
+            Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentState(), Logger::rampState);
+        }
+
         Logger::setFieldValue(p_sm->getCurrentState(), Logger::BrState);
-
-
 
         loop_timer = millis();
     }
