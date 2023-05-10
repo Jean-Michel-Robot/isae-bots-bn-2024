@@ -164,15 +164,15 @@ Pour afficher les graphes en live, qques commandes a lancer en plus :
 
 Sur la Pi (dans le meme terminal que roscore et rosrun): 
 ```
-export ROS_IP=192.168.43.12
-export ROS_MASTER_URI=http://192.168.43.12:11311
+export ROS_IP=192.168.222.11
+export ROS_MASTER_URI=http://192.168.222.11:11311
 ```
 Ou alors utiliser les scripts export_roscore.sh et export_rosrun.sh sur la pi
 
 Sur le pc fixe 
 ```
-export ROS_IP=192.168.43.139 #IP perso
-export ROS_MASTER_URI=http://192.168.43.12:11311
+export ROS_IP=192.168.222.131 #IP perso
+export ROS_MASTER_URI=http://192.168.222.11:11311
 cd Robotik/Robotik_2019/Sources/Robot/Haut_niveau/Dev/
 source devel/setup.bash
 rosrun isae_robotics_graph GraphNode.py 

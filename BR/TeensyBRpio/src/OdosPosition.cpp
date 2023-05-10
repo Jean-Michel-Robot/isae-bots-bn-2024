@@ -174,7 +174,11 @@ void OdosPosition::setPositionAvecRecalage()
 
 Position2D OdosPosition::getRobotPosition() const
 {
-  return m_robotPosition;
+
+  // Conversion en m
+  Position2D pos = Position2D(m_robotPosition.x / 1000.0, m_robotPosition.y / 1000.0, m_robotPosition.theta);
+
+  return pos;
 }
 
 void OdosPosition::sendRobotPosition(){

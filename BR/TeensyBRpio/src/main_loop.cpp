@@ -53,7 +53,7 @@ void setup() {
     // p_linearTrajectory->setDest(0.0, 0.0);
     // p_linearTrajectory->beginTrajectory( micros() );
 
-    p_asserv = new Asserv(10.0, 0.0, 0.0);  //TODO réglage des gains
+    p_asserv = new Asserv(0.0, 0.0, 0.0);  //TODO réglage des gains
 
     p_sm = new BrSMWrapper();
 

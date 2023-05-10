@@ -99,6 +99,16 @@ class Ready
   void react(BrUpdateEvent const & e) override {
     //TODO bloquer les moteurs avec l'asserv (a la difference de IDLE)
 
+      p_asserv->updateError( Position2D(0.0, 0.0, 0.0) );
+
+      float tmp[2] = {0.0, 0.0};
+
+      p_asserv->updateCommand_2(
+        tmp
+      );
+
+
+
   }
 
   void react(OrderEvent const & e) override {
@@ -120,7 +130,7 @@ class Ready
       case TRANS:
       case FINAL:
         p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
-        transit<InitRot>();  //FORTEST remettre InitRot
+        transit<InitRot>();
         break;
 
       case RECAL_FRONT:
@@ -294,6 +304,8 @@ class BR_Idle
 {
   void entry() override {
     currentState = BR_IDLE;
+
+    //TODO : envoyer axis_idle à l'Odrive
   }
 
   void react(BrUpdateEvent const & e) override {
@@ -503,7 +515,7 @@ void BrSM::react(BrUpdateEvent const & e) {
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
     // Can mean that the trajectory is done if the asserv agrees
-    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ?? //FORTEST
+    if (p_asserv->isAtObjectivePoint(false)) {  //TODO checkangle ?? //FORTEST
 
       //Serial.println("Send goal reached event");
 
