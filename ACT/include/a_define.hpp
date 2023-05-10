@@ -22,21 +22,21 @@
 /* PINS */
 //TODO with elec
 
-#define DOORS_LEFT_PIN 1
-#define DOORS_RIGHT_PIN 1
+#define DOORS_LEFT_PIN 5
+#define DOORS_RIGHT_PIN 6
 
 #define MOTOR_INTERFACE_TYPE 1 //arduino connected to a stepper driver with 2 driver pins
-#define ELEV_DIR_PIN 2
-#define ELEV_STEP_PIN 3
+#define ELEV_DIR_PIN 3
+#define ELEV_STEP_PIN 4
 
-#define CLAMP_PIN 1
+#define CLAMP_PIN 20
 
-#define CHERRY_PIN 1
+#define CHERRY_PIN 21
 
-#define ULTRASONIC_L_TRIG_PIN 1
-#define ULTRASONIC_L_ECHO_PIN 1
-#define ULTRASONIC_R_TRIG_PIN 1
-#define ULTRASONIC_R_ECHO_PIN 1
+#define ULTRASONIC_L_TRIG_PIN 22
+#define ULTRASONIC_L_ECHO_PIN 23
+#define ULTRASONIC_R_TRIG_PIN 7
+#define ULTRASONIC_R_ECHO_PIN 8
 
 #endif
 
