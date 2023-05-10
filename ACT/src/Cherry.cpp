@@ -17,10 +17,11 @@ void Cherry::setState(CherryState state){
 
 void Cherry::setup(){
 
+    m_servo.attach(CHERRY_PIN);   
+
     m_state = CherryState::DOWN;
     this->setState(m_state);
 
-    m_servo.attach(CHERRY_PIN);   
 
 }
 
@@ -40,6 +41,7 @@ CherryROS::CherryROS(Cherry* p_cherry, ros::NodeHandle* p_nh) :
 }
 
 void CherryROS::subCallback(const std_msgs::Int16& stateVal){
+    m_p_nh->loginfo("[CHERRY] Order");
     if (stateVal.data == 0) m_p_cherry->setState(CherryState::UP);
     else               m_p_cherry->setState(CherryState::DOWN);
 }
@@ -47,6 +49,8 @@ void CherryROS::subCallback(const std_msgs::Int16& stateVal){
 void CherryROS::setup(){
     m_p_cherry->setup();
     m_p_nh->subscribe(m_sub);
+
+    m_p_nh->loginfo("[CHERRY] Setup");
 }
 
 void CherryROS::loop(){

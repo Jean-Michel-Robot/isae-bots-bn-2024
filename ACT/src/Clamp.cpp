@@ -17,11 +17,10 @@ void Clamp::setState(ClampState state){
 
 void Clamp::setup(){
 
-    m_state = ClampState::OPEN;
-    this->setState(m_state);
-
     m_servo.attach(CLAMP_PIN);   
 
+    m_state = ClampState::OPEN;
+    this->setState(m_state);
 }
 
 void Clamp::loop(){
@@ -40,6 +39,7 @@ ClampROS::ClampROS(Clamp* p_clamp, ros::NodeHandle* p_nh) :
 }
 
 void ClampROS::subCallback(const std_msgs::Int16& stateVal){
+    m_p_nh->loginfo("[CLAMP] Order");
     if (stateVal.data == 0) m_p_clamp->setState(ClampState::CLOSED);
     else               m_p_clamp->setState(ClampState::OPEN);
 }
@@ -47,6 +47,8 @@ void ClampROS::subCallback(const std_msgs::Int16& stateVal){
 void ClampROS::setup(){
     m_p_clamp->setup();
     m_p_nh->subscribe(m_sub);
+
+    m_p_nh->loginfo("[CLAMP] Setup");
 }
 
 void ClampROS::loop(){

@@ -17,15 +17,16 @@ void Doors::setState(DoorsState state){
     m_state = state;
     m_left_servo.write(m_left_positions[state]);
     m_right_servo.write(m_right_positions[state]);
+
 }
 
 void Doors::setup(){
 
-    m_state = DoorsState::OPEN;
-    this->setState(m_state);
-
     m_left_servo.attach(DOORS_LEFT_PIN);   
     m_right_servo.attach(DOORS_RIGHT_PIN);
+
+    m_state = DoorsState::CLOSED;
+    this->setState(m_state);
 
 }
 
@@ -45,6 +46,9 @@ DoorsROS::DoorsROS(Doors* p_doors, ros::NodeHandle* p_nh) :
 }
 
 void DoorsROS::subCallback(const std_msgs::Int16& stateVal){
+
+    m_p_nh->loginfo("[DOORS] Order");
+
     if (stateVal.data == 0) m_p_doors->setState(DoorsState::CLOSED);
     else               m_p_doors->setState(DoorsState::OPEN);
 }
@@ -52,6 +56,8 @@ void DoorsROS::subCallback(const std_msgs::Int16& stateVal){
 void DoorsROS::setup(){
     m_p_doors->setup();
     m_p_nh->subscribe(m_sub);
+
+    m_p_nh->loginfo("[DOORS] Setup");
 }
 
 void DoorsROS::loop(){

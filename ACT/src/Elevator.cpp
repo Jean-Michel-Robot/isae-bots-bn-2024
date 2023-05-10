@@ -8,7 +8,7 @@ Elevator::Elevator() :
     m_down_bumper(ELEV_BUMP_DOWN_PIN,ELEV_BUMP_TAU, ELEV_BUMP_THR, true){
 
         for(int i=0; i<9; i++){
-            m_positions_step[i] = 0;
+            m_positions_step[i] = i*ELEV_STEP_DIFF;
         }    
 
 }
@@ -84,6 +84,7 @@ ElevatorROS::ElevatorROS(Elevator* p_elevator, ros::NodeHandle* p_nh) :
 }
 
 void ElevatorROS::subCallback(const std_msgs::Int16& stateVal){
+    m_p_nh->loginfo("[ELEVATOR] Order");
     m_p_elevator->setState(ElevatorState::MOVING,stateVal.data);
 
 }
@@ -92,6 +93,8 @@ void ElevatorROS::setup(){
     m_p_nh->subscribe(m_sub);
     m_p_nh->advertise(m_pub_feedback);
     m_p_elevator->setup();
+
+    m_p_nh->loginfo("[ELEVATOR] Setup");
 }
 
 void ElevatorROS::loop(){

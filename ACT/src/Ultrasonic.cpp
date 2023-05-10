@@ -20,6 +20,7 @@ float Ultrasonic::getLastMeasure(){
 void Ultrasonic::setup(){
     pinMode(m_trig_pin, OUTPUT);
     pinMode(m_echo_pin, INPUT);
+    digitalWrite(m_trig_pin, LOW);
 }
 
 void Ultrasonic::loop(){
@@ -33,16 +34,19 @@ void Ultrasonic::loop(){
     }
 
     else if(m_state == UltrasonicState::SENDING_SIG){
-        if(micros() - m_timer_us > ULTRASONIC_TRIG_INTERVAL){
-            digitalWrite(m_trig_pin, HIGH);
+        if(micros() - m_timer_us > 1000){
             m_timer_us = micros();
             m_state = UltrasonicState::WAITING_SIG;
         }
+        else if(micros() - m_timer_us > ULTRASONIC_TRIG_INTERVAL){
+            digitalWrite(m_trig_pin, LOW);
+        }
+
     }
 
     else if(m_state == UltrasonicState::WAITING_SIG){
         if(digitalRead(m_echo_pin) == HIGH){
-            m_last_measure = (micros() - m_timer_us) / ULTRASONIC_TIME_TO_DIST;
+            m_last_measure = (float)(micros() - m_timer_us) / (float)ULTRASONIC_TIME_TO_DIST;
             m_state = UltrasonicState::IDLE;
             m_last_measure_timer_ms = millis();
         }
@@ -66,6 +70,8 @@ void UltrasonicROS::setup(){
     m_p_right_ultrasonic->setup();
 
     m_p_nh->advertise(m_pub);
+
+    m_p_nh->loginfo("[ULTRASONIC] Setup");
 }
 
 void UltrasonicROS::loop(){
