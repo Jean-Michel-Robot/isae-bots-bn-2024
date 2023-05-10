@@ -4,25 +4,38 @@
 #include <AccelStepper.h>
 #include <ros.h>
 #include <std_msgs/Int16.h>
+
+#include "SwitchFiltered.h"
+
 #include "a_define.hpp"
+
+enum class ElevatorState{
+    IDLE,
+    MOVING,
+    RECAL_DOWN
+};
 
 class Elevator{
 
     private:
 
         AccelStepper m_stepper;
+        
+        SwitchFiltered m_up_bumper;
+        SwitchFiltered m_down_bumper;
 
-        int m_state; //0 to 8
-        int m_positions_step[9];
+        ElevatorState m_state; //0 to 8
+        int m_sub_state;
+        long m_positions_step[9];
 
     public:
 
         Elevator();
 
-        void setState(int state);
+        void setState(ElevatorState state, int sub_state);
 
         void setup();
-        void loop();
+        int loop();
 
 };
 
@@ -38,7 +51,6 @@ class ElevatorROS{
         ros::Publisher m_pub_feedback;
         std_msgs::Int16 m_msg_feedback;
         
-
     public:
 
         ElevatorROS(Elevator* p_elevator, ros::NodeHandle* n_ph);
