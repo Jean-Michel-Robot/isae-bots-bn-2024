@@ -19,14 +19,13 @@ class Ultrasonic{
         int m_trig_pin;
         int m_echo_pin;
 
-        unsigned long m_start_measure_timer_ms;
+        unsigned long m_last_measure_timer_ms;
         unsigned long m_timer_us;
 
         float m_last_measure;
 
         UltrasonicState m_state;
 
-        
 
     public:
 
@@ -54,7 +53,7 @@ class UltrasonicROS{
 
     public:
 
-        UltrasonicROS(Ultrasonic* p_left_ultrasionic, Ultrasonic* p_right_ultrasionic, ros::NodeHandle* p_nh);
+        UltrasonicROS(Ultrasonic* p_left_ultrasonic, Ultrasonic* p_right_ultrasonic, ros::NodeHandle* p_nh);
 
         void setup();
         void loop();

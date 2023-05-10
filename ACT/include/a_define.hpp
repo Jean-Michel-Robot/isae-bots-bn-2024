@@ -26,8 +26,8 @@
 /* PINS */
 //TODO with elec
 
-#define DOORS_LEFT_PIN 5
-#define DOORS_RIGHT_PIN 6
+#define DOORS_LEFT_PIN 21
+#define DOORS_RIGHT_PIN 20
 
 #define MOTOR_INTERFACE_TYPE 1 //arduino connected to a stepper driver with 2 driver pins
 #define ELEV_DIR_PIN 3
