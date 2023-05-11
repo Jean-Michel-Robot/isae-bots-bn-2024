@@ -44,18 +44,20 @@ int Elevator::loop(){
 
     m_down_bumper.loop();
     m_up_bumper.loop();
+    boolean stepper_bool = m_stepper.run(); //is false when the motor reaches the target position
 
     if(m_state == ElevatorState::MOVING){
-        if(abs(m_stepper.currentPosition()-m_positions_step[m_sub_state]) < ELEV_STEP_TOL){
+        if(stepper_bool == 0){
             m_state = ElevatorState::IDLE;
             return 1;
         }
         else if(m_down_bumper.isSwitchPressed()){
+            m_stepper.stop();
             m_state = ElevatorState::IDLE;
-            
             return 2;
         }
         else if(m_up_bumper.isSwitchPressed()){
+            m_stepper.stop();
             m_state = ElevatorState::IDLE;
             return 3;
         }
@@ -64,9 +66,11 @@ int Elevator::loop(){
     else if(m_state == ElevatorState::RECAL_DOWN){
         if(m_down_bumper.isSwitchPressed()){
             m_state = ElevatorState::IDLE;
-            for(int i=0; i<9; i++){
-                m_positions_step[i] = m_stepper.currentPosition() + i*ELEV_STEP_DIFF;
-            }
+            // for(int i=0; i<9; i++){
+            //     m_positions_step[i] = m_stepper.currentPosition() + i*ELEV_STEP_DIFF;
+            // }
+            m_stepper.stop();
+            m_stepper.setCurrentPosition(m_stepper.currentPosition());
             return 1;  
         }
     }

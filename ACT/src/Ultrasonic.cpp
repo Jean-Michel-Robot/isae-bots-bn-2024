@@ -53,11 +53,11 @@ void Ultrasonic::loop(){
     }
 }
 
-UltrasonicROS::UltrasonicROS(Ultrasonic* p_left_ultrasionic, Ultrasonic* p_right_ultrasionic, ros::NodeHandle* p_nh) :
+UltrasonicROS::UltrasonicROS(Ultrasonic* p_left_ultrasonic, Ultrasonic* p_right_ultrasonic, ros::NodeHandle* p_nh) :
     m_pub("ulrasonicDistances",&m_distance_msg){
     
-    m_p_left_ultrasonic = p_left_ultrasionic;
-    m_p_right_ultrasonic = p_right_ultrasionic;
+    m_p_left_ultrasonic = p_left_ultrasonic;
+    m_p_right_ultrasonic = p_right_ultrasonic;
 
     m_p_nh = p_nh;
 

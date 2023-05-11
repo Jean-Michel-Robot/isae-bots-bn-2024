@@ -11,7 +11,7 @@
 
 
 #define ELEV_STEP_DIFF 25
-#define ELEV_STEP_TOL  5
+#define ELEV_STEP_TOL  1
 #define ELEV_BUMP_TAU  0.05
 #define ELEV_BUMP_THR  0.5
 #define ELEV_STEP_SPEED 1 //in ??
