@@ -118,6 +118,10 @@ void loop() {
         Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
         Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);
 
+        float *goalSpeed = p_sm->currentTrajectory->getTrajectoryAbsoluteSpeed();
+        Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
+        Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
+
         Logger::setFieldValue(p_sm->currentTrajectory->s, Logger::trajectoryS);
 
         if (p_sm->currentTrajectory == NULL) {

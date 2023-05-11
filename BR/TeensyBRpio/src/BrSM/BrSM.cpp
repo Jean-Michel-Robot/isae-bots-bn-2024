@@ -113,13 +113,14 @@ class Ready
         break;
 
     }
+
     currentState = BR_READY;
 
 
   }
 
   void react(BrUpdateEvent const & e) override {
-    //TODO bloquer les moteurs avec l'asserv (a la difference de IDLE)
+    // On bloque les moteurs avec l'asserv (a la difference de IDLE)
 
     if (currentTrajectory == NULL) {  // should only be the case at the start before the first order
 

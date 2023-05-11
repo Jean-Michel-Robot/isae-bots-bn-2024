@@ -48,6 +48,9 @@ public :
         goalPointPosY,
         goalPointPosTheta,
 
+        goalPointSpeedX,
+        goalPointSpeedY,
+
         trajectoryS,
         goalSpeedLinear,
         goalSpeedAngular,
