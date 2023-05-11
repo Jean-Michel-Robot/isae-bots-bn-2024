@@ -5,6 +5,7 @@
 
 
 #include <Arduino.h>
+#include <GeometricTools.hpp>
 #include "Trajectories/Trajectory.hpp"
 #include "Trajectories/LinearTrajectory.hpp"
 #include "Trajectories/RotationTrajectory.hpp"
@@ -90,22 +91,51 @@ class Ready
 : public BrSM
 {
   void entry() override {
+
+    // send callback to HN depending of the previous state
+
+    switch (currentState) {
+
+      case BR_IDLE:  // TODO callback to confirm ready state ?
+        break;
+
+      case BR_INITROT:
+      case BR_FORWARD:
+      case BR_FINALROT:
+        // p_ros->sendCallback(OK_POS);  //TODO implement
+        break;
+
+      case BR_RECAL_DETECT:
+        // p_ros->sendCallback(OK_RECAL);  //TODO implement
+        break;
+
+      default:
+        break;
+
+    }
     currentState = BR_READY;
 
-    // send callback to HN
-    // p_ros->sendCallback(OK_POS);  //TODO implement
+
   }
 
   void react(BrUpdateEvent const & e) override {
     //TODO bloquer les moteurs avec l'asserv (a la difference de IDLE)
 
-      p_asserv->updateError( Position2D(0.0, 0.0, 0.0) );
+    if (currentTrajectory == NULL) {  // should only be the case at the start before the first order
 
-      float tmp[2] = {0.0, 0.0};
+      Position2D startPos = Position2D(0.4, 0.4, 1.57);
+      currentGoalPos = startPos;
+    }
+    else {
+      currentGoalPos = currentTrajectory->getGoalPoint();
+    }
 
-      p_asserv->updateCommand_2(
-        tmp
-      );
+
+    p_asserv->updateError( toAsservPointFrame(currentGoalPos) );
+
+    float nullSpeed[2] = {0.0, 0.0};
+
+    p_asserv->updateCommand_2( nullSpeed );
 
 
 
@@ -125,7 +155,6 @@ class Ready
     // Transition depending on the order goal type
     switch (currentOrder.goalType) {
 
-      //TOTEST les switch cases
       case ORIENT:
       case TRANS:
       case FINAL:
@@ -384,8 +413,9 @@ class BR_RecalAsserv
     }
 
     currentTrajectory->updateTrajectory( e.currentTime );
+    currentGoalPos = currentTrajectory->getGoalPoint();
 
-    p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
+    p_asserv->updateError( toAsservPointFrame(currentGoalPos) );
 
     p_asserv->updateCommand_2(
       currentTrajectory->getTrajectoryAbsoluteSpeed()
@@ -503,8 +533,9 @@ void BrSM::react(BrUpdateEvent const & e) {
   }
 
   currentTrajectory->updateTrajectory( e.currentTime );
+  currentGoalPos = currentTrajectory->getGoalPoint();
 
-  p_asserv->updateError( currentTrajectory->getTrajectoryPoint() );
+  p_asserv->updateError( toAsservPointFrame(currentGoalPos) );
 
   p_asserv->updateCommand_2(
     currentTrajectory->getTrajectoryAbsoluteSpeed()
@@ -537,6 +568,10 @@ String BrSM::getCurrentStateStr() {
   return BrStateStr[currentState];
 }
 
+Position2D BrSM::getCurrentGoalPos() {
+  return currentGoalPos;
+}
+
 float BrSM::getCurrentTargetSpeed() {
   if (currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
     return currentTrajectory->getTrajectoryLinearSpeed();
@@ -553,6 +588,7 @@ float BrSM::getCurrentTargetSpeed() {
 // Variable initializations
 AxisStates BrSM::axisStates = {0};
 OrderType BrSM::currentOrder = {0};
+Position2D BrSM::currentGoalPos = Position2D(0.0, 0.0, 0.0);
 Trajectory* BrSM::currentTrajectory = NULL;
 Timer BrSM::recalAsservTimer = Timer( millis() );
 SwitchFiltered* BrSM::m_switches[2] = {NULL};

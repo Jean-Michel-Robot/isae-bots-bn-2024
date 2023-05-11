@@ -192,7 +192,7 @@ void ROS::s_changeGains(const std_msgs::Float32MultiArray& gains)
 
 void ROS::sendDebug() {
 
-  Position2D pos = p_sm->currentTrajectory->getTrajectoryPoint();
+  Position2D pos = p_sm->currentTrajectory->getGoalPoint();
 
   m_debugVar.x = pos.x;
   m_debugVar.y = pos.y;

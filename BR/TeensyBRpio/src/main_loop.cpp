@@ -91,7 +91,7 @@ void loop() {
         //     // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
         //     // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
 
-        //     //Serial.println(p_sm->currentTrajectory->getTrajectoryPoint().toString());
+        //     //Serial.println(p_sm->currentTrajectory->getGoalPoint().toString());
         //     //p_ros->sendDebug();
 
         //     p_ros->logPrint(INFO, "s : "+String(p_sm->currentTrajectory->s));
@@ -113,7 +113,7 @@ void loop() {
         Logger::setFieldValue(robotPos.y, Logger::robotPosY);
         Logger::setFieldValue(robotPos.theta, Logger::robotPosTheta);
 
-        Position2D goalPos = p_sm->currentTrajectory->getTrajectoryPoint();
+        Position2D goalPos = p_sm->getCurrentGoalPos();
         Logger::setFieldValue(goalPos.x, Logger::goalPointPosX);
         Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
         Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);

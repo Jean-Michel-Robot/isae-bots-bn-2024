@@ -36,7 +36,10 @@ public :
     void setRobotPos(Position2D pos);
 
     void setGoalSpeed(float goalSpeed);
-    Position2D getTrajectoryPoint();
+
+    Position2D getGoalPoint();
+    Position2D getGoalOffsetPoint();
+
     float getTrajectoryLinearSpeed();
     float getTrajectoryAngularSpeed();
 

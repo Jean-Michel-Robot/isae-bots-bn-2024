@@ -1,6 +1,7 @@
 #include "GeometricTools.hpp"
 
 #include "defines.hpp"
+#include <Position2D.h>
 
 //Ramene un angle € [-2*PI;2*PI] dans [-PI;PI]
 float modulo_x2(float value)
@@ -19,4 +20,15 @@ float modulo_pi2pi2(float value)
 float modulo_pipi(float value)//ramene un angle € R dans [-PI;PI]
 {
     return modulo_x2(fmod(value,2*PI));
+}
+
+
+// Helper function to switch to asserv point frame
+Position2D toAsservPointFrame(Position2D pos) {
+  return Position2D(
+    pos.x + ASSERV_ALPHA*cos(pos.theta),
+    pos.x + ASSERV_ALPHA*sin(pos.theta),
+    pos.theta
+  );
+  //TODO assuming ASSERV_BETA is 0 here, could generalize with ASSERV_BETA as well
 }

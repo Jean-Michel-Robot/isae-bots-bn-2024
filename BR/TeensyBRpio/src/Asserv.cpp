@@ -3,6 +3,7 @@
 
 #include "OdosPosition.hpp"
 #include <Motors.hpp>
+#include <GeometricTools.hpp>
 
 #include "ROS.hpp"
 #include "main_loop.hpp"
@@ -37,7 +38,7 @@ void Asserv::setGains(float Kp, float Ti, float Td) {
     m_Td = Td;
 }
 
-void Asserv::updateError(Position2D trajectoryPointPos) {
+void Asserv::updateError(Position2D goalOffsetPos) {
 
     //TODO maybe put this elsewhere, should be done at every loop
     currentRobotPos = p_odos->getRobotPosition();
@@ -51,9 +52,11 @@ void Asserv::updateError(Position2D trajectoryPointPos) {
     // m_errorPos.x = cos(angle)*errorPosTableFrame.x + sin(angle)*errorPosTableFrame.y;
     // m_errorPos.y = -sin(angle)*errorPosTableFrame.x + cos(angle)*errorPosTableFrame.y;
     // m_errorPos.theta = errorPosTableFrame.theta;
-    error[0] = (double) trajectoryPointPos.x - (currentRobotPos.x + ASSERV_ALPHA*cos(currentRobotPos.theta));
-    error[1] = (double) trajectoryPointPos.y - (currentRobotPos.y + ASSERV_ALPHA*sin(currentRobotPos.theta));
-    //TODO assuming ASSERV_BETA is 0 here, could generalize
+
+    Position2D robotOffsetPos = toAsservPointFrame(currentRobotPos);
+
+    error[0] = (double) (goalOffsetPos.x - robotOffsetPos.x);
+    error[1] = (double) (goalOffsetPos.y - robotOffsetPos.y);
     //TODO utiliser le fait que l'erreur est un double
 }
 
@@ -151,7 +154,7 @@ void Asserv::loop() {
 
     updateTrajectory(t);
 
-    getTrajectoryPoint() -> (x, y, theta)
+    getGoalPoint() -> (x, y, theta)
     getTrajectoryLinearSpeed() -> V
     getTrajectoryAngularSpeed() -> omega
     */

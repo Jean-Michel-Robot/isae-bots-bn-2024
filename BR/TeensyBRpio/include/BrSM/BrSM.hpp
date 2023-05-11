@@ -81,6 +81,8 @@ public:
 	BRState getCurrentState();
 	String getCurrentStateStr();
 
+	Position2D getCurrentGoalPos();
+
 	float getCurrentTargetSpeed();
 
 	template<typename E>
@@ -103,7 +105,8 @@ protected:
 
 	static Timer recalAsservTimer;
 
-	static BRState currentState;  //TODO : besoin ou pas ? A priori oui ce sera plus simple
+	static BRState currentState;
+	static Position2D currentGoalPos;
 
 	static SwitchFiltered m_switchLeft;
 	static SwitchFiltered m_switchRight;

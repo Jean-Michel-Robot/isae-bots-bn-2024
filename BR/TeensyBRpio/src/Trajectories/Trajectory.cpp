@@ -5,6 +5,7 @@
 #include "Trajectories/Trajectory.hpp"
 
 #include <defines.hpp>
+#include <GeometricTools.hpp>
 
 #include "ROS.hpp"
 #include "main_loop.hpp"
@@ -128,15 +129,19 @@ void Trajectory::setGoalSpeed(float goalSpeed) {
 }
 
 
-Position2D Trajectory::getTrajectoryPoint() {
+Position2D Trajectory::getGoalPoint() {
 
     // transform coordinates to the asserv tracking point frame
-    float x_p = x + ASSERV_ALPHA*cos(theta);
-    float y_p = y + ASSERV_ALPHA*sin(theta);
-    //TODO this assumes that ASSERV_BETA is zero
-    
-    return Position2D(x_p, y_p, theta);
+    return Position2D(x, y, theta);
 }
+
+Position2D Trajectory::getGoalOffsetPoint() {
+
+    // transform coordinates to the asserv tracking point frame
+    return toAsservPointFrame(Position2D(x, y, theta));
+}
+
+
 
 float Trajectory::getTrajectoryLinearSpeed() {
     return V;

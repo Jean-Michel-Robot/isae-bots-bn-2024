@@ -39,7 +39,7 @@ public:
     void setGains(float Kp, float Ti, float Td);
 
     // update l'erreur en recevant la position du point objectif actuel
-    void updateError(Position2D trajectoryPointPos);
+    void updateError(Position2D goalOffsetPos);
 
     // update la commande en recevant la consigne en vitesse (linéaire et angulaire)
     void updateCommand(float vd, float omega_d, bool bypassAsserv=0);
