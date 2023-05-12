@@ -76,7 +76,7 @@ public:
     double m_lastMesuredError[2] = {0.0};
     unsigned long m_lastTimeOfCalcul = 0;
     float m_outputMax = 0.0;
-    float m_satuIntegrale = 0.0;
+    float m_satuIntegrale = 0.5;
     float m_cmdDerivee[2] = {0.0};
 
 
@@ -85,8 +85,6 @@ private:
 
 
 
-
-    bool m_enableI = true;
     float m_N = 5.0;
     float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère robot
 

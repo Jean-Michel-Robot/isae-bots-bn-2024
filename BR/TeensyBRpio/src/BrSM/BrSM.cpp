@@ -165,7 +165,7 @@ class Ready
     if (isSupposedToBeIdle) {
 
       int* motor_states = getCurrentMotorStates();
-      if (motor_states[0] == AXIS_STATE_IDLE && motor_states[1] == AXIS_STATE_IDLE) {
+      if (true || motor_states[0] == AXIS_STATE_IDLE && motor_states[1] == AXIS_STATE_IDLE) {
 
         p_ros->logPrint(INFO, "BR Transition : Ready -> Idle");
         transit<BR_Idle>();
@@ -178,7 +178,7 @@ class Ready
     // On bloque les moteurs avec l'asserv (a la difference de IDLE)
     if (currentTrajectory == NULL) {  // should only be the case at the start before the first order
 
-      Position2D startPos = Position2D(0.4, 0.4, 1.57);
+      Position2D startPos = Position2D(0.0, 0.0, 0.0);
       currentGoalPos = startPos;
     }
     else {
@@ -402,7 +402,7 @@ class BR_Idle
     if (!isSupposedToBeIdle) {
 
       int* motor_states = getCurrentMotorStates();
-      if (motor_states[0] == AXIS_STATE_CLOSED_LOOP_CONTROL && motor_states[1] == AXIS_STATE_CLOSED_LOOP_CONTROL) {
+      if (true || motor_states[0] == AXIS_STATE_CLOSED_LOOP_CONTROL && motor_states[1] == AXIS_STATE_CLOSED_LOOP_CONTROL) {
 
         p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
         transit<Ready>();
@@ -613,7 +613,7 @@ void BrSM::react(BrUpdateEvent const & e) {
   currentGoalPos = currentTrajectory->getGoalPoint();
 
   //FORTEST caler le robot parfaitement sur la goalPos, si l'asserv est bypassed
-  p_odos->setPosition(currentGoalPos);
+  // p_odos->setPosition(currentGoalPos);
 
   p_asserv->updateError( toAsservPointFrame(currentGoalPos) );
 
@@ -626,7 +626,7 @@ void BrSM::react(BrUpdateEvent const & e) {
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
     // Can mean that the trajectory is done if the asserv agrees
-    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ?? //FORTEST
+    if (p_asserv->isAtObjectivePoint(false)/* || true*/) {  //TODO checkangle ?? //FORTEST
 
       //Serial.println("Send goal reached event");
 

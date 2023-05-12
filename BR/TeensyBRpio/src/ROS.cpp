@@ -23,7 +23,8 @@
 ROS::ROS()
 {
     m_nodeHandle.initNode();
-    // m_nodeHandle.subscribe(m_subGainsP);
+    
+    m_nodeHandle.subscribe(m_subGainsP);
     m_nodeHandle.subscribe(m_subOrder);
     m_nodeHandle.subscribe(m_subDebug);
     m_nodeHandle.subscribe(m_subIdle);

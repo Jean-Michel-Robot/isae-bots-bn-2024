@@ -191,8 +191,8 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
 
 
         // conversion en vitesse des roues
-        m_leftWheelSpeed = cmd_v + cmd_omega*WHEEL_DISTANCE/2;
-        m_rightWheelSpeed = cmd_v - cmd_omega*WHEEL_DISTANCE/2;
+        m_rightWheelSpeed = cmd_v + cmd_omega*WHEEL_DISTANCE/2;
+        m_leftWheelSpeed = cmd_v - cmd_omega*WHEEL_DISTANCE/2;
 
     }
 
@@ -206,8 +206,8 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
     else { // asserv is idle
 
         //TODO make the motors stay still
-        m_leftWheelSpeed = 0.0;
         m_rightWheelSpeed = 0.0;
+        m_leftWheelSpeed = 0.0;
     }
 
     // send the commands to the motors
@@ -230,7 +230,7 @@ void Asserv::computeOutput(unsigned long t_micro, float* ppoint_d) {
 
     for (int k=0; k<2; k++) {  // boucle sur les deux composantes du vecteur cmd_coordspoint
 
-        if (m_Ti != 0.0 && m_enableI) {
+        if (m_Ti != 0.0) {
 
             m_sumIntegral[k] += m_Kp / m_Ti * deltaT * error[k];
             m_sumIntegral[k] = constrain(m_sumIntegral[k], -m_satuIntegrale, m_satuIntegrale);

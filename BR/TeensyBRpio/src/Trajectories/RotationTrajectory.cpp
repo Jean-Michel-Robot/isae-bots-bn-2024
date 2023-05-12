@@ -28,7 +28,7 @@ void RotationTrajectory::setDest(Position2D orderInfo) {
 
     this->thetaDest = orderInfo.theta;
 
-    Dtotale = ASSERV_ALPHA * abs(modulo_x2(thetaDest - theta0)); // distance angulaire de max PI
+    Dtotale = abs(modulo_x2(thetaDest - theta0)); // distance angulaire de max PI
 }
 
 
@@ -51,13 +51,13 @@ void RotationTrajectory::updateTrajectoryState() {
     //     angle_diff = angle_diff + PI;
     // }
 
-    theta = modulo_x2(theta0 + s*angle_diff); //TODO pb du passage par -pi;pi
+    theta = modulo_x2(theta0 + s*angle_diff);
 
     V = 0.0;
-    omega = currentSpeed;
+    omega = sign(angle_diff) * currentSpeed;
 
 
     // Update des vitesses absolues du goal offset point en rotation
-    ppoint_d[0] = -abs(omega) * ASSERV_ALPHA*sin(theta);
-    ppoint_d[1] = abs(omega) * ASSERV_ALPHA*cos(theta);
+    ppoint_d[0] = -omega * ASSERV_ALPHA*sin(theta);
+    ppoint_d[1] = omega * ASSERV_ALPHA*cos(theta);
 }

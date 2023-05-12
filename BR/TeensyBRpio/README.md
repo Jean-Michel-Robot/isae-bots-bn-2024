@@ -171,7 +171,8 @@ Ou alors utiliser les scripts export_roscore.sh et export_rosrun.sh sur la pi
 
 Sur le pc fixe 
 ```
-export ROS_IP=192.168.222.131 #IP perso
+#IP perso ici
+export ROS_IP=192.168.222.131
 export ROS_MASTER_URI=http://192.168.222.11:11311
 cd Robotik/Robotik_2019/Sources/Robot/Haut_niveau/Dev/
 source devel/setup.bash

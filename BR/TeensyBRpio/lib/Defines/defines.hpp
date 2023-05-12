@@ -18,7 +18,7 @@
 
 
 /* ASSERV */
-#define WHEEL_DISTANCE 0.25 //m
+#define WHEEL_DISTANCE 0.22 // m
 
 // x offset of the tracking point (should be strictly greater than 0)
 #define ASSERV_ALPHA 0.15 // m //TODO set to the center of the cakes
@@ -44,10 +44,10 @@
 /* TRAJECTOIRES */
 
 #define DEFAULT_LINEAR_GOAL_SPEED 0.1 // m/s //TODO set
-#define DEFAULT_ROTATION_GOAL_SPEED 0.3 // m/s //TODO set
+#define DEFAULT_ROTATION_GOAL_SPEED 0.1 // rad/s //TODO set
 
 #define DEFAULT_LINEAR_ACCEL_PARAM 0.2 // m/s^2 //TODO set
-#define DEFAULT_ROTATION_ACCEL_PARAM 0.2 // m/s^2 //TODO set
+#define DEFAULT_ROTATION_ACCEL_PARAM 0.2 // rad/s^2 //TODO set
 
 // longueur de trajectoire en-dessous de laquelle on ignore la trajectore
 #define EPSILON_DTOTALE 0.001 // m
