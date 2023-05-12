@@ -61,17 +61,24 @@ String ODriveArduino::test() {
 }
 
 bool ODriveArduino::run_state(int axis, int requested_state, bool wait_for_idle, float timeout) {
-    int timeout_ctr = (int)(timeout * 10.0f);
+    int timeout_ctr = (int)(timeout * 100.0f);
     serial_ << "w axis" << axis << ".requested_state " << requested_state << '\n';
     if (wait_for_idle) {
         do {
-            delay(100);
+            delay(10);
             serial_ << "r axis" << axis << ".current_state\n";
-        } while (readInt() != AXIS_STATE_IDLE && --timeout_ctr > 0);
+        } while (readInt() != requested_state && --timeout_ctr > 0);
     }
 
     return timeout_ctr > 0;
 }
+
+int ODriveArduino::getCurrentAxisState(int axis) {
+    
+    serial_ << "r axis" << axis << ".current_state\n";
+    return readInt();
+}
+
 
 String ODriveArduino::readString() {
     String str = "";

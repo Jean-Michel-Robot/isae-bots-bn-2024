@@ -16,4 +16,9 @@ template<>        inline Print& operator <<(Print &obj, float arg) { obj.print(a
 void motors_init();
 void sendMotorCommand(int motor_number, float velCmd);
 
+void setMotorsToIdle();
+void setMotorsToClosedLoop();
+
+int* getCurrentMotorStates();
+
 #endif

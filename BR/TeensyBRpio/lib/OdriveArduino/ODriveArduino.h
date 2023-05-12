@@ -28,6 +28,10 @@ public:
 
     // State helper
     bool run_state(int axis, int requested_state, bool wait_for_idle, float timeout = 10.0f);
+
+    int getCurrentAxisState(int axis);
+
+
 private:
     String readString();
 

@@ -115,6 +115,10 @@ protected:
 	//ça marche bien si on ne les utilise que pour la SM
 	static SwitchFiltered* m_switches[2];  // 0 : right, 1 : left
 
+	// whether or not the BR should be in Idle, used to wait for the Odrive response
+	// to change between Idle and Ready states
+	static bool isSupposedToBeIdle;
+
 
 	static void setupTrajectory();
 };

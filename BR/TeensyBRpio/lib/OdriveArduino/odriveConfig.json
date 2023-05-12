@@ -11,7 +11,7 @@
             "enable_step_dir": false,
             "enable_watchdog": false,
 
-            "startup_closed_loop_control": true,
+            "startup_closed_loop_control": false,
 
             "startup_encoder_index_search": true,
             "startup_encoder_offset_calibration": true,
@@ -249,7 +249,7 @@
             "enable_sensorless_mode": false,
             "enable_step_dir": false,
             "enable_watchdog": false,
-            "startup_closed_loop_control": true,
+            "startup_closed_loop_control": false,
             "startup_encoder_index_search": true,
             "startup_encoder_offset_calibration": true,
             "startup_homing": false,

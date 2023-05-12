@@ -42,3 +42,24 @@ void sendMotorCommand(int motor_number, float velCmd) {
 
 }
 
+void setMotorsToIdle() {
+
+    //NOTE on n'attend pas le retour de l'Odrive
+    odrive.run_state(BR_RIGHT, AXIS_STATE_IDLE, false, 0.0);
+    odrive.run_state(BR_LEFT, AXIS_STATE_IDLE, false, 0.0);
+}
+
+void setMotorsToClosedLoop() {
+
+    //NOTE on n'attend pas le retour de l'Odrive
+    odrive.run_state(BR_RIGHT, AXIS_STATE_CLOSED_LOOP_CONTROL, false, 0.0);
+    odrive.run_state(BR_LEFT, AXIS_STATE_CLOSED_LOOP_CONTROL, false, 0.0);
+}
+
+int* getCurrentMotorStates() {
+    int states[2];
+    states[0] = odrive.getCurrentAxisState(BR_RIGHT);
+    states[1] = odrive.getCurrentAxisState(BR_LEFT);
+
+    return states;
+}

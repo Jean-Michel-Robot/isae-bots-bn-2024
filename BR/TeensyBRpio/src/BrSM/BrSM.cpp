@@ -160,8 +160,22 @@ class Ready
   }
 
   void react(BrUpdateEvent const & e) override {
-    // On bloque les moteurs avec l'asserv (a la difference de IDLE)
 
+    // check if we have to transit to Idle
+    if (isSupposedToBeIdle) {
+
+      int* motor_states = getCurrentMotorStates();
+      if (motor_states[0] == AXIS_STATE_IDLE && motor_states[1] == AXIS_STATE_IDLE) {
+
+        p_ros->logPrint(INFO, "BR Transition : Ready -> Idle");
+        transit<BR_Idle>();
+
+        return;
+      }
+    }
+
+
+    // On bloque les moteurs avec l'asserv (a la difference de IDLE)
     if (currentTrajectory == NULL) {  // should only be the case at the start before the first order
 
       Position2D startPos = Position2D(0.4, 0.4, 1.57);
@@ -217,11 +231,15 @@ class Ready
 
   void react(BrSetToIdleEvent const & e) override {
 
-    //TODO set motor speed to 0
-    //TODO set motor state to Idle
+    // Set motor speed to 0  //TODO put elsewhere ?
+    sendMotorCommand(BR_RIGHT, 0.0);
+    sendMotorCommand(BR_LEFT, 0.0);
 
-    p_ros->logPrint(INFO, "BR Transition : Ready -> Idle");
-    transit<BR_Idle>();
+    // Send request for motors state to be Idle
+    setMotorsToIdle(); //NOTE without waiting
+
+    // will trigger the transition when the Odrive response will be received
+    isSupposedToBeIdle = true;
   }
 };
 
@@ -376,20 +394,34 @@ class BR_Idle
   void entry() override {
     currentState = BR_IDLE;
 
-    //TODO : envoyer axis_idle à l'Odrive
   }
 
   void react(BrUpdateEvent const & e) override {
-    // ne rien faire en Idle
+
+    // check if we have to transit to Ready
+    if (!isSupposedToBeIdle) {
+
+      int* motor_states = getCurrentMotorStates();
+      if (motor_states[0] == AXIS_STATE_CLOSED_LOOP_CONTROL && motor_states[1] == AXIS_STATE_CLOSED_LOOP_CONTROL) {
+
+        p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
+        transit<Ready>();
+
+        return;
+      }
+    }
   }
 
   void react(BrGetReadyEvent const &) override {
 
     //TODO check if there is no motor error
     //TODO check is calibration is needed or not
-    p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
 
-    transit<Ready>();
+    // Send request for motors state to be Idle
+    setMotorsToClosedLoop(); //NOTE without waiting
+
+    // will trigger the transition when the Odrive response will be received
+    isSupposedToBeIdle = false;
   }
 
 };
@@ -433,6 +465,7 @@ class BR_RecalAsserv
     if (recalAsservTimer.isExpired( millis() )) {
       p_ros->logPrint(ERROR, "Timeout for Recal, transit to Ready");
       transit<Ready>(); //TOTEST cette transition
+      return;
     }
 
     Position2D robot_pos = p_odos->getRobotPosition();
@@ -444,6 +477,7 @@ class BR_RecalAsserv
       m_switches[BR_LEFT]->isSwitchPressed() ) {  // condition pour passer en recul commande
 
         transit<BR_RecalDetect>();
+        return;
     }
 
     // else we follow a linear trajectory backwards (theta is towards the rear)
@@ -499,6 +533,7 @@ class BR_RecalDetect
         //TODO reset position on axis if needed
 
         transit<Ready>();
+        return;
 
     // Send motor commands directly (right motor and left motor)
     sendMotorCommand(BR_RIGHT, cmd_right);
@@ -637,6 +672,7 @@ Position2D BrSM::currentGoalPos = Position2D(0.0, 0.0, 0.0);
 Trajectory* BrSM::currentTrajectory = NULL;
 Timer BrSM::recalAsservTimer = Timer( millis() );
 SwitchFiltered* BrSM::m_switches[2] = {NULL};
+bool BrSM::isSupposedToBeIdle = true;
 
 // BrSM::current_state_ptr
 
