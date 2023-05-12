@@ -70,7 +70,8 @@ void BrSM::setupTrajectory() {
   switch (currentState) {
 
     case BR_INITROT:
-      float thetaDest;
+    {
+      float thetaDest = 0.0;
 
       switch (currentOrder.goalType) {
 
@@ -85,18 +86,25 @@ void BrSM::setupTrajectory() {
       }
       currentTrajectory->setDest( Position2D(0.0, 0.0, thetaDest) );
       break;
+    }
 
     case BR_FORWARD:
+    {
       currentTrajectory->setDest( Position2D(currentOrder.x, currentOrder.y, 0.0) );
       break;
+    }
 
     case BR_FINALROT:
+    {
       currentTrajectory->setDest( Position2D(0.0, 0.0, currentOrder.theta) );
       break;
+    }
 
     default:
+    {
       p_ros->logPrint(ERROR, "Current state not handled in setDest");
       break;
+    }
   }
 
   // si Dtotale vaut 0 (ou est proche de 0) c'est que l'ordre peut être ignoré
@@ -245,13 +253,14 @@ class InitRot
 
     switch (currentOrder.goalType) {
 
-      case GoalType::ORIENT :
+      case GoalType::ORIENT:
         p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
         
         transit<Ready>();
         break;
 
-      case GoalType::TRANS :
+      case GoalType::TRANS:
+      case GoalType::FINAL:
         p_ros->logPrint(INFO, "BR Transition : InitRot -> Forward");
 
         transit<Forward>();
@@ -296,13 +305,13 @@ class Forward
 
     switch (currentOrder.goalType) {
 
-      case GoalType::TRANS :
+      case GoalType::TRANS:
         p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
 
         transit<Ready>();
         break;
 
-      case GoalType::FINAL :
+      case GoalType::FINAL:
         p_ros->logPrint(INFO, "BR Transition : Forward -> FinalRot");
 
         transit<FinalRot>();
@@ -342,7 +351,7 @@ class FinalRot
 
     switch (currentOrder.goalType) {
 
-      case GoalType::FINAL :
+      case GoalType::FINAL:
         p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
 
         transit<Ready>();
@@ -567,6 +576,9 @@ void BrSM::react(BrUpdateEvent const & e) {
 
   currentTrajectory->updateTrajectory( e.currentTime );
   currentGoalPos = currentTrajectory->getGoalPoint();
+
+  //FORTEST caler le robot parfaitement sur la goalPos, si l'asserv est bypassed
+  p_odos->setPosition(currentGoalPos);
 
   p_asserv->updateError( toAsservPointFrame(currentGoalPos) );
 

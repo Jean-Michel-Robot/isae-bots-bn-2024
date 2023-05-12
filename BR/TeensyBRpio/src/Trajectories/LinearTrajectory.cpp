@@ -26,7 +26,7 @@ void LinearTrajectory::setDest(Position2D orderInfo) {
     this->ydest = orderInfo.y;
 
     Dtotale = sqrt((x0 - xdest) * (x0 - xdest) + (y0 - ydest) * (y0 - ydest));
-    theta0 = atan2(ydest - y0, xdest - x0);  // plus exact que le theta du robot
+    // theta0 = atan2(ydest - y0, xdest - x0);  // plus exact que le theta du robot
 
 }
 

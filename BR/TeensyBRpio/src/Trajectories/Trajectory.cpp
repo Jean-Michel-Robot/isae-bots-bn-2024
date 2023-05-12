@@ -33,6 +33,8 @@ bool Trajectory::isTrajectoryActive() {
     return !rampSpeed.isRampIdle();
 }
 
+// We make sure the trajectory goal point starts exactly on the robot pos
+// so that the error at the start is 0
 void Trajectory::setRobotPos(Position2D pos) {
     this->x0 = pos.x;
     this->y0 = pos.y;
