@@ -162,6 +162,6 @@ void Trajectory::updateTrajectoryState() {
     p_ros->logPrint(ERROR, "Shouldn't use default implementation of updateTrajectoryState");
 }
 
-void Trajectory::setDest(OrderType order) {
+void Trajectory::setDest(Position2D orderInfo) {
     p_ros->logPrint(ERROR, "Shouldn't use default implementation of setDest");
 }

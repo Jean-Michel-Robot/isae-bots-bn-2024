@@ -62,10 +62,42 @@ void BrSM::setupTrajectory() {
   //TODO RAZ des variables
 
   // Set robot position
-  currentTrajectory->setRobotPos( p_odos->getRobotPosition() );
+  Position2D robotPos = p_odos->getRobotPosition();
+  currentTrajectory->setRobotPos( robotPos );
 
   // Set destination using order info
-  currentTrajectory->setDest( currentOrder );
+  //NOTE depends on the current state and the goal type
+  switch (currentState) {
+
+    case BR_INITROT:
+      float thetaDest;
+
+      switch (currentOrder.goalType) {
+
+        case ORIENT:
+          thetaDest = currentOrder.theta;
+          break;
+
+        case TRANS:
+        case FINAL:
+          thetaDest = atan2(currentOrder.y - robotPos.y, currentOrder.x - robotPos.x);
+          break;
+      }
+      currentTrajectory->setDest( Position2D(0.0, 0.0, thetaDest) );
+      break;
+
+    case BR_FORWARD:
+      currentTrajectory->setDest( Position2D(currentOrder.x, currentOrder.y, 0.0) );
+      break;
+
+    case BR_FINALROT:
+      currentTrajectory->setDest( Position2D(0.0, 0.0, currentOrder.theta) );
+      break;
+
+    default:
+      p_ros->logPrint(ERROR, "Current state not handled in setDest");
+      break;
+  }
 
   // si Dtotale vaut 0 (ou est proche de 0) c'est que l'ordre peut être ignoré
   // (pas besoin de se déplacer pour une trajectoire super courte)
@@ -547,7 +579,7 @@ void BrSM::react(BrUpdateEvent const & e) {
   if ( !currentTrajectory->isTrajectoryActive() ) {
 
     // Can mean that the trajectory is done if the asserv agrees
-    if (p_asserv->isAtObjectivePoint(false)) {  //TODO checkangle ?? //FORTEST
+    if (p_asserv->isAtObjectivePoint(false) || true) {  //TODO checkangle ?? //FORTEST
 
       //Serial.println("Send goal reached event");
 

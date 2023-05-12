@@ -10,7 +10,7 @@ public :
     LinearTrajectory(float initialGoalSpeed, float initialAccelParam);
     // TODO destructeur
 
-    void setDest(OrderType order) override;
+    void setDest(Position2D orderInfo) override;
 
 
 private:

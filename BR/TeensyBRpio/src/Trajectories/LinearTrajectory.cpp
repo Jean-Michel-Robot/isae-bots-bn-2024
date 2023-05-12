@@ -21,9 +21,9 @@ LinearTrajectory::LinearTrajectory(float initialGoalSpeed, float initialAccelPar
 }
 
 // A faire après avoir set la position du robot
-void LinearTrajectory::setDest(OrderType order) {
-    this->xdest = order.x;
-    this->ydest = order.y;
+void LinearTrajectory::setDest(Position2D orderInfo) {
+    this->xdest = orderInfo.x;
+    this->ydest = orderInfo.y;
 
     Dtotale = sqrt((x0 - xdest) * (x0 - xdest) + (y0 - ydest) * (y0 - ydest));
     theta0 = atan2(ydest - y0, xdest - x0);  // plus exact que le theta du robot

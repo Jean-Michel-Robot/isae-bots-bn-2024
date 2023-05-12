@@ -22,7 +22,7 @@ public :
 
     // Méthodes dépendant du type de trajectoire
 
-    virtual void setDest(OrderType order);
+    virtual void setDest(Position2D orderInfo);
 
     virtual void updateTrajectoryState();  // variables x, y, theta, V, omega
 

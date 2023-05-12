@@ -22,8 +22,11 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
 }
 
 // A faire après avoir set la position du robot
-void RotationTrajectory::setDest(OrderType order) {
-    this->thetaDest = order.theta;
+void RotationTrajectory::setDest(Position2D orderInfo) {
+    //NOTE every trajectory uses different elements of orderInfo,
+    // and not necessarily all of them
+
+    this->thetaDest = orderInfo.theta;
 
     Dtotale = ASSERV_ALPHA * abs(thetaDest - theta0); //TODO : pb de modulo
     // theta0 = atan2(ydest - y0, xdest - x0);
