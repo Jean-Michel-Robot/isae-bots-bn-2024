@@ -8,6 +8,7 @@
 #include "Clamp.hpp"
 #include "Cherry.hpp"
 #include "Ultrasonic.hpp"
+#include "Deguisement.hpp"
 
 ros::NodeHandle nh;
 
@@ -28,6 +29,8 @@ Ultrasonic ultrasonic_r = Ultrasonic(ULTRASONIC_R_TRIG_PIN, ULTRASONIC_R_ECHO_PI
 
 UltrasonicROS ultrasonicROS = UltrasonicROS(&ultrasonic_l, &ultrasonic_r, &nh);
 
+DeguisementROS deguisementROS = DeguisementROS(&nh);
+
 
 void setup() {
 
@@ -40,6 +43,8 @@ void setup() {
 
   ultrasonicROS.setup();
 
+  deguisementROS.setup();
+
 
 
 }
@@ -48,11 +53,14 @@ void loop() {
   
   nh.spinOnce();
 
- doorsROS.loop();
- elevatorROS.loop();
- cherryROS.loop();
- clampROS.loop();
+  doorsROS.loop();
+  elevatorROS.loop();
+  cherryROS.loop();
+  clampROS.loop();
 
- ultrasonicROS.loop();
+  ultrasonicROS.loop();
+
+  deguisementROS.loop();
+  
 
 }

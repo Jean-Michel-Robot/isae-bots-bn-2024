@@ -3,6 +3,7 @@
 #include "Deguisement.hpp"
 
 Adafruit_NeoPixel* DeguisementROS::m_p_neopixel = NULL;
+ros::NodeHandle* DeguisementROS::m_p_nh = NULL;
 
 DeguisementROS::DeguisementROS(ros::NodeHandle* p_nh) :
     m_sub("/strat/deguisement", DeguisementROS::subCallback){
@@ -22,8 +23,9 @@ void DeguisementROS::loop(){
 }
 
 void DeguisementROS::subCallback(const std_msgs::Int16& stateVal){
- for (int pixel = 0; pixel < DEGUISEMENT_NEOPX_NUMBER; pixel++) { // for each pixel
-    m_p_neopixel->setPixelColor(pixel, m_p_neopixel->Color(0, 255, 0)); // it only takes effect if pixels.show() is called
-    m_p_neopixel->show();  
- }
+    for (int pixel = 0; pixel < DEGUISEMENT_NEOPX_NUMBER; pixel++) { // for each pixel
+        m_p_neopixel->setPixelColor(pixel, m_p_neopixel->Color(0, 255, 0)); // it only takes effect if pixels.show() is called
+        m_p_neopixel->show();  
+    }
+    m_p_nh->loginfo("[DEGUISEMENT] Order");
 }

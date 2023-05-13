@@ -10,7 +10,7 @@ class DeguisementROS{
 
     private:
 
-        ros::NodeHandle* m_p_nh;
+        static ros::NodeHandle* m_p_nh;
 
         ros::Subscriber<std_msgs::Int16> m_sub;
 
