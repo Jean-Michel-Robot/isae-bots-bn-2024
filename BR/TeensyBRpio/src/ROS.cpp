@@ -37,9 +37,9 @@ ROS::ROS()
 
     m_nodeHandle.advertise(m_odosTicksPub);
     m_nodeHandle.advertise(m_debugPub);
+    m_nodeHandle.advertise(m_pubHN);
 
-  
-    // m_nodeHandle.advertise(m_okFeedback);
+      // m_nodeHandle.advertise(m_okFeedback);
     m_nodeHandle.advertise(m_logTotale);
 
     m_nodeHandle.getHardware()->setBaud(250000);

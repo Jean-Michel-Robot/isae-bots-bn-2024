@@ -230,6 +230,7 @@ void Asserv::computeOutput(unsigned long t_micro, float* ppoint_d) {
 
     for (int k=0; k<2; k++) {  // boucle sur les deux composantes du vecteur cmd_coordspoint
 
+        //TODO reset sum to 0 when the sign of the command changes
         if (m_Ti != 0.0) {
 
             m_sumIntegral[k] += m_Kp / m_Ti * deltaT * error[k];

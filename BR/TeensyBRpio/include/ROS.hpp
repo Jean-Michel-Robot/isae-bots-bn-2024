@@ -64,6 +64,9 @@ enum CallbackHN // TODO retour renvoyé vers le haut niveau
     OK_TURN = 1,
     OK_RECAL = 2,
 
+    OK_READY = 5,
+    OK_IDLE = 6,
+
     ERROR_ASSERV = 3,
 };
 
