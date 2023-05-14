@@ -32,27 +32,30 @@ void Ultrasonic::loop(){
             digitalWrite(m_trig_pin, HIGH);
             delayMicroseconds(10);
             digitalWrite(m_trig_pin, LOW);
-            m_state = UltrasonicState::WAITING_SIG;
-            m_timer_us = micros();
+            m_state = UltrasonicState::SENDING_SIG;
         }
     }
 
-    // else if(m_state == UltrasonicState::SENDING_SIG){
-    //     if(micros() - m_timer_us > 1000){
-    //         m_timer_us = micros();
-    //         m_state = UltrasonicState::WAITING_SIG;
-    //     }
-    //     else if(micros() - m_timer_us > ULTRASONIC_TRIG_INTERVAL){
-    //         digitalWrite(m_trig_pin, LOW);
-    //     }
-
-    // }
+    else if(m_state == UltrasonicState::SENDING_SIG){
+        if(digitalRead(m_echo_pin) == HIGH){
+            m_timer_us = micros();
+            m_state = UltrasonicState::WAITING_SIG;
+        }
+        else if(micros() - m_timer_us > 20000){
+            m_state = UltrasonicState::IDLE;
+            m_last_measure = 401;
+        }
+    }
 
     else if(m_state == UltrasonicState::WAITING_SIG && micros()){
         if(digitalRead(m_echo_pin) == LOW){
-            m_last_measure = (float)(micros() - m_timer_us) ;// * ULTRASONIC_SOUND_SPEED / 2;
+            m_last_measure = (float)(micros() - m_timer_us) * ULTRASONIC_SOUND_SPEED / 2;
             m_state = UltrasonicState::IDLE;
             m_last_measure_timer_ms = millis();
+        }
+        else if(micros() - m_timer_us > 20000){
+            m_state = UltrasonicState::IDLE;
+            m_last_measure = 401;
         }
     }
 }
@@ -90,6 +93,5 @@ void UltrasonicROS::loop(){
         m_timer_pub = millis();
     }
 }
-
 
 
