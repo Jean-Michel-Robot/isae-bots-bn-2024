@@ -45,7 +45,8 @@ void setup() {
 
   deguisementROS.setup();
 
-
+  // pinMode(ULTRASONIC_L_ECHO_PIN, INPUT);
+  // pinMode(ULTRASONIC_L_TRIG_PIN, OUTPUT);
 
 }
 
@@ -58,7 +59,19 @@ void loop() {
   cherryROS.loop();
   clampROS.loop();
 
+  digitalWrite(ULTRASONIC_L_TRIG_PIN, LOW);
+  delayMicroseconds(5);
+  digitalWrite(ULTRASONIC_L_TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(ULTRASONIC_L_TRIG_PIN, LOW);
+
+
   ultrasonicROS.loop();
+
+  // float duration = pulseIn(ULTRASONIC_L_ECHO_PIN, HIGH);
+
+  // ultrasonicROS.m_distance_msg.x = duration / 29.1;
+  // ultrasonicROS.m_pub.publish(&ultrasonicROS.m_distance_msg);
 
   deguisementROS.loop();
   

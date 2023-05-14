@@ -27,26 +27,30 @@ void Ultrasonic::loop(){
 
     if(m_state == UltrasonicState::IDLE){
         if(millis() - m_last_measure_timer_ms > ULTRASONIC_MEASURE_INTERVAL){
-            digitalWrite(m_trig_pin, HIGH);
-            m_timer_us = micros();
-            m_state = UltrasonicState::SENDING_SIG;
-        }
-    }
-
-    else if(m_state == UltrasonicState::SENDING_SIG){
-        if(micros() - m_timer_us > 1000){
-            m_timer_us = micros();
-            m_state = UltrasonicState::WAITING_SIG;
-        }
-        else if(micros() - m_timer_us > ULTRASONIC_TRIG_INTERVAL){
             digitalWrite(m_trig_pin, LOW);
+            delayMicroseconds(2);   //short delays (fine)
+            digitalWrite(m_trig_pin, HIGH);
+            delayMicroseconds(10);
+            digitalWrite(m_trig_pin, LOW);
+            m_state = UltrasonicState::WAITING_SIG;
+            m_timer_us = micros();
         }
-
     }
 
-    else if(m_state == UltrasonicState::WAITING_SIG){
-        if(digitalRead(m_echo_pin) == HIGH){
-            m_last_measure = (float)(micros() - m_timer_us) / (float)ULTRASONIC_TIME_TO_DIST;
+    // else if(m_state == UltrasonicState::SENDING_SIG){
+    //     if(micros() - m_timer_us > 1000){
+    //         m_timer_us = micros();
+    //         m_state = UltrasonicState::WAITING_SIG;
+    //     }
+    //     else if(micros() - m_timer_us > ULTRASONIC_TRIG_INTERVAL){
+    //         digitalWrite(m_trig_pin, LOW);
+    //     }
+
+    // }
+
+    else if(m_state == UltrasonicState::WAITING_SIG && micros()){
+        if(digitalRead(m_echo_pin) == LOW){
+            m_last_measure = (float)(micros() - m_timer_us) ;// * ULTRASONIC_SOUND_SPEED / 2;
             m_state = UltrasonicState::IDLE;
             m_last_measure_timer_ms = millis();
         }
@@ -80,8 +84,8 @@ void UltrasonicROS::loop(){
     m_p_right_ultrasonic->loop();
 
     if(millis() - m_timer_pub > ULTRASONIC_MEASURE_INTERVAL){
-        m_distance_msg.x = (int)m_p_left_ultrasonic->getLastMeasure();
-        m_distance_msg.y = (int)m_p_right_ultrasonic->getLastMeasure();
+        m_distance_msg.x = (float)m_p_left_ultrasonic->getLastMeasure();
+        m_distance_msg.y = (float)m_p_right_ultrasonic->getLastMeasure();
         m_pub.publish(&m_distance_msg);
         m_timer_pub = millis();
     }

@@ -17,7 +17,6 @@ void Elevator::setState(ElevatorState state, int sub_state){
     if(state == ElevatorState::MOVING){
         if(0 <= sub_state && sub_state < 9){
             m_stepper.moveTo(m_positions_step[sub_state]); //is this enough ??
-            // m_stepper.setSpeed(ELEV_STEP_SPEED);
             m_state = state;
             m_sub_state = sub_state;      
         }
@@ -38,6 +37,9 @@ void Elevator::setup(){
     m_up_bumper.setup();
 
     this->setState(ElevatorState::IDLE, 0);
+
+    m_stepper.setAcceleration(50);
+    m_stepper.setMaxSpeed((float)ELEV_STEP_SPEED);
 }
 
 int Elevator::loop(){
@@ -51,16 +53,16 @@ int Elevator::loop(){
             m_state = ElevatorState::IDLE;
             return 1;
         }
-        else if(m_down_bumper.isSwitchPressed()){
-            m_stepper.stop();
-            m_state = ElevatorState::IDLE;
-            return 2;
-        }
-        else if(m_up_bumper.isSwitchPressed()){
-            m_stepper.stop();
-            m_state = ElevatorState::IDLE;
-            return 3;
-        }
+        // else if(m_down_bumper.isSwitchPressed()){
+        //     m_stepper.stop();
+        //     m_state = ElevatorState::IDLE;
+        //     return 2;
+        // }
+        // else if(m_up_bumper.isSwitchPressed()){
+        //     m_stepper.stop();
+        //     m_state = ElevatorState::IDLE;
+        //     return 3;
+        // }
     }
 
     else if(m_state == ElevatorState::RECAL_DOWN){

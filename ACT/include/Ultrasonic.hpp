@@ -43,17 +43,20 @@ class UltrasonicROS{
     private:
 
         Ultrasonic* m_p_left_ultrasonic;
-        Ultrasonic* m_p_right_ultrasonic;
+        Ultrasonic* m_p_right_ultrasonic;        
 
         ros::NodeHandle* m_p_nh;
-        ros::Publisher m_pub;
-        geometry_msgs::Point m_distance_msg;
+        // ros::Publisher m_pub;
+        // geometry_msgs::Point m_distance_msg;
 
         unsigned long m_timer_pub;
 
     public:
 
         UltrasonicROS(Ultrasonic* p_left_ultrasonic, Ultrasonic* p_right_ultrasonic, ros::NodeHandle* p_nh);
+
+        ros::Publisher m_pub;
+        geometry_msgs::Point m_distance_msg;
 
         void setup();
         void loop();
