@@ -19,6 +19,6 @@ void sendMotorCommand(int motor_number, float velCmd);
 void setMotorsToIdle();
 void setMotorsToClosedLoop();
 
-int* getCurrentMotorStates();
+void getCurrentMotorStates(int* states);
 
 #endif

@@ -56,10 +56,7 @@ void setMotorsToClosedLoop() {
     odrive.run_state(BR_LEFT, AXIS_STATE_CLOSED_LOOP_CONTROL, false, 0.0);
 }
 
-int* getCurrentMotorStates() {
-    int states[2];
+void getCurrentMotorStates(int* states) {
     states[0] = odrive.getCurrentAxisState(BR_RIGHT);
     states[1] = odrive.getCurrentAxisState(BR_LEFT);
-
-    return states;
 }

@@ -156,6 +156,11 @@ class Ready
     }
 
     currentState = BR_READY;
+
+    // need to have an error of 0 when transitioning to Ready before any trajectory
+    // if (currentTrajectory == NULL) {
+    //   currentGoalPos = p_odos->getRobotPosition();
+    // }
   }
 
   void react(BrUpdateEvent const &e) override
@@ -165,8 +170,9 @@ class Ready
     if (isSupposedToBeIdle)
     {
 
-      int *motor_states = getCurrentMotorStates();
-      if (true || motor_states[0] == AXIS_STATE_IDLE && motor_states[1] == AXIS_STATE_IDLE)
+      int motor_states[2];
+      getCurrentMotorStates(motor_states);      
+      if (true || (motor_states[0] == AXIS_STATE_IDLE && motor_states[1] == AXIS_STATE_IDLE))  //FORTEST
       {
 
         p_ros->logPrint(INFO, "BR Transition : Ready -> Idle");
@@ -177,17 +183,18 @@ class Ready
     }
 
     // On bloque les moteurs avec l'asserv (a la difference de IDLE)
-    if (currentTrajectory == NULL)
-    { // should only be the case at the start before the first order
 
-      Position2D startPos = Position2D(0.0, 0.0, 0.0);
-      p_odos->setPosition(startPos);
-      currentGoalPos = startPos;
-    }
-    else
-    {
-      currentGoalPos = currentTrajectory->getGoalPoint();
-    }
+    // if (currentTrajectory == NULL)
+    // { // should only be the case at the start before the first order
+
+    //   // Position2D startPos = Position2D(0.0, 0.0, 0.0);
+    //   // p_odos->setPosition(startPos);
+    //   // currentGoalPos = startPos;
+    // }
+    // else  // Cas ou on vient de sortir d'une trajectoire, on se
+    // {
+    //   currentGoalPos = currentTrajectory->getGoalPoint();
+    // }
 
     p_asserv->updateError(toAsservPointFrame(currentGoalPos));
 
@@ -411,12 +418,15 @@ class BR_Idle
     if (!isSupposedToBeIdle)
     {
 
-      int *motor_states = getCurrentMotorStates();
-      if (true || motor_states[0] == AXIS_STATE_CLOSED_LOOP_CONTROL && motor_states[1] == AXIS_STATE_CLOSED_LOOP_CONTROL)
+      int motor_states[2];
+      getCurrentMotorStates(motor_states);
+      if (true || (motor_states[0] == AXIS_STATE_CLOSED_LOOP_CONTROL && motor_states[1] == AXIS_STATE_CLOSED_LOOP_CONTROL))  //FORTEST
       {
 
         p_ros->logPrint(INFO, "BR Transition : Idle -> Ready");
         transit<Ready>();
+
+        currentGoalPos = p_odos->getRobotPosition();
 
         return;
       }
@@ -606,12 +616,17 @@ void BrSM::react(BrSetToIdleEvent const &)
 void BrSM::react(ResetPosEvent const &e)
 {
   p_ros->logPrint(INFO, "Received reset position event to (" + String(e.x) + ", " +
-                          String(e.y) + ", " + String(e.theta));
+                          String(e.y) + ", " + String(e.theta)+")");
 
   p_odos->setPosition(Position2D(e.x, e.y, e.theta));
 
   // We also reset the currentGoalPos to make sure the asserv doesnt do madness
-  currentGoalPos = Position2D(e.x, e.y, e.theta);
+  currentGoalPos.x = e.x;
+  currentGoalPos.y = e.y;
+  currentGoalPos.theta = e.theta;
+
+  // RAZ l'intégrateur ?
+  p_asserv->RAZIntegral();
 }
 
 void BrSM::react(BrEmergencyBrakeEvent const &)
