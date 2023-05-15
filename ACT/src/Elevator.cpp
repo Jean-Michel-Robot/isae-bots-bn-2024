@@ -3,9 +3,7 @@
 
 
 Elevator::Elevator() :
-    m_stepper(MOTOR_INTERFACE_TYPE, ELEV_DIR_PIN, ELEV_STEP_PIN),
-    m_up_bumper(ELEV_BUMP_UP_PIN,ELEV_BUMP_TAU, ELEV_BUMP_THR, true),
-    m_down_bumper(ELEV_BUMP_DOWN_PIN,ELEV_BUMP_TAU, ELEV_BUMP_THR, true){
+    m_stepper(MOTOR_INTERFACE_TYPE, ELEV_DIR_PIN, ELEV_STEP_PIN){
 
         for(int i=0; i<9; i++){
             m_positions_step[i] = i*ELEV_STEP_DIFF;
@@ -16,25 +14,25 @@ Elevator::Elevator() :
 void Elevator::setState(ElevatorState state, int sub_state){
     if(state == ElevatorState::MOVING){
         if(0 <= sub_state && sub_state < 9){
-            m_stepper.moveTo(m_positions_step[sub_state]); //is this enough ??
+            m_stepper.moveTo(m_positions_step[sub_state]);
             m_state = state;
             m_sub_state = sub_state;      
         }
         else return;
     }
 
-    else if(state == ElevatorState::RECAL_DOWN){
-        m_stepper.setSpeed(ELEV_STEP_SPEED/3);
-    }
     else if(state == ElevatorState::IDLE){
         m_state = state;
     }
 }
 
+void Elevator::setZeroPosition(){
+    m_stepper.setCurrentPosition(m_stepper.currentPosition());
+}
+
 void Elevator::setup(){
 
-    m_down_bumper.setup();
-    m_up_bumper.setup();
+    m_stepper.setCurrentPosition(m_stepper.currentPosition());
 
     this->setState(ElevatorState::IDLE, 0);
 
@@ -44,8 +42,6 @@ void Elevator::setup(){
 
 int Elevator::loop(){
 
-    m_down_bumper.loop();
-    m_up_bumper.loop();
     boolean stepper_bool = m_stepper.run(); //is false when the motor reaches the target position
 
     if(m_state == ElevatorState::MOVING){
@@ -53,29 +49,8 @@ int Elevator::loop(){
             m_state = ElevatorState::IDLE;
             return 1;
         }
-        // else if(m_down_bumper.isSwitchPressed()){
-        //     m_stepper.stop();
-        //     m_state = ElevatorState::IDLE;
-        //     return 2;
-        // }
-        // else if(m_up_bumper.isSwitchPressed()){
-        //     m_stepper.stop();
-        //     m_state = ElevatorState::IDLE;
-        //     return 3;
-        // }
     }
 
-    else if(m_state == ElevatorState::RECAL_DOWN){
-        if(m_down_bumper.isSwitchPressed()){
-            m_state = ElevatorState::IDLE;
-            // for(int i=0; i<9; i++){
-            //     m_positions_step[i] = m_stepper.currentPosition() + i*ELEV_STEP_DIFF;
-            // }
-            m_stepper.stop();
-            m_stepper.setCurrentPosition(m_stepper.currentPosition());
-            return 1;  
-        }
-    }
     return 0;
 }
 
@@ -91,7 +66,14 @@ ElevatorROS::ElevatorROS(Elevator* p_elevator, ros::NodeHandle* p_nh) :
 
 void ElevatorROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_nh->loginfo("[ELEVATOR] Order");
-    m_p_elevator->setState(ElevatorState::MOVING,stateVal.data);
+    int order_id = stateVal.data;
+    if(order_id > 0 && order_id <= 8){
+        m_p_elevator->setState(ElevatorState::MOVING,stateVal.data);
+    }
+    else if(order_id == -1){
+        m_p_elevator->setZeroPosition();
+    }
+    
 
 }
 

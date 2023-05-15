@@ -29,7 +29,7 @@ Ultrasonic ultrasonic_r = Ultrasonic(ULTRASONIC_R_TRIG_PIN, ULTRASONIC_R_ECHO_PI
 
 UltrasonicROS ultrasonicROS = UltrasonicROS(&ultrasonic_l, &ultrasonic_r, &nh);
 
-DeguisementROS deguisementROS = DeguisementROS(&nh);
+// DeguisementROS deguisementROS = DeguisementROS(&nh);
 
 
 void setup() {
@@ -43,7 +43,7 @@ void setup() {
 
   ultrasonicROS.setup();
 
-  deguisementROS.setup();
+  // deguisementROS.setup();
 
 }
 
@@ -58,6 +58,6 @@ void loop() {
 
   ultrasonicROS.loop();
 
-  deguisementROS.loop();
+  // deguisementROS.loop();
 
 }

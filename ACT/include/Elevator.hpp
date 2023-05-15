@@ -11,8 +11,7 @@
 
 enum class ElevatorState{
     IDLE,
-    MOVING,
-    RECAL_DOWN
+    MOVING
 };
 
 class Elevator{
@@ -20,9 +19,6 @@ class Elevator{
     private:
 
         AccelStepper m_stepper;
-        
-        SwitchFiltered m_up_bumper;
-        SwitchFiltered m_down_bumper;
 
         ElevatorState m_state; //0 to 8
         int m_sub_state;
@@ -33,6 +29,7 @@ class Elevator{
         Elevator();
 
         void setState(ElevatorState state, int sub_state);
+        void setZeroPosition();
 
         void setup();
         int loop();
