@@ -177,7 +177,7 @@
                 "acim_gain_min_flux": 10.0,
                 "bEMF_FF_enable": false,
 
-                "calibration_current": 15.0,
+                "calibration_current": 8.0,
 
                 "current_control_bandwidth": 2000.0,
                 "current_lim_margin": 8.0,
@@ -397,7 +397,7 @@
                 "acim_gain_min_flux": 10.0,
                 "bEMF_FF_enable": false,
 
-                "calibration_current": 15.0,
+                "calibration_current": 8.0,
 
                 "current_control_bandwidth": 2000.0,
                 "current_lim_margin": 8.0,

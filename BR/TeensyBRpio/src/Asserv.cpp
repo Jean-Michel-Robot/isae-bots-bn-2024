@@ -253,6 +253,11 @@ void Asserv::computeOutput(unsigned long t_micro, float* ppoint_d) {
 }
 
 
+void Asserv::RAZIntegral() {
+    m_sumIntegral[0] = 0;
+    m_sumIntegral[1] = 0;
+}
+
 void Asserv::calculateSpeeds() {
     float theta = currentRobotPos.theta;
 

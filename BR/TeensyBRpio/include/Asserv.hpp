@@ -58,6 +58,8 @@ public:
     */
     bool isAtObjectivePoint(bool checkAngle);
 
+    void RAZIntegral();
+
     void loop();
 
     void calculateSpeeds();
