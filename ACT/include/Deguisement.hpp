@@ -6,6 +6,8 @@
 #include <Adafruit_NeoPixel.h>
 #include <std_msgs/Int16.h>
 
+#include "a_define.hpp"
+
 class DeguisementROS{
 
     private:
@@ -18,8 +20,6 @@ class DeguisementROS{
     public:
 
         DeguisementROS(ros::NodeHandle* p_nh);
-
-        static Adafruit_NeoPixel* m_p_neopixel;
 
         void setup();
         void loop();
