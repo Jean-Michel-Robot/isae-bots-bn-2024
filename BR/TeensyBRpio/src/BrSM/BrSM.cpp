@@ -20,7 +20,8 @@
 static const char *BrStateStr[] = {
     FOREACH_BRSTATE(GENERATE_STRING)};
 
-// forward declarations (all of them to have the list of states here)
+// forward declarations (all of them to have the list of states here)$
+class Wait;
 class Ready;
 class InitRot;
 class Forward;
@@ -36,6 +37,7 @@ BrSM::BrSM()
 
   // set timer lengths
   recalAsservTimer.setLength(RECAL_ASSERV_TIMEOUT);
+  waitTimer.setLength(BR_WAIT_TIMER);
 
   // initialize switches
   m_switches[BR_RIGHT] = new SwitchFiltered(BUMPER_RIGHT_PIN);
@@ -46,9 +48,9 @@ BrSM::BrSM()
 // Transition functions
 //
 
-// static void CallMaintenance() {
-//   std::cout << "*** calling maintenance ***" << std::endl;
-// }
+// ----------------------------------------------------------------------------
+// Helper functions
+//
 
 // Helper function to setup a trajectory
 void BrSM::setupTrajectory()
@@ -256,7 +258,7 @@ class Ready
 //
 
 class InitRot
-    : public BrSM
+  : public BrSM
 {
   void entry() override
   {
@@ -283,14 +285,18 @@ class InitRot
     case GoalType::ORIENT:
       p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
 
-      transit<Ready>();
+      requestedState = BR_READY;
+      waitTimer.start( millis() );
+      // transit<Ready>();
       break;
 
     case GoalType::TRANS:
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : InitRot -> Forward");
 
-      transit<Forward>();
+      requestedState = BR_FORWARD;
+      waitTimer.start( millis() );
+      // transit<Forward>();
       break;
 
     default:
@@ -337,13 +343,17 @@ class Forward
     case GoalType::TRANS:
       p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
 
-      transit<Ready>();
+      requestedState = BR_READY;
+      waitTimer.start( millis() );
+      // transit<Ready>();
       break;
 
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : Forward -> FinalRot");
 
-      transit<FinalRot>();
+      requestedState = BR_FINALROT;
+      waitTimer.start( millis() );
+      // transit<FinalRot>();
       break;
 
     default:
@@ -385,7 +395,9 @@ class FinalRot
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
 
-      transit<Ready>();
+      requestedState = BR_READY;
+      waitTimer.start( millis() );
+      // transit<Ready>();
       break;
 
     default:
@@ -522,6 +534,10 @@ class BR_RecalAsserv
   }
 };
 
+// ----------------------------------------------------------------------------
+// State: BR_RecalDetect
+//
+
 class BR_RecalDetect
     : public BrSM
 {
@@ -568,6 +584,10 @@ class BR_RecalDetect
   }
 };
 
+
+// ----------------------------------------------------------------------------
+// State: BR_EmergencyStop
+//
 class BR_EmergencyStop
     : public BrSM
 {
@@ -582,6 +602,7 @@ class BR_EmergencyStop
     // TODO
   }
 };
+
 
 // ----------------------------------------------------------------------------
 // Base state: default implementations
@@ -650,6 +671,26 @@ void BrSM::react(BrUpdateEvent const &e)
     return;
   }
 
+  // if requested state not undef, means we have a pending transition
+  if (requestedState != BR_UNDEF) {
+
+    if (waitTimer.isExpired( millis() )) {
+
+      requestedState = BR_UNDEF;
+
+      switch (requestedState) {
+        case BR_FORWARD:
+          transit<Forward>();
+        case BR_FINALROT:
+          transit<FinalRot>();
+        case BR_READY:
+          transit<Ready>();
+        default:
+          p_ros->logPrint(ERROR, "Requested state not handled");
+      }
+    }
+  }
+
   currentTrajectory->updateTrajectory(e.currentTime);
   currentGoalPos = currentTrajectory->getGoalPoint();
 
@@ -678,6 +719,11 @@ void BrSM::react(BrUpdateEvent const &e)
     // otherwise we let the asserv stabilize close to the end point
   }
 }
+
+
+// ----------------------------------------------------------------------------
+// Getters
+//
 
 BRState BrSM::getCurrentState()
 {
@@ -717,6 +763,7 @@ OrderType BrSM::currentOrder = {0};
 Position2D BrSM::currentGoalPos = Position2D(0.0, 0.0, 0.0);
 Trajectory *BrSM::currentTrajectory = NULL;
 Timer BrSM::recalAsservTimer = Timer(millis());
+Timer BrSM::waitTimer = Timer(millis());
 SwitchFiltered *BrSM::m_switches[2] = {NULL};
 bool BrSM::isSupposedToBeIdle = true;
 
@@ -726,4 +773,7 @@ bool BrSM::isSupposedToBeIdle = true;
 // Initial state definition
 //
 BRState BrSM::currentState = BR_IDLE;
+BRState	BrSM::requestedState = BR_UNDEF;
+
+
 FSM_INITIAL_STATE(BrSM, BR_Idle)

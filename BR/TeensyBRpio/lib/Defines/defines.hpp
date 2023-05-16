@@ -32,6 +32,7 @@
 
 #define ASSERV_BYPASSED 1  // to use if we want to bypass the asserv for one update
 
+#define BR_WAIT_TIMER 1.0  // s
 
 /* COMMANDES MOTEUR */
 

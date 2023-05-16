@@ -104,8 +104,10 @@ protected:
 	static OrderType currentOrder;
 
 	static Timer recalAsservTimer;
+	static Timer waitTimer;
 
 	static BRState currentState;
+	static BRState requestedState;
 	static Position2D currentGoalPos;
 
 	static SwitchFiltered m_switchLeft;
