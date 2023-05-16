@@ -48,26 +48,26 @@ enum GoalType // type d'objectif recu par le haut niveau
 
 	FINAL = 0,             // point final, avec orientation
 	TRANS = 1,             // point transitoire, sans orientation finale
-	ORIENT = 2,            // orientation seule sur place
+	ORIENT = 9,            // orientation seule sur place
 
-    RECAL_FRONT = 3,       // recalage avant
-    RECAL_BACK = 4,        // recalage arrière
+    RECAL_FRONT = -1,       // recalage avant //TODO pas def pour cette année
+    RECAL_BACK = 6,        // recalage arrière
 
-	STOP  = 8,             // freinage d'urgence
-	RESET = 9,             // reset de la position odometrique
-	CONTROL = 10,          // controle en commande directe
+	STOP  = 2,             // freinage d'urgence
+	RESET = 3,             // reset de la position odometrique
+	CONTROL = 4,          // controle en commande directe
 };
 
 enum CallbackHN // TODO retour renvoyé vers le haut niveau
 {
-    OK_POS = 0,
-    OK_TURN = 1,
-    OK_RECAL = 2,
+    OK_POS = 1,
+    OK_TURN = 2,
+    OK_RECAL = 3,
 
     OK_READY = 5,
     OK_IDLE = 6,
 
-    ERROR_ASSERV = 3,
+    ERROR_ASSERV = 0,
 };
 
 class ROS
