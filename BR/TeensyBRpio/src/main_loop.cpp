@@ -46,8 +46,8 @@ void setup() {
 
     // led_instance = new LED();
 
-    p_linearTrajectory = new LinearTrajectory(DEFAULT_LINEAR_GOAL_SPEED, DEFAULT_LINEAR_ACCEL_PARAM);
-    p_rotationTrajectory = new RotationTrajectory(DEFAULT_ROTATION_GOAL_SPEED, DEFAULT_ROTATION_ACCEL_PARAM);
+    p_linearTrajectory = new LinearTrajectory(0.6 * MAX_LINEAR_GOAL_SPEED, DEFAULT_LINEAR_ACCEL_PARAM);
+    p_rotationTrajectory = new RotationTrajectory(0.6 * MAX_ROTATION_GOAL_SPEED, DEFAULT_ROTATION_ACCEL_PARAM);
 
     // p_linearTrajectory->setRobotPos(100, 100, 0);
     // p_linearTrajectory->setDest(0.0, 0.0);

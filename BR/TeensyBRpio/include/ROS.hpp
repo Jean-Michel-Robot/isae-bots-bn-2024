@@ -91,12 +91,13 @@ public :
     // l'utilisation en callback impose de les déclarer statique
     static void s_goToCb(const geometry_msgs::Quaternion& positionMsg);
     static void s_debug(const std_msgs::Int16& debugMsg);
+    static void s_setSpeed(const std_msgs::Int16& speedMsg);
 
     static void s_changeGains(const std_msgs::Float32MultiArray& gains);
-    static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
-    static void s_setSpeed(const std_msgs::Float32MultiArray& speeds);
-    static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
-    static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
+    // static void s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM);
+    // static void s_setSpeed(const std_msgs::Float32MultiArray& speeds);
+    // static void s_changeAccDecRampe(const std_msgs::Float32MultiArray& gains);
+    // static void s_changeAccDecRampePrecise(const std_msgs::Float32MultiArray& gains);
 
     static void s_idle(const std_msgs::Int16 &msg);
 
@@ -105,6 +106,8 @@ public :
 
 
 private :
+
+    /* SUBSCRIBERS */
     ros::Subscriber<geometry_msgs::Quaternion>   m_subOrder {
         ros::Subscriber<geometry_msgs::Quaternion>  ("nextPositionTeensy", s_goToCb)
     };
@@ -117,22 +120,27 @@ private :
         ros::Subscriber<std_msgs::Int16>("br/idle", s_idle)
     };
 
+    ros::Subscriber<std_msgs::Int16> m_subSpeed{
+        ros::Subscriber<std_msgs::Int16>("teensy/obstacle_seen", s_setSpeed)  // TODO change dat stupid topic name (et faire une topic map au passage)
+    };
+
     ros::Subscriber<std_msgs::Int16> m_subDebug {ros::Subscriber<std_msgs::Int16>("debug/BR", s_debug)};
 
+
+    /* PUBLISHERS */
     geometry_msgs::Pose2D m_feedbackPosition;
     ros::Publisher m_positionFeedback{ros::Publisher("current_position", &m_feedbackPosition)};
 
     geometry_msgs::Quaternion m_debugVar;
     ros::Publisher m_debugPub{ros::Publisher("debugSend", &m_debugVar)};
 
-    
-
-
     std_msgs::Int16 m_callbackHN;
     ros::Publisher m_pubHN{ros::Publisher("okPosition", &m_callbackHN)};
 
     std_msgs::Float32MultiArray m_logTotalArray; // envoi en array pour simplifier la lecture
     ros::Publisher m_logTotale{ros::Publisher("logTotaleArray", &m_logTotalArray)};
+
+
 
     ros::NodeHandle m_nodeHandle;
 };

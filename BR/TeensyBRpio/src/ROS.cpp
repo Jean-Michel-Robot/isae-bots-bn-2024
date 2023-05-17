@@ -28,10 +28,10 @@ ROS::ROS()
     m_nodeHandle.subscribe(m_subOrder);
     m_nodeHandle.subscribe(m_subDebug);
     m_nodeHandle.subscribe(m_subIdle);
+    m_nodeHandle.subscribe(m_subSpeed);
     // m_nodeHandle.subscribe(m_subGainsM);
     // m_nodeHandle.subscribe(m_subAcc);
     // m_nodeHandle.subscribe(m_subAcc2);
-    // m_nodeHandle.subscribe(m_subSpeed);
 
     m_nodeHandle.advertise(m_positionFeedback);
 
@@ -190,6 +190,26 @@ void ROS::s_changeGains(const std_msgs::Float32MultiArray& gains)
   //TODO RAZ de l'asserv ?
 }
 
+void ROS::s_setSpeed(const std_msgs::Int16& speedMsg)
+{
+  float newSpeedFactor = (float) speedMsg.data / 100.0;  // data is a percentage
+
+  switch (p_sm->currentTrajectory->trajectoryType) {
+
+    case TRAJ_UNDEF:  //TODO handle differently ?
+    case TRAJ_LINEAR:
+      p_sm->currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_LINEAR_GOAL_SPEED);
+      break;
+
+    case TRAJ_ROTATION:
+      p_sm->currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_ROTATION_GOAL_SPEED);
+      break;    
+
+    default:
+      p_ros->logPrint(ERROR, "Unhandled trajectory type in setSpeed callback");
+  }
+}
+
 
 void ROS::sendDebug() {
 
@@ -214,11 +234,7 @@ void ROS::sendDebug() {
 //   }
 // }
 
-// void ROS::s_setSpeed(const std_msgs::Float32MultiArray& speeds)
-// {
-//     machineAEtatAsservInstance->getRampePosition()->setSpeed(speeds.data[0],timeFloat());
-//     machineAEtatAsservInstance->getRampeOrientation()->setSpeed(speeds.data[1],timeFloat());
-// }
+
 
 
 void ROS::sendCallback(CallbackHN callback)

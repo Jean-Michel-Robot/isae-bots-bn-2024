@@ -50,7 +50,7 @@ void setup()
   Ramp* rampLinear = new Ramp(DEFAULT_LINEAR_ACCEL_PARAM);
 
   uint32_t t0 = micros();
-  rampLinear->beginRamp(t0, DEFAULT_LINEAR_GOAL_SPEED);
+  rampLinear->beginRamp(t0, MAX_LINEAR_GOAL_SPEED);
 
 
   UNITY_BEGIN(); // begin unit testing

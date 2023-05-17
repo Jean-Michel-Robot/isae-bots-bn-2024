@@ -44,8 +44,8 @@
 
 /* TRAJECTOIRES */
 
-#define DEFAULT_LINEAR_GOAL_SPEED 0.2 // m/s //TODO set
-#define DEFAULT_ROTATION_GOAL_SPEED 1.57 // rad/s //TODO set
+#define MAX_LINEAR_GOAL_SPEED 0.2 // m/s //TODO set
+#define MAX_ROTATION_GOAL_SPEED 1.57 // rad/s //TODO set
 
 #define DEFAULT_LINEAR_ACCEL_PARAM 0.2 // m/s^2 //TODO set
 #define DEFAULT_ROTATION_ACCEL_PARAM 3.0 // rad/s^2 //TODO set
