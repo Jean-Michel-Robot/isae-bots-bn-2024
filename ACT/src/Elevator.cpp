@@ -28,6 +28,7 @@ void Elevator::setState(ElevatorState state, int sub_state){
 
 void Elevator::setZeroPosition(){
     m_stepper.setCurrentPosition(m_stepper.currentPosition());
+    m_sub_state = 0;
 }
 
 void Elevator::setup(){
@@ -67,7 +68,7 @@ ElevatorROS::ElevatorROS(Elevator* p_elevator, ros::NodeHandle* p_nh) :
 void ElevatorROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_nh->loginfo("[ELEVATOR] Order");
     int order_id = stateVal.data;
-    if(order_id > 0 && order_id <= 8){
+    if(order_id >= 0 && order_id <= 8){
         m_p_elevator->setState(ElevatorState::MOVING,stateVal.data);
     }
     else if(order_id == -1){
