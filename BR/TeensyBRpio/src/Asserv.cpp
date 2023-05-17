@@ -74,6 +74,9 @@ void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv) {
     // p_linearTrajectory->updateTrajectory( micros() );
 
     m_state = BYPASSED; //FORTEST
+    //TODO be able to bypass asserv without changing the trajectory outputs
+    // so that it just follows the trajectory in open loop
+    // (revient à mettre les gains de l'asserv à 0 mais on peut faire plus propre)
 
 
     if(m_state == ACTIVE) {
@@ -181,12 +184,18 @@ void Asserv::loop() {
 
 void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
 
+    //TODO be able to bypass asserv without changing the trajectory outputs
+    // so that it just follows the trajectory in open loop
+    // (revient à mettre les gains de l'asserv à 0 mais on peut faire plus propre)
+
+
 
     if (m_state == ACTIVE || true) {
 
         // il faut que la trajectoire et l'erreur soient update avant
+        //TODO faut rendre ça moins error prone
 
-        computeOutput( micros(), ppoint_d);
+        computeOutput(micros(), ppoint_d);
         calculateSpeeds();
 
 
