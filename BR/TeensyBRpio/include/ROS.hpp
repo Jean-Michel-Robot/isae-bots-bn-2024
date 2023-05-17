@@ -49,13 +49,14 @@ enum GoalType // type d'objectif recu par le haut niveau
 	FINAL = 0,             // point final, avec orientation
 	TRANS = 1,             // point transitoire, sans orientation finale
 	ORIENT = 9,            // orientation seule sur place
+    REVERSE = -3,          // marche arrière
 
-    RECAL_FRONT = -1,       // recalage avant //TODO pas def pour cette année
+    RECAL_FRONT = -2,      // recalage avant //TODO pas def pour cette année
     RECAL_BACK = 6,        // recalage arrière
 
 	STOP  = 2,             // freinage d'urgence
 	RESET = 3,             // reset de la position odometrique
-	CONTROL = 4,          // controle en commande directe
+	CONTROL = 4,           // controle en commande directe
 };
 
 enum CallbackHN // TODO retour renvoyé vers le haut niveau

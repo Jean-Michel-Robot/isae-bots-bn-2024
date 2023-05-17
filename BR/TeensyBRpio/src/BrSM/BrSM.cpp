@@ -21,7 +21,6 @@ static const char *BrStateStr[] = {
     FOREACH_BRSTATE(GENERATE_STRING)};
 
 // forward declarations (all of them to have the list of states here)$
-class Wait;
 class Ready;
 class InitRot;
 class Forward;
@@ -226,6 +225,11 @@ class Ready
       p_ros->logPrint(INFO, "BR Transition : Ready -> InitRot");
       transit<InitRot>();
       break;
+
+    case REVERSE:
+      p_ros->logPrint(INFO, "BR Transition : Ready -> Forward");
+      transit<Forward>();
+      break;      
 
     case RECAL_FRONT:
     case RECAL_BACK:
