@@ -139,14 +139,14 @@ class Ready
         p_ros->sendCallback(OK_READY);
         break;
 
-      case BR_INITROT:
-      case BR_FINALROT:
-        p_ros->sendCallback(OK_TURN);
-        break;
+      // case BR_INITROT:
+      // case BR_FINALROT:
+      //   p_ros->sendCallback(OK_TURN);
+      //   break;
 
-      case BR_FORWARD:
-        p_ros->sendCallback(OK_POS);
-        break;
+      // case BR_FORWARD:
+      //   p_ros->sendCallback(OK_POS);
+      //   break;
 
       case BR_RECAL_DETECT:
         p_ros->sendCallback(OK_RECAL);
@@ -289,18 +289,20 @@ class InitRot
     case GoalType::ORIENT:
       p_ros->logPrint(INFO, "BR Transition : InitRot -> Ready");
 
-      requestedState = BR_READY;
-      waitTimer.start( millis() );
-      // transit<Ready>();
+      // requestedState = BR_READY;
+      // waitTimer.start( millis() );
+      p_ros->sendCallback(OK_TURN);
+      transit<Ready>();
       break;
 
     case GoalType::TRANS:
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : InitRot -> Forward");
 
-      requestedState = BR_FORWARD;
-      waitTimer.start( millis() );
-      // transit<Forward>();
+      // requestedState = BR_FORWARD;
+      // waitTimer.start( millis() );
+      p_ros->sendCallback(OK_TURN);
+      transit<Forward>();
       break;
 
     default:
@@ -347,17 +349,19 @@ class Forward
     case GoalType::TRANS:
       p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
 
-      requestedState = BR_READY;
-      waitTimer.start( millis() );
-      // transit<Ready>();
+      // requestedState = BR_READY;
+      // waitTimer.start( millis() );
+      p_ros->sendCallback(OK_POS);
+      transit<Ready>();
       break;
 
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : Forward -> FinalRot");
 
-      requestedState = BR_FINALROT;
-      waitTimer.start( millis() );
-      // transit<FinalRot>();
+      // requestedState = BR_FINALROT;
+      // waitTimer.start( millis() );
+      p_ros->sendCallback(OK_POS);
+      transit<FinalRot>();
       break;
 
     default:
@@ -399,9 +403,10 @@ class FinalRot
     case GoalType::FINAL:
       p_ros->logPrint(INFO, "BR Transition : FinalRot -> Ready");
 
-      requestedState = BR_READY;
-      waitTimer.start( millis() );
-      // transit<Ready>();
+      // requestedState = BR_READY;
+      // waitTimer.start( millis() );
+      p_ros->sendCallback(OK_TURN);
+      transit<Ready>();
       break;
 
     default:
@@ -676,24 +681,24 @@ void BrSM::react(BrUpdateEvent const &e)
   }
 
   // if requested state not undef, means we have a pending transition
-  if (requestedState != BR_UNDEF) {
+  // if (requestedState != BR_UNDEF) {
 
-    if (waitTimer.isExpired( millis() )) {
+  //   if (waitTimer.isExpired( millis() )) {
 
-      requestedState = BR_UNDEF;
+  //     requestedState = BR_UNDEF;
 
-      switch (requestedState) {
-        case BR_FORWARD:
-          transit<Forward>();
-        case BR_FINALROT:
-          transit<FinalRot>();
-        case BR_READY:
-          transit<Ready>();
-        default:
-          p_ros->logPrint(ERROR, "Requested state not handled");
-      }
-    }
-  }
+  //     switch (requestedState) {
+  //       case BR_FORWARD:
+  //         transit<Forward>();
+  //       case BR_FINALROT:
+  //         transit<FinalRot>();
+  //       case BR_READY:
+  //         transit<Ready>();
+  //       default:
+  //         p_ros->logPrint(ERROR, "Requested state not handled");
+  //     }
+  //   }
+  // }
 
   currentTrajectory->updateTrajectory(e.currentTime);
   currentGoalPos = currentTrajectory->getGoalPoint();
