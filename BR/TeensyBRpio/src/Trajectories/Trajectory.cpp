@@ -72,7 +72,7 @@ void Trajectory::updateTrajectory(uint32_t new_time)
     currentSpeed = rampSpeed.updateRamp(current_time);
 
     if (Dtotale == 0.0) { //TODO make it so that never happens (no update when Dtotale is small)
-        p_ros->logPrint(ERROR, "Dtotale is zero in updateTrajectory");
+        // p_ros->logPrint(ERROR, "Dtotale is zero in updateTrajectory");
         return;
     }
 
