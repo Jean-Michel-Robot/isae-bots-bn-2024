@@ -27,13 +27,13 @@ void Elevator::setState(ElevatorState state, int sub_state){
 }
 
 void Elevator::setZeroPosition(){
-    m_stepper.setCurrentPosition(m_stepper.currentPosition());
+    m_stepper.setCurrentPosition(0);
     m_sub_state = 0;
 }
 
 void Elevator::setup(){
 
-    m_stepper.setCurrentPosition(m_stepper.currentPosition());
+    m_stepper.setCurrentPosition(0);
 
     this->setState(ElevatorState::IDLE, 0);
 
