@@ -43,8 +43,8 @@ OdosPosition::OdosPosition()
 
 void OdosPosition::setPosition(Position2D pos)
 {
-  // Conversion en mm
-  Position2D pos2 = Position2D(pos.x * 1000.0, pos.y * 1000.0, pos.theta);
+  // On la reçoit déjà en mm
+  Position2D pos2 = Position2D(pos.x, pos.y, pos.theta);
 
   m_robotPosition = pos2;
   m_positionThetaOffset += pos.theta - m_positionThetaOdo;
