@@ -103,9 +103,9 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     case GoalType::STOP:
     {
 
-      EmergencyBrakeEvent emergencyBrakeEvent;
+      BrEmergencyBrakeEvent brEmergencyBrakeEvent;
 
-      p_sm->send_event(emergencyBrakeEvent);
+      p_sm->send_event(brEmergencyBrakeEvent);
       break;
     }
 
@@ -204,11 +204,12 @@ void ROS::s_setSpeed(const std_msgs::Int16& speedMsg)
 
     case TRAJ_ROTATION:
       p_sm->currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_ROTATION_GOAL_SPEED);
-      break;    
+      break;
 
     default:
       p_ros->logPrint(ERROR, "Unhandled trajectory type in setSpeed callback");
-  }
+      break;
+    }
 }
 
 

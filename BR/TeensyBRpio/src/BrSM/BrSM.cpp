@@ -357,7 +357,7 @@ class Forward
 
     case GoalType::REVERSE:
       p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
-      p_ros->sendCallback(OK_REVERSE);
+      p_ros->sendCallback(OK_POS);
       transit<Ready>();
       break;
 
@@ -613,8 +613,9 @@ class BR_EmergencyStop
 
   void react(BrUpdateEvent const &e) override
   {
-
-    // TODO
+    sendMotorCommand(BR_RIGHT, 0.0);
+    sendMotorCommand(BR_LEFT, 0.0);
+    transit<Ready>();
   }
 };
 
