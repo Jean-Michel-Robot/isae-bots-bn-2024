@@ -148,9 +148,9 @@ class Ready
       //   p_ros->sendCallback(OK_POS);
       //   break;
 
-      case BR_RECAL_DETECT:
-        p_ros->sendCallback(OK_RECAL);
-        break;
+      // case BR_RECAL_DETECT:
+      //   p_ros->sendCallback(OK_RECAL);
+      //   break;
 
       default:
         break;
@@ -352,6 +352,12 @@ class Forward
       // requestedState = BR_READY;
       // waitTimer.start( millis() );
       p_ros->sendCallback(OK_POS);
+      transit<Ready>();
+      break;
+
+    case GoalType::REVERSE:
+      p_ros->logPrint(INFO, "BR Transition : Forward -> Ready");
+      p_ros->sendCallback(OK_REVERSE);
       transit<Ready>();
       break;
 
@@ -651,8 +657,8 @@ void BrSM::react(ResetPosEvent const &e)
   p_odos->setPosition(Position2D(e.x, e.y, e.theta));
 
   // We also reset the currentGoalPos to make sure the asserv doesnt do madness
-  currentGoalPos.x = e.x;
-  currentGoalPos.y = e.y;
+  currentGoalPos.x = e.x / 1000.0;
+  currentGoalPos.y = e.y / 1000.0;
   currentGoalPos.theta = e.theta;
 
   // RAZ l'intégrateur ?

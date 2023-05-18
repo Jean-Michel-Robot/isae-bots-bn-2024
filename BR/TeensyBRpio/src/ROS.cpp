@@ -67,6 +67,7 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     case GoalType::FINAL:
     case GoalType::TRANS:
     case GoalType::ORIENT:
+    case GoalType::REVERSE:
 
     case GoalType::RECAL_BACK:
     case GoalType::RECAL_FRONT:
