@@ -39,7 +39,7 @@ ROS::ROS()
     m_nodeHandle.advertise(m_debugPub);
     m_nodeHandle.advertise(m_pubHN);
 
-      // m_nodeHandle.advertise(m_okFeedback);
+    // m_nodeHandle.advertise(m_okFeedback);
     m_nodeHandle.advertise(m_logTotale);
 
     m_nodeHandle.getHardware()->setBaud(250000);
@@ -76,8 +76,8 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 
       OrderEvent orderEvent;
 
-      orderEvent.order.x = positionMsg.x;
-      orderEvent.order.y = positionMsg.y;
+      orderEvent.order.x = positionMsg.x/1000.0;  // conversion en m
+      orderEvent.order.y = positionMsg.y/1000.0;  // conversion en m
       orderEvent.order.theta = positionMsg.z;
       orderEvent.order.goalType = positionMsg.w;
 
