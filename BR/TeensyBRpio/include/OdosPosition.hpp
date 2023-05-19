@@ -23,7 +23,7 @@ public :
 
     void loop();
 
-
+    // Odos 19.05.2023 
     // le L impose les constantes en double precisions (pour une teensy)
     static constexpr float ECARTS_ODOS = 5980.73537126610L;  // (ticks.rad^(-1) ecart entre les 2 odos
     static constexpr float UNITS_ODOS = 51.54179961710274L;  // ticks.mm^(-1)
