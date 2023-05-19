@@ -119,8 +119,10 @@ void Trajectory::updateTrajectory(uint32_t new_time)
 
 bool Trajectory::detectEndRamp() {
 
+    return false;  //FORCOUPE
+
     // On utilise la fraction de Dtotale donnée par s pour savoir quand s'arrêter
-    return ( Dtotale * (1 - s) < 0.5*currentSpeed*currentSpeed/accelParam );
+    return ( Dtotale * (1 - s) < 0.5*0.5*currentSpeed*currentSpeed/accelParam );
 }
 
 
