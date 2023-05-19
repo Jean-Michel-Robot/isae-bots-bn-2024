@@ -25,9 +25,9 @@ public :
 
 
     // le L impose les constantes en double precisions (pour une teensy)
-    static constexpr float ECARTS_ODOS = 5964.529501170628L;  // (ticks.rad^(-1) ecart entre les 2 odos
-    static constexpr float UNITS_ODOS = 51.50592885375494L;  // ticks.mm^(-1)
-    static constexpr float L_R_ODOS = 0.9955054176905741L;  // rapport des rapports... (var en R et L)
+    static constexpr float ECARTS_ODOS = 5980.73537126610L;  // (ticks.rad^(-1) ecart entre les 2 odos
+    static constexpr float UNITS_ODOS = 51.54179961710274L;  // ticks.mm^(-1)
+    static constexpr float L_R_ODOS = 1.0011809854125424L;  // rapport des rapports... (var en R et L)
 private :
 
     int32_t m_odoLeftCount = 0;
