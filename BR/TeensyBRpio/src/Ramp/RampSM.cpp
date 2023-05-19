@@ -100,7 +100,7 @@ class Slope
       currentSpeed = V_start_slope + accelParam * (e.currentTime - t_start_slope)*0.000001;  // en ASC
     
       if (currentSpeed > goalSpeed - RAMP_EPSILON) {
-        p_ros->logPrint(INFO, "Reached constant part of upwards slope");
+        // p_ros->logPrint(INFO, "Reached constant part of upwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
       }
@@ -110,7 +110,7 @@ class Slope
       currentSpeed = V_start_slope - accelParam * (e.currentTime - t_start_slope)*0.000001;  // en DESC
     
       if (currentSpeed < goalSpeed + RAMP_EPSILON) {
-        p_ros->logPrint(INFO, "Reached constant part of downwards slope");
+        // p_ros->logPrint(INFO, "Reached constant part of downwards slope");
         currentSpeed = goalSpeed;
         transit<Constant>();
       }
@@ -130,7 +130,7 @@ class Slope
   void react(EndRampEvent const & e) override {
     
     // transition
-    p_ros->logPrint(INFO, "Ending ramp from slope");
+    // p_ros->logPrint(INFO, "Ending ramp from slope");
     transit<RampEnd>();
   }
 
@@ -138,7 +138,7 @@ class Slope
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    p_ros->logPrint(INFO, "Goal speed changed in ramp slope");
+    // p_ros->logPrint(INFO, "Goal speed changed in ramp slope");
 
     transit<Slope>();  //TOTEST est ce que avec le UpdateEvent on passe bien qu'une fois dans entry ?
   };
@@ -170,14 +170,14 @@ class Constant
   void react(EndRampEvent const & e) override {
     
     // transition
-    p_ros->logPrint(INFO, "Ending ramp from constant");
+    // p_ros->logPrint(INFO, "Ending ramp from constant");
     transit<RampEnd>();
   }
 
   void react(GoalSpeedChangeEvent const & e) override {
 
     setGoalSpeed(e.newSpeed);
-    p_ros->logPrint(INFO, "Goal speed changed in ramp constant");
+    // p_ros->logPrint(INFO, "Goal speed changed in ramp constant");
 
     transit<Slope>();  // go back to slope if the goal speed is changed
   };
@@ -204,7 +204,7 @@ class RampIdle
 
   void react(BeginRampEvent const & e) override {  // on commence juste la rampe
     
-    p_ros->logPrint(INFO, "Starting new ramp");
+    // p_ros->logPrint(INFO, "Starting new ramp");
     t0 = e.t0;  // set de t0
     transit<Slope>();
   }
@@ -231,7 +231,7 @@ class RampEnd
   
     if (currentSpeed < 0.0 + RAMP_EPSILON) {
 
-      p_ros->logPrint(INFO, "Ramp finished ending");
+      // p_ros->logPrint(INFO, "Ramp finished ending");
       currentSpeed = 0.0;
       transit<RampIdle>();
     }
