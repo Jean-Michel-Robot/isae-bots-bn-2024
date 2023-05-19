@@ -87,6 +87,7 @@ void BrSM::setupTrajectory()
   }
 
   case BR_FORWARD:
+  case REVERSE:
   {
     currentTrajectory->setDest(Position2D(currentOrder.x, currentOrder.y, 0.0));
     break;
