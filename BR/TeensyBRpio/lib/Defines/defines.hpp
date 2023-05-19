@@ -44,7 +44,7 @@
 
 /* TRAJECTOIRES */
 
-#define MAX_LINEAR_GOAL_SPEED 0.25 // m/s //TODO set
+#define MAX_LINEAR_GOAL_SPEED 0.4 // m/s //TODO set
 #define MAX_ROTATION_GOAL_SPEED 3.0 // rad/s //TODO set
 
 #define DEFAULT_LINEAR_ACCEL_PARAM 0.05 // m/s^2 //TODO set
@@ -56,6 +56,7 @@
 
 /* RECALAGES */
 #define RECAL_ASSERV_TIMEOUT 10.0 // s //TODO set
+#define RECAL_BACKWARDS_DURATION 3.0 //s 
 #define RECAL_SPEED 0.1 // m/s
 
 // distance below which we command the motors directly
