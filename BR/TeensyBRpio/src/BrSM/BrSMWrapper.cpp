@@ -26,10 +26,18 @@ BrSMWrapper::BrSMWrapper() {
 
 }
 
+uint32_t timer = millis();
+
 void BrSMWrapper::loop() {
 
-  // update SM
-  brUpdateEvent.currentTime = micros();
-  brSM.send_event(brUpdateEvent);
+
+  if (millis() - timer > 20) {
+
+    // update SM
+    brUpdateEvent.currentTime = micros();
+    brSM.send_event(brUpdateEvent);
+
+    timer = millis();
+  }
 }
 
