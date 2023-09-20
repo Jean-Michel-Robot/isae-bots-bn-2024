@@ -1,5 +1,0 @@
-void loop() {
-  loopSteppers();
-  loopRos();
-
-}
