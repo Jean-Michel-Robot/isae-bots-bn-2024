@@ -1,0 +1,64 @@
+<!--
+exemple de lancement: 
+roslaunch main.launch method:='sim'
+-->
+
+
+<launch>  
+	<arg name='BR' default="None" />
+	<arg name='ACT' default="None" />
+	<arg name='LIDAR' default="None" />
+	<arg name='NANONPX' default="None" />
+
+	<rosparam param="BR" subst_value="True">$(arg BR)</rosparam>
+	<rosparam param="ACT" subst_value="True">$(arg ACT)</rosparam>
+	<rosparam param="LIDAR" subst_value="True">$(arg LIDAR)</rosparam>
+	<rosparam param="NANONPX" subst_value="True">$(arg NANONPX)</rosparam>
+	
+
+	<!-- Disjonction de cas -->
+
+	<group if="$(eval arg('BR') != 'None')"> <!-- La carte Base Roulante est presente -->
+		<!-- on est sur le vrai robot -->
+		<node pkg="rosserial_python" type="serial_node.py" name="SerialNodeBR" output="screen">
+			<param name="port" value="$(eval arg('BR'))"/>
+			<param name="baud" value="115200"/>
+		</node>
+	</group>
+	<group if="$(eval arg('ACT') != 'None')"> <!-- La carte Actionneurs est presente -->
+		<node pkg="rosserial_python" type="serial_node.py" name="SerialNodeACT" output="screen">
+			<param name="port" value="$(eval arg('ACT'))"/>
+			<param name="baud" value="115200"/>
+		</node>
+		<node pkg="sensors" type="sonar_node.py" name="SonarNode" output="screen" />
+	</group>
+	
+	<group if="$(eval arg('LIDAR') != 'None')"> <!-- Le LIDAR est present -->
+		<node pkg="hokuyo_node" type="hokuyo_node" name="Hokuyo" output="screen" >
+			<param name="port" type="string" value="$(eval arg('LIDAR'))"/>
+		</node>
+		<node pkg="sensors" type="lidar_node.py" name="LidarNode" output="screen" />
+		<node pkg="sensors" type="sensors_node.py" name="SensorNode" output="screen" />
+	</group>
+
+	<group if="$(eval arg('NANONPX') != 'None')"> <!-- La Nano est presente -->
+		<!-- on est sur le vrai robot -->
+		<node pkg="rosserial_python" type="serial_node.py" name="NanoPxNode" output="screen">
+			<param name="port" value="$(eval arg('NANONPX'))"/>
+		</node>
+	</group>
+
+	<!-- deplacements -->
+	<node name="DisplacementNode" pkg="displacement"  type="disp_node.py" output="screen" cwd="node" required="true"/>
+
+	<!-- strategie -->
+	<node name="DecisionNode" pkg="stratgr"  type="dec_node.py" output="screen" cwd="node" required="true"/>
+	<node name="ActionNode" pkg="stratgr"  type="act_node.py" output="screen" cwd="node" required="true"/>
+
+	<!-- isb -->
+	<node name="IsbNode" pkg="isb"  type="isb_node.py" output="screen" cwd="node" required="true"/>
+
+	<!-- points -->
+	<node name="PointsNode" pkg="lcd"  type="points_node.py" output="screen" cwd="node" required="true"/>
+	
+</launch>

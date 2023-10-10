@@ -1,0 +1,26 @@
+<!--
+Launch script for GR (sim for now)
+-->
+
+
+<launch>  
+
+	<!-- displacement node -->
+	<!-- <node name="DSP" pkg="isae_robotics_displacement"  type="displacement_node.py" output="screen" cwd="node" required="true"/> -->
+
+	<!-- strat nodes -->
+	<node name="DEC" pkg="stratgr" type="dec_node.py" output="screen" cwd="node" required="true"/>
+	<node name="ACT" pkg="stratgr" type="act_node.py" output="screen" cwd="node" required="true"/>
+	<node name="ACN" pkg="sim" type="actuators_node.py" output="screen" cwd="node" required="true"/>
+	<node name="DSP" pkg="displacement" type="disp_node.py" output="screen" cwd="node" required="true"/>
+
+	<!-- sensor nodes -->
+	<node name="LID" pkg="sensors" type="lidar_node.py" output="screen" cwd="node" required="true"/>
+	<node name="SON" pkg="sensors" type="sonar_node.py" output="screen" cwd="node" required="true"/>
+	<node name="SEN" pkg="sensors" type="sensors_node.py" output="screen" cwd="node" required="true"/>
+
+	<!-- sim nodes -->
+	<node name="OBS" pkg="sim" type="obstacles_node.py" output="screen" cwd="node" required="true"/>
+
+
+</launch>

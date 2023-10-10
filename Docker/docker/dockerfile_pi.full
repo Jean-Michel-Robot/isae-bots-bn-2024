@@ -1,0 +1,124 @@
+# DOCKERFILE for isaebots-dev-env-img :
+# - Ubuntu 20.04 focal fossa + packages
+# - ROS 1 noetic + deps
+# - Python 3.8 + deps
+
+FROM ubuntu:20.04
+
+#############################################################
+# 1 - Create CORE image                                     #
+#############################################################
+
+# Install basic apt packages
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+RUN apt-get install -y lsb-release
+RUN apt-get install -y curl
+RUN apt-get install -y gnupg
+RUN apt-get install -y gnupg2
+RUN apt-get install -y locales
+RUN dpkg-reconfigure locales
+
+# Install ROS noetic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends ros-noetic-ros-base
+RUN apt-get install -y --no-install-recommends python3-rosdep
+
+RUN update-ca-certificates --fresh
+RUN export SSL_CERT_DIR=/etc/ssl/certs
+
+RUN rosdep init
+# COPY ./docker/20-default.list /etc/ros/rosdep/sources.list.d/20-default.list
+
+RUN sudo rosdep fix-permissions
+RUN rosdep update
+
+# bn
+RUN apt-get install -y ros-noetic-rosserial-arduino
+RUN apt-get install -y ros-noetic-rosserial-python
+RUN apt-get install -y ros-noetic-rosserial
+
+# hn
+RUN apt-get install -y ros-noetic-smach ros-noetic-smach-viewer
+
+# Setup ROS environment
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+
+# alias python to python3
+RUN echo "alias python=python3" >> ~/.bashrc
+
+
+#### BASE ####
+
+# SHELL ["/bin/bash", "-c"]
+
+#############################################################
+# 2 - Add up BASE image (desktop dev env)                   #
+#############################################################
+
+# Install basic apt packages
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    git \
+    python3-pip \
+    python3-catkin-tools \
+    nano \
+    python-is-python3 \
+    usbutils
+
+# Install tools for python / pip
+RUN pip3 install numpy
+# RUN pip3 install cwiid
+
+# Add user so that we don't log in as root
+RUN adduser --quiet --disabled-password dockeruser && usermod -a -G audio dockeruser
+
+# This fix: libGL error: No matching fbConfigs or visuals found
+#ENV LIBGL_ALWAYS_INDIRECT=1
+
+# install pi-bluetooth
+RUN apt-get install -y pi-bluetooth
+
+# Install cwiid
+# RUN git clone https://github.com/abstrakraft/cwiid.git
+# WORKDIR '/home/pi/cwiid'
+# RUN aclocal
+# RUN autoconf
+# RUN ./configure
+# RUN make
+# RUN sudo make install
+RUN apt install -y libcwiid-dev
+# RUN apt-get install -y libcwiid1
+# RUN pip install cwiid
+# RUN python ./docker/cwiid/setup.py
+
+# COPY ./docker/cwiid-3.0.0.tar.xz /app/cwiid-3.0.0.tar.xz
+COPY ./docker/cwiid-3.0.0.tar.xz .
+RUN python3 -m pip install ./cwiid-3.0.0.tar.xz
+
+# Install PyQt
+# RUN apt-get install -y python3-pyqt5
+
+# install bluetooth
+RUN apt-get install -y bluez bluetooth
+
+# Install smbus for isb
+RUN pip3 install smbus
+
+# Install dependency of lidar driver node (hokuyo or sick)
+RUN apt-get install -y ros-noetic-diagnostics
+
+# Add udev file
+COPY ./install/10-usb-serial.rules /etc/udev/rules.d/10-usb-serial.rules
+
+# Add service file
+COPY ./service/match.service /etc/systemd/system/match.service
+
+
+# Setup the work directory and entrypoint
+WORKDIR '/app'
+COPY ./docker/autosetup.sh /autosetup.sh
+ENTRYPOINT [ "/autosetup.sh" ]

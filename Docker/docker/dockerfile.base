@@ -1,0 +1,101 @@
+# DOCKERFILE for isaebots-dev-env-img :
+# - Ubuntu 20.04 focal fossa + packages
+# - ROS 1 noetic + deps
+# - Python 3.8 + deps
+
+FROM isaebots_desktop_env_core:latest
+# FROM test_img:latest
+# FROM --platform=linux/arm/v7 test_img:latest
+# ARG TARGETPLATFORM
+# ARG BUILDPLATFORM
+# RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+
+SHELL ["/bin/bash", "-c"]
+
+#############################################################
+# 2 - Add up BASE image (desktop dev env)                   #
+#############################################################
+
+# Install basic apt packages
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    git \
+    python3-pip \
+    python3-catkin-tools \
+    nano \
+    python-is-python3
+
+# Install tools for python / pip
+RUN pip3 install numpy
+
+RUN apt install -y python3-tk
+RUN pip install mttkinter
+
+# Install dependency of lidar driver node (hokuyo or sick)
+RUN apt-get install -y ros-noetic-diagnostics
+
+# Add user so that we don't log in as root
+RUN adduser --quiet --disabled-password dockeruser && usermod -a -G audio dockeruser
+
+# This fix: libGL error: No matching fbConfigs or visuals found
+#ENV LIBGL_ALWAYS_INDIRECT=1
+
+# Install PyQt
+RUN apt-get install -y python3-pyqt5
+
+# Install pyqtgrapph
+RUN pip install pyqtgraph==0.10.0
+
+#ENV QT_QUICK_BACKEND=software
+
+# Install additional PyQt5 packages
+# RUN apt-get install -y \
+#     python3-pyqt5.qtopengl \
+#     python3-pyqt5.qtquick \
+#     python3-pyqt5.qtmultimedia \
+#     # Install Qml
+#     qmlscene \
+#     qml-module-qtqml* \
+#     qml-module-qtquick* \
+#     qml-module-qmltermwidget \
+#     qml-module-qt-websockets \
+#     qml-module-qt3d \
+#     qml-module-qtaudioengine \
+#     qml-module-qtav \
+#     qml-module-qtbluetooth \
+#     qml-module-qtcharts \
+#     qml-module-qtdatavisualization \
+#     qml-module-qtgraphicaleffects \
+#     qml-module-qtgstreamer \
+#     qml-module-qtlocation \
+#     qml-module-qtmultimedia \
+#     qml-module-qtpositioning \
+#     # Libraries for multimedia
+#     libqt5multimedia5-plugins \
+#     gstreamer1.0-libav \
+#     gstreamer1.0-alsa \
+#     gstreamer1.0-plugins-bad \
+#     gstreamer1.0-plugins-base \
+#     gstreamer1.0-plugins-base-apps \
+#     gstreamer1.0-plugins-good \
+#     gstreamer1.0-plugins-ugly \
+#     alsa-base \
+#     alsa-utils
+
+
+
+# BN installs
+# RUN adduser $USER dialout
+
+RUN apt-get install -y ros-noetic-rosserial-arduino
+RUN apt-get install -y ros-noetic-rosserial-python
+RUN apt-get install -y ros-noetic-rosserial
+
+COPY ./docker/49-teensy.rules /etc/udev/rules.d/
+
+# Setup the work directory and entrypoint
+WORKDIR '/app'
+COPY ./docker/autosetup.sh /app/autosetup.sh
+
+ENTRYPOINT [ "/app/autosetup.sh" ]
