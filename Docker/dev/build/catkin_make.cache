@@ -1,0 +1,2 @@
+control:isb:lcd:message:sensors:sim:stratgr:stratpr:uix
+-DCATKIN_DEVEL_PREFIX=/app/dev/devel -DCMAKE_INSTALL_PREFIX=/app/dev/install -G Unix Makefiles

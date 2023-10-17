@@ -1,0 +1,203 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  extra_styling = False
+  geometry_hinting = True
+  inactive_color_offset = 0.804487179487
+  suppress_multiple_term_dialog = False
+  title_inactive_bg_color = "#d3d7cf"
+  title_inactive_fg_color = "#2e3436"
+  title_receive_bg_color = "#d3d7cf"
+  title_receive_fg_color = "#2e3436"
+  title_transmit_bg_color = "#75507b"
+  title_transmit_fg_color = "#000000"
+[keybindings]
+  close_term = <Primary>w
+  close_window = <Primary>q
+  cycle_next = <Primary>Tab
+  full_screen = <Ctrl><Shift>F11
+  hide_window = None
+  reset = <Primary><Shift>r
+  switch_to_tab_1 = None
+[layouts]
+  [[default]]
+    [[[child1]]]
+      command = ""
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+  [[simulation]]
+    [[[window0]]]
+      parent = ""
+      last_active_window = True
+      order = 0
+      title = Robot monitoring & simulation match
+      size = 1800, 920
+      type = Window
+    [[[notebook]]]
+      active_page = 0
+      parent = window0
+      labels = HN Nodes, BN Nodes, Monitoring
+      order = 0 
+      type = Notebook
+    [[[subframe1]]]
+      order = 0
+      parent = notebook
+      type = VPaned
+    [[[topscreen1]]]
+      parent = subframe1
+      order = 0
+      ratio = 0.5
+      type = HPaned
+    [[[botscreen1]]]
+      parent = subframe1
+      order = 1
+      ratio = 0.5
+      type = HPaned
+    [[[terminal1]]]
+      command = clear; make term CMD="./dev/src/uix/log/echo_logs.sh '/ACT'"
+      order = 0
+      title = [ACT] Action Node
+      parent = topscreen1
+      type = Terminal
+    [[[terminal2]]]
+      command = clear; make term CMD="./dev/src/uix/log/echo_logs.sh '/DEC'"
+      order = 1
+      title = [DEC] Decision Node
+      parent = topscreen1
+      type = Terminal
+    [[[terminal3]]]
+      command = clear; make term CMD="./dev/src/uix/log/echo_logs.sh '/DSP'"
+      order = 0
+      title = [DSP] Displacement Node
+      parent = botscreen1
+      type = Terminal
+    [[[terminal4]]]
+      command = clear; make sim_term
+      order = 1
+      title = Terminal
+      parent = botscreen1
+      type = Terminal      
+    [[[subframe2]]]
+      order = 1
+      parent = notebook
+      type = VPaned
+    [[[topscreen2]]]
+      order = 0
+      parent = subframe2
+      type = HPaned
+    [[[botscreen2]]]
+      order = 1
+      parent = subframe2
+      type = HPaned
+    [[[terminal5]]]
+      command = clear; make term CMD="./dev/src/uix/log/echo_logs.sh '/ACN'"
+      order = 0
+      title = [ACN] Actuator Node | SIM
+      parent = topscreen2
+      type = Terminal
+    [[[terminal6]]]
+      command = clear && make term CMD="./dev/src/uix/log/echo_logs.sh '/SEN'"
+      order = 1
+      title = [SSR] Sensors Nodes
+      parent = topscreen2
+      type = Terminal
+    [[[terminal7]]]
+      command = clear && make term CMD="cd dev/src/sim/br; ./SimulationBaseRoulante"
+      order = 0
+      title = [BRN] Base Roulante | SIM
+      parent = botscreen2
+      type = Terminal
+    [[[terminal8]]]
+      command = clear && make term CMD="./dev/src/uix/log/echo_logs.sh '/OBS'"
+      order = 1
+      title = [OBS] Obstacle Node | SIM
+      parent = botscreen2
+      type = Terminal 
+    [[[subframe3]]]
+      order = 1
+      parent = notebook
+      type = VPaned
+    [[[topscreen3]]]
+      order = 0
+      parent = subframe3
+      type = HPaned
+    [[[botscreen3]]]
+      order = 1
+      parent = subframe3
+      type = HPaned
+    [[[terminal9]]]
+      command = clear; make main CMD="source dev/devel/setup.bash; roslaunch scripts/gr_desktop.launch; $SHELL"
+      order = 0
+      title = Roscore
+      parent = topscreen3
+      type = Terminal
+    [[[terminal10]]]
+      command = clear && make term CMD="cd dev/; source devel/setup.bash; rosrun uix interface_plateau.py"
+      order = 1
+      title = Interface
+      parent = topscreen3
+      type = Terminal
+    [[[terminal11]]]
+      command = clear && sleep 3 && make term CMD="rostopic echo /game/score" 
+      order = 0
+      title = SCORE
+      parent = botscreen3
+      type = Terminal
+    [[[terminal12]]]
+      command = clear && sleep 3 && make term CMD="rostopic echo /teensy/obstacle_seen"
+      order = 1
+      title = SPEED
+      parent = botscreen3
+      type = Terminal 
+  [[test_disp]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_term = 0fd5b328-6501-45cb-a037-332341446069
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 378:146
+      size = 734, 451
+      title = etienne@etienne-HP-Notebook: ~
+      type = Window
+    [[[child1]]]
+      order = 0
+      parent = child0
+      position = 365
+      ratio = 0.500685871056
+      type = HPaned
+    [[[terminal2]]]
+      order = 0
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = 0fd5b328-6501-45cb-a037-332341446069
+    [[[terminal3]]]
+      order = 1
+      parent = child1
+      profile = default
+      type = Terminal
+      uuid = a23dd6f0-1e64-48d0-81e2-8ae2711446e6
+[plugins]
+[profiles]
+  [[default]]
+    audible_bell = True
+    background_color = "#2d0922"
+    cursor_color = "#aaaaaa"
+    cursor_shape = ibeam
+    exit_action = restart
+    foreground_color = "#ffffff"
+    icon_bell = False
+  [[backup]]
+    cursor_color = "#aaaaaa"
+  [[sim]]
+    audible_bell = True
+    background_color = "#15092d"
+    cursor_color = "#aaaaaa"
+    cursor_shape = ibeam
+    exit_action = restart
+    foreground_color = "#ffffff"
+    icon_bell = False

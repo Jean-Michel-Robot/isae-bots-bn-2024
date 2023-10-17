@@ -1,0 +1,8 @@
+prefix=/app/dev/devel
+
+Name: uix
+Description: Description of uix
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

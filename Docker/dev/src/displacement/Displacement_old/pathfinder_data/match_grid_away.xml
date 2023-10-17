@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<map>
+  <node id="p0" x="310" y="2710"/>
+  <node id="p1" x="675" y="2710"/>
+  <node id="p2" x="1040" y="2710"/>
+  <node id="p3" x="1375" y="2490"/>
+  <node id="p4" x="1375" y="2030"/>
+  <node id="p5" x="1040" y="2030"/>
+  <node id="p6" x="1710" y="2360"/>
+  <node id="p7" x="1710" y="1710"/>
+  <node id="p8" x="1040" y="2360"/>
+  <node id="p9" x="675" y="2400"/>
+  <node id="p10" x="310" y="2360"/>
+  <node id="p11" x="310" y="2100"/>
+  <node id="p12" x="430" y="1905"/>
+  <node id="p13" x="930" y="1905"/>
+  <node id="p14" x="1040" y="1710"/>
+  <connection p1="p0" p2="p1"/>
+  <connection p1="p0" p2="p10"/>
+  <connection p1="p1" p2="p2"/>
+  <connection p1="p1" p2="p9"/>
+  <connection p1="p2" p2="p8"/>
+  <connection p1="p2" p2="p3"/>
+  <connection p1="p3" p2="p8"/>
+  <connection p1="p3" p2="p6"/>
+  <connection p1="p4" p2="p8"/>
+  <connection p1="p4" p2="p6"/>
+  <connection p1="p4" p2="p7"/>
+  <connection p1="p4" p2="p14"/>
+  <connection p1="p5" p2="p8"/>
+  <connection p1="p5" p2="p13"/>
+  <connection p1="p6" p2="p7"/>
+  <connection p1="p7" p2="p14"/>
+  <connection p1="p8" p2="p9"/>
+  <connection p1="p9" p2="p10"/>
+  <connection p1="p10" p2="p11"/>
+  <connection p1="p11" p2="p12"/>
+  <connection p1="p12" p2="p13"/>
+  <connection p1="p13" p2="p14"/>
+</map>
