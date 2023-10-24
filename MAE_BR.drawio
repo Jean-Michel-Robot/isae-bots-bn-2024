@@ -1,0 +1,396 @@
+<mxfile host="app.diagrams.net" modified="2023-10-24T20:14:35.492Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="vWgqcdZuc1LVmWHeJbXs" version="22.0.6" type="github">
+  <diagram name="Page-1" id="hf3ef-Y2EWKjDb-jeJQz">
+    <mxGraphModel dx="1374" dy="795" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-17" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+          <mxGeometry x="190" y="970" width="470" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-19" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+          <mxGeometry x="690" y="970" width="440" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-1" target="uh5GhXnPHYMRlya4kCUN-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-1" value="&lt;div&gt;ROT_INITIALE&lt;/div&gt;&lt;div&gt;(rotation vers le&lt;/div&gt;&lt;div&gt;cap objectif)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="300" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-3" value="&lt;div&gt;Si orientation finale terminée&lt;/div&gt;&lt;div&gt;(dernier point)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-2" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-2" value="&lt;div&gt;ROT_FINALE&lt;/div&gt;&lt;div&gt;(rotation vers le &lt;br&gt;&lt;/div&gt;&lt;div&gt;cap objectif de fin)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="300" y="540" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-3" target="uh5GhXnPHYMRlya4kCUN-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-4" value="&lt;div&gt;Si pas d&#39;orientation finale&lt;/div&gt;&lt;div&gt;demandée (point transitoire)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;labelBackgroundColor=default;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-3" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-3" value="&lt;div&gt;AVANCE_RAMPE&lt;/div&gt;&lt;div&gt;(avance rectiligne)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="300" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-9" value="Ordre de déplacement" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-4" target="uh5GhXnPHYMRlya4kCUN-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-17" value="&lt;div&gt;Mise en Idle des axes&lt;/div&gt;&lt;div&gt;(moteurs inactifs)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-4" target="ONuOxpNwqjPkGdF1RgSP-6" edge="1">
+          <mxGeometry x="0.7108" y="3" relative="1" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwW5drimF2jROwmTF-nK-1" value="Si rotation unique demandée" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-1" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-4" value="&lt;div&gt;READY&lt;/div&gt;&lt;div&gt;(asservi sur la&lt;/div&gt;&lt;div&gt;position objectif)&lt;/div&gt;&lt;div&gt;/placer la pos objectif &lt;br&gt;&lt;/div&gt;&lt;div&gt;sur la pos du robot&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="660" y="350" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-19" value="&lt;div&gt;Les 2 bumpers activés&lt;/div&gt;&lt;div&gt;+ un certain timer pour bien se caler&lt;br&gt;&lt;/div&gt;&lt;div&gt;/reset coords sur l&#39;axe concerné&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-5" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry x="-0.0496" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-5" value="&lt;div&gt;RECALAGE&lt;/div&gt;&lt;div&gt;(reculer droit et détecter le contact aux bumpers)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="1010" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-20" value="&lt;div&gt;Le robot est arrêté &lt;br&gt;&lt;/div&gt;&lt;div&gt;(vitesse de consigne nulle)&lt;br&gt;&lt;/div&gt;&lt;div&gt;/placer le point objectif sur &lt;br&gt;&lt;/div&gt;&lt;div&gt;la position du robot&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-6" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry x="-0.4435" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JwW5drimF2jROwmTF-nK-3" value="&lt;div&gt;From any state&lt;/div&gt;&lt;div&gt;except IDLE&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="uh5GhXnPHYMRlya4kCUN-6" edge="1">
+          <mxGeometry x="-1" y="3" relative="1" as="geometry">
+            <mxPoint x="1120" y="557.5" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-6" value="&lt;div&gt;EMERGENCY_BRAKE&lt;/div&gt;&lt;div&gt;(freinage max)&lt;/div&gt;&lt;div&gt;-&amp;gt; commande directe des moteurs ? Sinon l&#39;asserv pourrait ne pas suivre&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="890" y="515" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-7" value="&lt;div&gt;STOP&lt;/div&gt;&lt;div&gt;(moteurs bloqués)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="740" y="673" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-8" value="&lt;div&gt;ERREUR&lt;/div&gt;&lt;div&gt;(de la teensy ou de l&#39;Odrive, on bloque les moteurs)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="300" y="630" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="uh5GhXnPHYMRlya4kCUN-9" value="&lt;div&gt;RECALAGE_TERMINE ?&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="870" y="750" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-13" value="Ordre de recalage" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="uh5GhXnPHYMRlya4kCUN-4" target="uh5GhXnPHYMRlya4kCUN-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-15" value="&lt;div&gt;Mise en close loop des axes&lt;/div&gt;&lt;div&gt;(s&#39;ils sont bien en Idle)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="ONuOxpNwqjPkGdF1RgSP-6" target="uh5GhXnPHYMRlya4kCUN-4" edge="1">
+          <mxGeometry x="-0.3253" y="13" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ONuOxpNwqjPkGdF1RgSP-6" value="IDLE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="670" y="100" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-8" value="-&amp;gt; MotorStop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="890" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-31" value="&lt;div&gt;Upon Alarm&lt;/div&gt;&lt;div&gt;(CallFirefighters)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-1" target="ciBssF_R8I6i2YH_fjGX-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-35" value="&lt;div&gt;Upon Call&lt;/div&gt;&lt;div&gt;if dest_floor !=&lt;/div&gt;&lt;div&gt;event floor&lt;/div&gt;&lt;div&gt;(&lt;br&gt;&lt;/div&gt;&lt;div&gt;-&amp;gt; MotorUp OR&lt;/div&gt;&lt;div&gt;-&amp;gt; MotorDown&lt;/div&gt;&lt;div&gt;)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-1" target="ciBssF_R8I6i2YH_fjGX-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-1" value="&lt;div&gt;&lt;b&gt;ELEVATOR_IDLE&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : -&amp;gt; MotorStop&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="470" y="1000" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-24" value="direction = 0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="980" y="880" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-40" value="Upon MotorUp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-3" target="ciBssF_R8I6i2YH_fjGX-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-43" value="Upon MotorDown" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-3" target="ciBssF_R8I6i2YH_fjGX-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-3" value="&lt;div&gt;&lt;b&gt;MOTOR_STOPPED&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : direction = 0&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="920" y="990" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-32" value="&lt;div&gt;Upon Alarm&lt;/div&gt;&lt;div&gt;(CallFirefighters)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-4" target="ciBssF_R8I6i2YH_fjGX-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-33" value="&lt;div&gt;Upon FloorSensor&lt;/div&gt;&lt;div&gt;if expected floor is not &lt;br&gt;&lt;/div&gt;&lt;div&gt;the event floor&lt;/div&gt;&lt;div&gt;(CallMaintenance)&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-4" target="ciBssF_R8I6i2YH_fjGX-5" edge="1">
+          <mxGeometry x="-0.2667" y="10" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-34" value="&lt;div&gt;Upon FloorSensor&lt;/div&gt;&lt;div&gt;if expected floor is &lt;br&gt;&lt;/div&gt;&lt;div&gt;the event floor&lt;/div&gt;&lt;div&gt;()&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-4" target="ciBssF_R8I6i2YH_fjGX-1" edge="1">
+          <mxGeometry x="0.1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-4" value="&lt;div&gt;&lt;b&gt;ELEVATOR_MOVING&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="270" y="1115" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-5" value="&lt;div&gt;&lt;b&gt;ELEVATOR_PANIC&lt;/b&gt;&lt;/div&gt;&lt;div&gt;entry : -&amp;gt; MotorStop&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="450" y="1230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-25" value="Upon MotorStop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-6" target="ciBssF_R8I6i2YH_fjGX-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-42" value="Upon MotorDown" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-6" target="ciBssF_R8I6i2YH_fjGX-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-6" value="&lt;div&gt;&lt;b&gt;MOTOR_UP&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : direction = 1&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="750" y="1200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-26" value="Upon MotorStop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-7" target="ciBssF_R8I6i2YH_fjGX-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-41" value="Upon MotorUp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-7" target="ciBssF_R8I6i2YH_fjGX-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-7" value="&lt;div&gt;&lt;b&gt;MOTOR_DOWN&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : direction = -1&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="980" y="1200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-9" value="&lt;div&gt;FloorEvent&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- int floor&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="1400" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;endArrow=block;endFill=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-10" target="ciBssF_R8I6i2YH_fjGX-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-10" value="&lt;div&gt;Call&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="1380" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;endArrow=block;endFill=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-11" target="ciBssF_R8I6i2YH_fjGX-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-11" value="FloorSensor" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="1450" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-12" value="Alarm" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="1510" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-18" value="&lt;div align=&quot;left&quot;&gt;- int initial_floor = 0&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- int current_floor&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- int dest_floor&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="200" y="1000" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-20" value="&lt;div align=&quot;left&quot;&gt;- int direction&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;public :&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- int getDirection()&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="710" y="990" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-21" value="MotorUp" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="760" y="1380" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-22" value="MotorDown" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="760" y="1450" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-23" value="MotorStop" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="760" y="1520" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-27" value="&lt;div&gt;Ici on n&#39;a pas de react dans les états eux-mêmes, juste le react par défaut pour n&#39;importe quel state&lt;/div&gt;&lt;div&gt;C&#39;est suffisant ici car le react ne dépend pas de l&#39;état dans lequel on se trouve&lt;br&gt; &lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="860" y="1370" width="250" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-28" value="&lt;div&gt;Les reacts ont une def par défaut qui est celle d&#39;ignorer les events Call et FloorSensor&lt;/div&gt;&lt;div&gt;Par contre le react par défaut sur l&#39;event Alarm est de transitionner vers Panic et de lancer CallFirefighters&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Le react au Call est dans IDLE, qui change dest_floor, envoie un event MotorUp ou MotorDown, et transitionne vers MOVING&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Le react au FloorSensor est dans MOVING, si le signal correspond au FloorSensor.floor on transitionne vers IDLE, sinon on transitionne vers Panic&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="480" y="1325" width="210" height="245" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-46" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;if goalType is TRANS&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#00CC00;" parent="1" source="ciBssF_R8I6i2YH_fjGX-47" target="ciBssF_R8I6i2YH_fjGX-52" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-47" value="&lt;div&gt;&lt;b&gt;INIT_ROT&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(rotation pour s&#39;aligner sur la traj)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="2140" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-48" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;if goalType is FINAL&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeColor=#00CC00;" parent="1" source="ciBssF_R8I6i2YH_fjGX-49" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-49" value="&lt;div&gt;&lt;b&gt;FINAL_ROT&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(rotation vers le &lt;br&gt;&lt;/div&gt;&lt;div&gt;cap objectif)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="2140" y="530" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-50" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;and goalType is FINAL&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#00CC00;" parent="1" source="ciBssF_R8I6i2YH_fjGX-52" target="ciBssF_R8I6i2YH_fjGX-49" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2200" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-51" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;&lt;div&gt;if goalType is TRANS&lt;/div&gt;&lt;div&gt;or REVERSE&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;labelBackgroundColor=default;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#00CC00;" parent="1" source="ciBssF_R8I6i2YH_fjGX-52" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry x="0.1088" y="-5" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="2580" y="405" />
+              <mxPoint x="2580" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-52" value="&lt;div&gt;&lt;b&gt;FORWARD&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(avance rectiligne)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="2140" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-53" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;if goalType == ORIENT&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;strokeColor=#00CC00;" parent="1" source="ciBssF_R8I6i2YH_fjGX-47" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry x="-0.0732" relative="1" as="geometry">
+            <mxPoint x="2850" y="300" as="targetPoint" />
+            <mxPoint x="2710" y="200" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="2500" y="175" />
+              <mxPoint x="2500" y="330" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-54" value="Upon BrSetToIdleEvent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#171717;" parent="1" source="ciBssF_R8I6i2YH_fjGX-55" target="ciBssF_R8I6i2YH_fjGX-57" edge="1">
+          <mxGeometry x="0.2959" y="-12" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2wvSedpEUKUVcXHPRgGq-1" value="&lt;div&gt;Upon OrderEvent&lt;/div&gt;&lt;div&gt;if goalType is ORIENT, &lt;br&gt;&lt;/div&gt;&lt;div&gt;TRANS or FINAL&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeColor=#CC00CC;" parent="1" source="ciBssF_R8I6i2YH_fjGX-55" target="ciBssF_R8I6i2YH_fjGX-47" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2750" y="280" />
+              <mxPoint x="2670" y="280" />
+              <mxPoint x="2670" y="145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Cgg4pRgrw1nAHNjQ0Tcx-1" value="&lt;div&gt;Upon OrderEvent&lt;/div&gt;&lt;div&gt;if goalType is REVERSE&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeColor=#CC00CC;exitX=0;exitY=0.5;exitDx=0;exitDy=0;dashed=1;" parent="1" source="ciBssF_R8I6i2YH_fjGX-55" target="ciBssF_R8I6i2YH_fjGX-52" edge="1">
+          <mxGeometry x="0.3672" relative="1" as="geometry">
+            <mxPoint x="2700" y="390" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="2400" y="345" />
+              <mxPoint x="2400" y="375" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-55" value="&lt;div&gt;&lt;b&gt;READY&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(asservi sur la&lt;/div&gt;&lt;div&gt;position objectif)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="2720" y="315" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-56" value="Upon BrGetReadyEvent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;strokeColor=#171717;" parent="1" source="ciBssF_R8I6i2YH_fjGX-57" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry x="0.5111" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-58" value="INIT" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;" parent="1" target="ciBssF_R8I6i2YH_fjGX-57" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2795" y="20" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zbf--YNUXzCRcsGXJnKa-1" value="&lt;div&gt;Upon BrSetToIdleEvent&lt;/div&gt;&lt;div&gt;from any other state&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-57" edge="1">
+          <mxGeometry x="-0.9995" y="-2" relative="1" as="geometry">
+            <mxPoint x="2640" y="98" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-57" value="&lt;div&gt;&lt;b&gt;IDLE&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(moteurs inactifs)&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="2730" y="68" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-59" value="&lt;div&gt;BumperEvent&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- bool isLeft&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;glass=0;imageAspect=1;fillOpacity=100;strokeOpacity=100;textOpacity=20;" parent="1" vertex="1">
+          <mxGeometry x="2530" y="630" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-60" value="StopEvent" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="3848" y="750" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-62" value="if w == 3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="ciBssF_R8I6i2YH_fjGX-61" target="ciBssF_R8I6i2YH_fjGX-60" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-61" value="&lt;div&gt;OrderEvent&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- float x&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- float y&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- float theta&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- int w&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="2640" y="630" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-63" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="3808" y="807" as="sourcePoint" />
+            <mxPoint x="3808" y="27" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-64" value="&lt;div&gt;&lt;b&gt;MOTOR_STOPPED&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(motors blocked)&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="3838" y="417" width="160" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-66" value="&lt;div&gt;&lt;b&gt;MOTOR_RUNNING&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(axis state is closed_loop)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="3958" y="260" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-67" value="&lt;div&gt;&lt;b&gt;MOTOR_ERROR&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : (de manière à faire repartir l&#39;axe)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="4028" y="495" width="160" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-77" value="Asserv" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-68" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2439.9999999999995" y="725" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-68" value="&lt;div&gt;GoalReachedEvent&lt;/div&gt;&lt;div&gt;&amp;nbsp;- int objType&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="2495" y="700" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-69" value="x2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=32;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="4188" y="360" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-70" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3838" y="20" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-70" value="&lt;div&gt;&lt;b&gt;MOTOR_IDLE&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(axis idle state, no pwm)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="3878" y="60" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-72" value="&lt;div&gt;&lt;b&gt;MOTOR_CALIB&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(during calibration procedure)&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;entry : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;exit : &lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="4058" y="90" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-81" value="OdriveSerial" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="ciBssF_R8I6i2YH_fjGX-79" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2400" y="794.8965517241379" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-79" value="&lt;div&gt;ErrorEvent&lt;/div&gt;&lt;div&gt;- int errorCode&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="2495" y="770" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-82" value="CalibrationEvent" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="3838" y="683" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-83" value="&lt;div align=&quot;left&quot;&gt;- struct axisStates&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- led&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="1970" y="23" width="120" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="ciBssF_R8I6i2YH_fjGX-84" value="&lt;div align=&quot;left&quot;&gt;- int axisState&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="4255" y="50" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="aEUfXTGbczbKFSO1ukaV-2" value="&lt;div&gt;Upon GoalReachedEvent&lt;/div&gt;&lt;div&gt;if goalType == RECAL&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Les 2 bumpers activés&lt;/div&gt;&lt;div&gt;+ un certain timer pour bien se caler&lt;br&gt;&lt;/div&gt;&lt;div&gt;/reset coords sur l&#39;axe concerné&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#00CC00;" parent="1" source="aEUfXTGbczbKFSO1ukaV-3" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry x="-0.097" y="22" relative="1" as="geometry">
+            <mxPoint x="12" y="20" as="offset" />
+            <mxPoint x="2890" y="355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aEUfXTGbczbKFSO1ukaV-3" value="&lt;div&gt;&lt;b&gt;RECAL_DETECT&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(reculer droit en commande et détecter le contact aux bumpers)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="3120" y="360" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aEUfXTGbczbKFSO1ukaV-4" value="&lt;div&gt;Upon OrderEvent&lt;/div&gt;&lt;div&gt;if goalType is RECAL&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#CC00CC;" parent="1" source="ciBssF_R8I6i2YH_fjGX-55" target="gb6GSMb26pJpbT5CDVdX-4" edge="1">
+          <mxGeometry y="10" relative="1" as="geometry">
+            <mxPoint x="2890" y="325" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gb6GSMb26pJpbT5CDVdX-1" value="&lt;div&gt;Le robot est arrêté &lt;br&gt;&lt;/div&gt;&lt;div&gt;(vitesse de consigne nulle)&lt;br&gt;&lt;/div&gt;&lt;div&gt;/placer le point objectif sur &lt;br&gt;&lt;/div&gt;&lt;div&gt;la position du robot&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="gb6GSMb26pJpbT5CDVdX-2" target="ciBssF_R8I6i2YH_fjGX-55" edge="1">
+          <mxGeometry x="-0.4435" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="2960" y="421" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gb6GSMb26pJpbT5CDVdX-2" value="&lt;div&gt;EMERGENCY_BRAKE&lt;/div&gt;&lt;div&gt;(freinage max)&lt;/div&gt;&lt;div&gt;-&amp;gt; commande directe des moteurs ? Sinon l&#39;asserv pourrait ne pas suivre&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="2980" y="490.5" width="160" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="gb6GSMb26pJpbT5CDVdX-3" value="&lt;div&gt;Upon BrEmergencyBrakeEvent&lt;br&gt;&lt;/div&gt;&lt;div&gt;From any state&lt;/div&gt;&lt;div&gt;except IDLE&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#e01b24;" parent="1" target="gb6GSMb26pJpbT5CDVdX-2" edge="1">
+          <mxGeometry x="-1" y="11" relative="1" as="geometry">
+            <mxPoint x="3240" y="535" as="sourcePoint" />
+            <mxPoint x="10" y="-6" as="offset" />
+            <mxPoint x="3210" y="532.98" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hW8lF-K3xAFudG9F_H8q-1" value="&lt;div&gt;if one bumper clicked OR&lt;/div&gt;&lt;div&gt;the distance to the wall is small enough&lt;br&gt;&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="gb6GSMb26pJpbT5CDVdX-4" target="aEUfXTGbczbKFSO1ukaV-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gb6GSMb26pJpbT5CDVdX-4" value="&lt;div&gt;&lt;b&gt;RECAL_ASSERV&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;~ FORWARD&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;(reculer droit en asserv)&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="3120" y="190" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hW8lF-K3xAFudG9F_H8q-2" value="&lt;div&gt;&lt;b&gt;ASSERV&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;IDLE&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;ACTIVE&lt;/div&gt;&lt;div&gt;BYPASSED&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+          <mxGeometry x="3070" y="36.5" width="130" height="91.5" as="geometry" />
+        </mxCell>
+        <mxCell id="YLS4Elkw91ksrik68dw--1" value="&lt;div&gt;- Il faut un mode REVERSE qui ne transitionne pas directement sur FORWARD mais qui passe par InitRot et FinalRot (donc analogue à FINAL mais en forçant la marche arrière)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- EmergencyBrakeEvent doit donner une rampe pour que l&#39;asserv puisse suivre&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Fusionner RECAL_ASSERV avec un enchaînement de INIT_ROT&amp;nbsp; et de FORWARD (c&#39;est en fait la même chose) et ensuite transitionner vers RECAL_DETECT quand on a détecté la distance de recalage (à régler le plus près possible du mur, en fonction de notre précision)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Implémenter de manière plus clean le setToIdle de la BR ?&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Faire en sorte que la MAE soit tout le temps réinitialisable (en passage à IDLE)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Utiliser les fonctions exit() de la MAE ?&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1640" y="140" width="460" height="240" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
