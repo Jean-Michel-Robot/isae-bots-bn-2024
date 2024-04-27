@@ -287,7 +287,7 @@ namespace bezier
             bool equals = true;
             for (size_t axis = 0; axis < Vec2::size; axis++)
             {
-                if (std::abs((*this)[axis] - other[axis]) >= internal::fuzzyEpsilon)
+                if (abs((*this)[axis] - other[axis]) >= internal::fuzzyEpsilon)
                 {
                     equals = false;
                     break;
@@ -319,7 +319,7 @@ namespace bezier
 
         bool fuzzyEquals(const ExtremeValue& other) const
         {
-            return axis == other.axis && std::abs(t - other.t) < internal::fuzzyEpsilon;
+            return axis == other.axis && abs(t - other.t) < internal::fuzzyEpsilon;
         }
 
         const double t;
@@ -791,13 +791,15 @@ namespace bezier
             double t = 0.5;
             double s = 0.5; // Binary search split value
 
+            double diff = 0.0;
+
             size_t iter = 0;
             while (iter < maxDepth)
             {
                 auto split = this->split(t);
                 double low  = split.left.length();
                 double high = split.right.length();
-                double diff = low - high;
+                diff = low - high;
 
                 if (std::abs(diff) <= epsilon)
                 {
