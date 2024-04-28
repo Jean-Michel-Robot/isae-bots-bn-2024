@@ -11,6 +11,7 @@ enum TrajectoryType
     TRAJ_UNDEF = 0,
     TRAJ_LINEAR = 1,
     TRAJ_ROTATION = 2,
+    TRAJ_BEZIER = 3,
 };
 
 class Trajectory
