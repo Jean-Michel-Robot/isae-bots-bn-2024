@@ -30,8 +30,9 @@ void setup()
   Serial.begin(115200);
   moteur_g.setup();
   moteur_d.setup();
-  /// moteur_d.set_speed(-255);
-  // moteur_g.set_speed(-255);
+
+  // moteur_d.set_speed(-255);
+  //   moteur_g.set_speed(-255);
   asserv.setup();
   machine_etats.setup();
 
@@ -43,11 +44,10 @@ void loop()
   // encoder_L.loop();
   // encoder_R.loop();
   irsensor.loop();
-  // machine_etats.loop();
+
   mesure_pos.loop();
   // asserv.loop();
   machine_etats.loop();
-  //    moteur_g.loop();
-  //    moteur_d.loop();
-  //    servo.loop();
+  //      moteur_g.loop();
+  //      moteur_d.loop();
 }

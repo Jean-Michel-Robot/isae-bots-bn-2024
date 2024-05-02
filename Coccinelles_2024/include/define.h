@@ -5,11 +5,11 @@
 ENCODEURS
 
 */
-#define CLK_L 16 // CLK RIGHT  ENCODER
-#define DT_L 17  // DT RIGHT Encoder
+#define CLK_L 18 // CLK RIGHT  ENCODER
+#define DT_L 5   // DT RIGHT Encoder
 
-#define CLK_R 18 // CLK LEFT  ENCODER
-#define DT_R 5   // DT LEFT Encoder
+#define CLK_R 17 // CLK LEFT  ENCODER
+#define DT_R 16  // DT LEFT Encoder
 
 /*
 MOTEURS

@@ -43,7 +43,7 @@ void Machine_etats::loop()
             }
             if ((m_p_ir_sensor->m_minimum_distance) <= DISTANCE_MIN)
             {
-                etat = AVOID;
+                etat = STOP;
             }
             break;
         case AVOID:

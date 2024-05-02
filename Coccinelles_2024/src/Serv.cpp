@@ -1,13 +1,15 @@
 
 #include <Serv.h>
 
-Serv::Serv(int pin){
-    this->servo = Servo();
-    this->pin = pin ;
+Serv::Serv(int pin)
+{
+  this->servo = Servo();
+  this->pin = pin;
 }
 
-void Serv::blink(long temps_blink , int angle1  , int angle2){
-    if (millis() - temps_servo >temps_blink )
+void Serv::blink(long temps_blink, int angle1, int angle2)
+{
+  if (millis() - temps_servo > temps_blink)
   {
     if (etat == angle1)
     {
@@ -27,13 +29,14 @@ void Serv::setup()
 {
   temps_servo = millis();
   servo.attach(pin);
-  
 
   etat = 120;
-  servo.write(25);
-
+  servo.write(180);
 }
 
-void Serv::loop(){
-    blink(200,90,150);
+void Serv::loop()
+{
+  servo.write(150);
+  delay(1000);
+  servo.write(80);
 }
