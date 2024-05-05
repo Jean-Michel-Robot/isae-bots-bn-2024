@@ -49,7 +49,7 @@ void Mesure_pos::loop()
 
         // Serial.println("Mesure_r = " + String(mesure_r));
         // Serial.println("Mesure_l= " + String(mesure_l));
-        // Maj des mesures et temps ;
+        //    Maj des mesures et temps ;
         mesure_r = m_p_encoder_R->mesure();
         mesure_l = m_p_encoder_L->mesure();
         m_time = millis();

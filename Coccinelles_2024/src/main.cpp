@@ -11,7 +11,7 @@
 #include <Machine_etats.h>
 
 #define IR_PIN 4
-// ne sert à rien pour le moment
+//  ne sert à rien pour le moment
 
 Irsensor irsensor = Irsensor(IR_PIN);
 Moteur moteur_d = Moteur(EN_R, IN1_R, IN2_R);
@@ -27,12 +27,14 @@ void setup()
 {
   irsensor.setup();
   mesure_pos.setup();
+  //   encoder_L.setup();
+  //    encoder_R.setup();
   Serial.begin(115200);
   moteur_g.setup();
   moteur_d.setup();
 
-  // moteur_d.set_speed(-255);
-  //   moteur_g.set_speed(-255);
+  // moteur_d.set_speed(175);
+  // moteur_g.set_speed(175);
   asserv.setup();
   machine_etats.setup();
 
@@ -44,10 +46,9 @@ void loop()
   // encoder_L.loop();
   // encoder_R.loop();
   irsensor.loop();
-
   mesure_pos.loop();
-  // asserv.loop();
+  //   asserv.loop();
   machine_etats.loop();
-  //      moteur_g.loop();
-  //      moteur_d.loop();
+  //                    moteur_g.loop();
+  //                     moteur_d.loop();
 }

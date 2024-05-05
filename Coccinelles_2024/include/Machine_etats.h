@@ -9,7 +9,7 @@
 
 #define K 1
 #define dt 10
-#define time_global 100000000
+#define time_global 10000
 
 #define SPEED 20
 #define DISTANCE_MIN 30 // Distance minimale pour éviter un obstacle en mm
