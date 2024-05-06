@@ -2,6 +2,7 @@
 #include "Doors.hpp"
 #include "ClampElevator.hpp"
 #include "Clamp.hpp"
+#include "ClampHoriz.hpp"
 #include "a_define.hpp"
 #include "Ultrasonic.hpp"
 #include <ros.h>
@@ -17,6 +18,9 @@ ClampElevatorROS clampelevatorROS = ClampElevatorROS(&clampelevator, &nh);
 Clamp clamp = Clamp();
 ClampROS clampROS = ClampROS(&clamp, &nh);
 
+ClampHoriz clamphoriz = ClampHoriz(); 
+ClampHorizROS clamphorizROS = ClampHorizROS(&clamphoriz, &nh);  
+
 Ultrasonic ultrasonic_l = Ultrasonic(ULTRASONIC_L_TRIG_PIN, ULTRASONIC_L_ECHO_PIN);
 Ultrasonic ultrasonic_r = Ultrasonic(ULTRASONIC_R_TRIG_PIN, ULTRASONIC_R_ECHO_PIN);
 
@@ -30,6 +34,8 @@ void setup() {
   doorsROS.setup();
   clampelevatorROS.setup();
   clampROS.setup();
+  clamphorizROS.setup();
+
   ultrasonicROS.setup();
 
 
@@ -40,6 +46,8 @@ void loop() {
   doorsROS.loop();
   clampelevatorROS.loop();
   clampROS.loop();
+  clamphorizROS.loop();
+
   ultrasonicROS.loop();
   
 

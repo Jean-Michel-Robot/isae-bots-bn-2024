@@ -33,7 +33,7 @@ ClampElevator* ClampElevatorROS::m_p_clampelevator = NULL;
 ros::NodeHandle* ClampElevatorROS::m_p_nh = NULL;
 
 ClampElevatorROS::ClampElevatorROS(ClampElevator* p_clampelevator, ros::NodeHandle* p_nh) :
-    m_sub("/strat/clampelevator", subCallback){
+    m_sub("/act/order/elevator", subCallback){
 
     m_p_clampelevator = p_clampelevator;
     m_p_nh = p_nh;
@@ -42,7 +42,7 @@ ClampElevatorROS::ClampElevatorROS(ClampElevator* p_clampelevator, ros::NodeHand
 
 void ClampElevatorROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_nh->loginfo("[CLAMPELEVATOR] Order");
-    if (stateVal.data == 0) m_p_clampelevator->setState(ClampElevatorState::UP);
+    if (stateVal.data == 1) m_p_clampelevator->setState(ClampElevatorState::UP);
     else               m_p_clampelevator->setState(ClampElevatorState::DOWN);
 }
 

@@ -31,7 +31,7 @@ Clamp* ClampROS::m_p_clamp = NULL;
 ros::NodeHandle* ClampROS::m_p_nh = NULL;
 
 ClampROS::ClampROS(Clamp* p_clamp, ros::NodeHandle* p_nh) :
-    m_sub("/strat/clamp", subCallback){
+    m_sub("/act/order/clamp", subCallback){
 
     m_p_clamp = p_clamp;
     m_p_nh = p_nh;
@@ -40,7 +40,7 @@ ClampROS::ClampROS(Clamp* p_clamp, ros::NodeHandle* p_nh) :
 
 void ClampROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_nh->loginfo("[CLAMP] Order");
-    if (stateVal.data == 0) m_p_clamp->setState(ClampState::CLOSED);
+    if (stateVal.data == 1) m_p_clamp->setState(ClampState::CLOSED);
     else               m_p_clamp->setState(ClampState::OPEN);
 }
 

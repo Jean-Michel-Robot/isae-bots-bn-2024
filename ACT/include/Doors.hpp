@@ -42,14 +42,16 @@ class DoorsROS{
         static Doors* m_p_doors;
         static ros::NodeHandle* m_p_nh;
 
-        ros::Subscriber<std_msgs::Int16> m_sub;
+        ros::Subscriber<std_msgs::Int16> m_subLeft;
+        ros::Subscriber<std_msgs::Int16> m_subRight;
 
 
     public:
 
         DoorsROS(Doors* m_p_doors, ros::NodeHandle* p_nh);
 
-        static void subCallback(const std_msgs::Int16& stateVal);
+        static void subCallbackLeft(const std_msgs::Int16& stateVal);
+        static void subCallbackRight(const std_msgs::Int16& stateVal);
 
         void setup();
         void loop();
