@@ -45,6 +45,17 @@ class DoorsROS{
         ros::Subscriber<std_msgs::Int16> m_subLeft;
         ros::Subscriber<std_msgs::Int16> m_subRight;
 
+        ros::Publisher m_pubLeft;
+        ros::Publisher m_pubRight;
+
+        std_msgs::Int16 m_msg_left;
+        static long m_callback_time_left;
+        static int m_callback_value_left;
+
+        std_msgs::Int16 m_msg_right;
+        static long m_callback_time_right;
+        static int m_callback_value_right;
+
 
     public:
 

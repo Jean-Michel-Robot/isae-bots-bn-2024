@@ -29,12 +29,17 @@ void ClampHoriz::loop(){
 
 ClampHoriz* ClampHorizROS::m_p_clamphoriz = NULL;
 ros::NodeHandle* ClampHorizROS::m_p_nh = NULL;
+long ClampHorizROS::m_callback_time = 0;
+int ClampHorizROS::m_callback_value = 0;
 
 ClampHorizROS::ClampHorizROS(ClampHoriz* p_clamphoriz, ros::NodeHandle* p_nh) :
-    m_sub("/act/order/doors", subCallback){
+    m_sub("/act/order/doors", subCallback),
+    m_pub("/act/callback/doors", &m_msg){
 
     m_p_clamphoriz = p_clamphoriz;
     m_p_nh = p_nh;
+
+    m_callback_value = -1;
 
 }
 
@@ -42,6 +47,8 @@ void ClampHorizROS::subCallback(const std_msgs::Int16& stateVal){
     m_p_nh->loginfo("[CLAMPHORIZ] Order");
     if (stateVal.data == 2) m_p_clamphoriz->setState(ClampHorizState::CLOSED);
     else               m_p_clamphoriz->setState(ClampHorizState::OPEN);
+    m_callback_value = stateVal.data;
+    m_callback_time = millis();
 }
 
 void ClampHorizROS::setup(){
@@ -53,5 +60,11 @@ void ClampHorizROS::setup(){
 
 void ClampHorizROS::loop(){
     m_p_clamphoriz->loop();
+
+    if(m_callback_value != -1 && millis() - m_callback_time > CALLBACK_INTERVAL){
+        m_msg.data = m_callback_value;
+        m_pub.publish(&m_msg);
+        m_callback_value = -1;
+    }
 }
 

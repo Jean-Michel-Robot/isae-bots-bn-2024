@@ -40,6 +40,11 @@ class ClampROS{
         static ros::NodeHandle* m_p_nh;
 
         ros::Subscriber<std_msgs::Int16> m_sub;
+        ros::Publisher m_pub;
+
+        std_msgs::Int16 m_msg;
+        static long m_callback_time;
+        static int m_callback_value;
 
 
     public:
