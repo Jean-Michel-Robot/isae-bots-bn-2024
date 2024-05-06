@@ -3,28 +3,45 @@
 #include "ClampElevator.hpp"
 #include "Clamp.hpp"
 #include "a_define.hpp"
+#include "Ultrasonic.hpp"
 #include <ros.h>
-
-Doors doors;
-ClampElevator clampelevator;
-Clamp clamp;
 
 ros::NodeHandle nh;
 
+Doors doors = Doors();
+DoorsROS doorsROS = DoorsROS(&doors, &nh);
+
+ClampElevator clampelevator = ClampElevator();
+ClampElevatorROS clampelevatorROS = ClampElevatorROS(&clampelevator, &nh);
+
+Clamp clamp = Clamp();
+ClampROS clampROS = ClampROS(&clamp, &nh);
+
+Ultrasonic ultrasonic_l = Ultrasonic(ULTRASONIC_L_TRIG_PIN, ULTRASONIC_L_ECHO_PIN);
+Ultrasonic ultrasonic_r = Ultrasonic(ULTRASONIC_R_TRIG_PIN, ULTRASONIC_R_ECHO_PIN);
+
+UltrasonicROS ultrasonicROS = UltrasonicROS(&ultrasonic_l, &ultrasonic_r, &nh);
+
+
 void setup() {
 
-  doors.setup();
-  clampelevator.setup();
-  clamp.setup();
-  
   nh.initNode();
+
+  doorsROS.setup();
+  clampelevatorROS.setup();
+  clampROS.setup();
+  ultrasonicROS.setup();
+
+
 }
 
 void loop() {
 
-  doors.loop();
-  clampelevator.loop();
-  clamp.loop();
+  doorsROS.loop();
+  clampelevatorROS.loop();
+  clampROS.loop();
+  ultrasonicROS.loop();
+  
 
   nh.spinOnce();
 }
