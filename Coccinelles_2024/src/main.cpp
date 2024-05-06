@@ -49,6 +49,6 @@ void loop()
   mesure_pos.loop();
   //   asserv.loop();
   machine_etats.loop();
-  //                    moteur_g.loop();
-  //                     moteur_d.loop();
+  // moteur_g.loop();
+  // moteur_d.loop();
 }
