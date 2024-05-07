@@ -83,6 +83,9 @@ void DoorsROS::setup(){
     m_p_nh->subscribe(m_subLeft);
     m_p_nh->subscribe(m_subRight);
 
+    m_p_nh->advertise(m_pubLeft);
+    m_p_nh->advertise(m_pubRight);
+
     m_p_nh->loginfo("[ARMS] Setup");
 }
 

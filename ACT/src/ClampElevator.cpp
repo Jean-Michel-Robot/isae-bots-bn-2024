@@ -56,6 +56,8 @@ void ClampElevatorROS::setup(){
     m_p_clampelevator->setup();
     m_p_nh->subscribe(m_sub);
 
+    m_p_nh->advertise(m_pub);
+    
     m_p_nh->loginfo("[CLAMPELEVATOR] Setup");
 }
 

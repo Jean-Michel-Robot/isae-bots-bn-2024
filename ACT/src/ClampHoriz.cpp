@@ -55,6 +55,8 @@ void ClampHorizROS::setup(){
     m_p_clamphoriz->setup();
     m_p_nh->subscribe(m_sub);
 
+    m_p_nh->advertise(m_pub);
+
     m_p_nh->loginfo("[CLAMPHORIZ] Setup");
 }
 
