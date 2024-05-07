@@ -5,7 +5,7 @@
 #include <Encodeur.h>
 #include <Mesure_pos.h>
 #include <Serv.h>
-#include <define.h>
+#include <define_ewan.h>
 #include <Asserv.h>
 #include <Irsensor.h>
 #include <Machine_etats.h>
@@ -36,7 +36,7 @@ void setup()
   // moteur_d.set_speed(175);
   // moteur_g.set_speed(175);
   asserv.setup();
-  machine_etats.setup();
+  // machine_etats.setup();
 
   // put your setup code here, to run once:
 }
@@ -47,8 +47,8 @@ void loop()
   // encoder_R.loop();
   irsensor.loop();
   mesure_pos.loop();
-  //   asserv.loop();
-  machine_etats.loop();
-  // moteur_g.loop();
-  // moteur_d.loop();
+  // asserv.loop();
+  //   machine_etats.loop();
+  //   moteur_g.loop();
+  //   moteur_d.loop();
 }
