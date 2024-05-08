@@ -12,11 +12,39 @@
 #define time_global 10000
 #define time_sensor 8000
 
-#define SPEED 20
-#define DISTANCE_MIN 30 // Distance minimale pour éviter un obstacle en mm
+#define SPEED 25
+#define DISTANCE_MIN 80 // Distance minimale pour éviter un obstacle en mm
 
-#define POS_INIT_X 0
-#define POS_INIT_Y 0
+/**
+ * ZONE DEPART
+ */
+
+#define DEPART_JAUNE_X 43
+#define DEPART_JAUNE_Y 1741
+
+#define DEPART_BLEU_X 43
+#define DEPART_BLEU_Y 1300
+
+/**
+ * ARRIVEE
+ */
+#define ARRIVEE_JAUNE_1_X 1000
+#define ARRIVEE_JAUNE_1_Y 300
+
+#define ARRIVEE_JAUNE_2_X 1775
+#define ARRIVEE_JAUNE_2_Y 2700
+
+#define ARRIVEE_JAUNE_3_X 225
+#define ARRIVEE_JAUNE_3_Y 2700
+
+#define ARRIVEE_BLEU_1_X 1000
+#define ARRIVEE_BLEU_1_Y 2700
+
+#define ARRIVEE_BLEU_2_X 1775
+#define ARRIVEE_BLEU_2_Y 300
+
+#define ARRIVEE_BLEU_3_X 125
+#define ARRIVEE_BLEU_3_Y 300
 
 class Machine_etats
 {
@@ -38,9 +66,11 @@ private:
 
 public:
     int tirette = 1;
-    float pos_finit_x = 40;
-    float pos_finit_y = 1000;
+    float pos_finit_x = ARRIVEE_BLEU_3_X;
+    float pos_finit_y = ARRIVEE_BLEU_3_Y;
 
+    float pos_init_x = DEPART_BLEU_X;
+    float pos_init_y = DEPART_BLEU_Y;
     float pos_x = 0;
     float pos_y = 0;
 

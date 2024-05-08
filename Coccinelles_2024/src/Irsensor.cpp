@@ -31,9 +31,7 @@ void Irsensor::setup()
     if (myImager.begin() == false)
     {
         Serial.println(F("Sensor not found - check your wiring. Freezing"));
-        while (1)
-            ;
-    }
+        }
 
     myImager.setResolution(8 * 8); // Enable all 64 pads
 

@@ -76,7 +76,7 @@ void Asserv::loop()
 {
     if (micros() - m_time >= 1e4)
     {
-        asserv_global(0, 0, 0);
+        asserv_global(0, 0, PI / 2);
         m_time = micros();
     }
 }

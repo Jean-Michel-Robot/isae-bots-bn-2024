@@ -41,11 +41,11 @@ void Mesure_pos::loop()
         // Affichage
         // Serial.println("Position_x = " + String(position_x));
         // Serial.println("Position_y = " + String(position_y));
-        // Serial.println("Position_theta = " + String(position_theta));
+        Serial.println("Position_theta = " + String(position_theta));
         // Serial.println("Vitesse_x = " + String(Vitesse_x));
         // Serial.println("Vitesse_y = " + String(Vitesse_y));
-        Serial.println("Vr=" + String(vitesse_r));
-        Serial.println("Vl=" + String(vitesse_l));
+        // Serial.println("Vr=" + String(vitesse_r));
+        // Serial.println("Vl=" + String(vitesse_l));
 
         // Serial.println("Mesure_r = " + String(mesure_r));
         // Serial.println("Mesure_l= " + String(mesure_l));

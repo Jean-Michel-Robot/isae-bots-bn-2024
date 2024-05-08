@@ -27,16 +27,16 @@ void setup()
 {
   irsensor.setup();
   mesure_pos.setup();
-  //   encoder_L.setup();
-  //    encoder_R.setup();
+  //     encoder_L.setup();
+  //      encoder_R.setup();
   Serial.begin(115200);
   moteur_g.setup();
   moteur_d.setup();
 
   // moteur_d.set_speed(175);
   // moteur_g.set_speed(175);
-  asserv.setup();
-  machine_etats.setup();
+  // asserv.setup();
+  // machine_etats.setup();
 
   // put your setup code here, to run once:
 }
@@ -46,9 +46,9 @@ void loop()
   // encoder_L.loop();
   // encoder_R.loop();
   irsensor.loop();
-  mesure_pos.loop();
+  // mesure_pos.loop();
   //  asserv.loop();
-  machine_etats.loop();
-  //    moteur_g.loop();
-  //    moteur_d.loop();
+  // machine_etats.loop();
+  //       moteur_g.loop();
+  //       moteur_d.loop();
 }
