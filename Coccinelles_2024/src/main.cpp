@@ -5,7 +5,7 @@
 #include <Encodeur.h>
 #include <Mesure_pos.h>
 #include <Serv.h>
-#include <define.h>
+#include <define_ewan.h>
 #include <Asserv.h>
 #include <Irsensor.h>
 #include <Machine_etats.h>
