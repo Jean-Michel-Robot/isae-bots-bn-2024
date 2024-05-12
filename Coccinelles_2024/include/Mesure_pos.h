@@ -12,10 +12,11 @@ private:
     Encodeur *m_p_encoder_L;
     /**
      * Facteurs proportionnels entre encodeur et roue ( a determiner empiriquement )
+     * Permet de passer de la mesure de l'encodeur à la distance parcourue par la roue et à l'angle de rotation
      */
-    float K_angle = 1. / 1170.32478;
-    float K_r = 1. / 91.637717;
-    float K_l = 1. / 92.332506;
+    float K_angle = 1. / 1170.32478; //TODO : regler les facteurs si on change la meca
+    float K_r = 1. / 91.637717; //TODO : regler les facteurs si on change la meca
+    float K_l = 1. / 92.332506; //TODO : regler les facteurs si on change la meca
     /**
      * temps entre deux mesures
      */

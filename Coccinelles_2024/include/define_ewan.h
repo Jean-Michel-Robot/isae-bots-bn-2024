@@ -1,3 +1,8 @@
+/**
+ * @file define_ewan.h
+ * @brief fichier de configuration des pins pour la pami de ewan ( cramptesque :) ) 
+*/
+
 #ifndef DEFINE_EWAN_H
 #define DEFINE_EWAN_H
 

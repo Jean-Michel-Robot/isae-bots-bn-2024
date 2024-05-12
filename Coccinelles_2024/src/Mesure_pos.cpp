@@ -38,7 +38,11 @@ void Mesure_pos::loop()
         vitesse_l = (position_l / dt * 1000) * K_l;
         vitesse_r = (position_r / dt * 1000) * K_r;
 
-        // Affichage
+        /**
+         * Affichage des valeurs , a decommenter si on veut debug , 
+         * NE PAS OUBLIER DE COMMENTER DANS LE CODE FINAL SINON LE TERMINAL SERIE INTERFERE AVEC L'ASSERVISSEMENT ET CA FAIT NIMP
+        */
+       
         // Serial.println("Position_x = " + String(position_x));
         // Serial.println("Position_y = " + String(position_y));
         Serial.println("Position_theta = " + String(position_theta));

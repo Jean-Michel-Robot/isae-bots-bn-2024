@@ -40,7 +40,7 @@ void Irsensor::setup()
 
     // Using 4x4, min frequency is 1Hz and max is 60Hz
     // Using 8x8, min frequency is 1Hz and max is 15Hz
-    bool response = myImager.setRangingFrequency(15);
+    bool response = myImager.setRangingFrequency(15); // une mesure toutes les 66ms
     if (response == true)
     {
         int frequency = myImager.getRangingFrequency();
@@ -73,10 +73,9 @@ void Irsensor::loop()
         {
             if (myImager.getRangingData(&measurementData)) // Read distance data into array
             {
-                // Calcul le minimum de la distance
+                // Iteration a travers la matrice de distance pour avoir la distance minimale
+                /*
                 int minDistance = measurementData.distance_mm[0];
-
-                // Iteration a travers la matrice de distance
                 for (int y = 0; y <= imageWidth * (imageWidth - 1); y += imageWidth)
                 {
                     for (int x = imageWidth - 1; x >= 0; x--)
@@ -88,6 +87,8 @@ void Irsensor::loop()
                         }
                     }
                 }
+                */
+                
                 m_minimum_distance = measurementData.distance_mm[35];
 
                 // Print minimum distance
@@ -101,7 +102,7 @@ void Irsensor::loop()
     }
 }
 
-/*
+
 void Irsensor::loop()
 {
     // Poll sensor for new data
@@ -124,7 +125,5 @@ void Irsensor::loop()
             Serial.println();
         }
     }
-
-    delay(5); // Small delay between polling
+    delay(5); // Small delay between polling// DANGEREUX CAR BLOQUE LE PROGRAMME PENDANT 5ms// A CHANGER si possible 
 }
-*/

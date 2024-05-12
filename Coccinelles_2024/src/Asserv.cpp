@@ -2,9 +2,14 @@
 #include <Moteur.h>
 #include <Arduino.h>
 #include <Mesure_pos.h>
-
-Asserv::Asserv(Moteur *p_moteur_r, Moteur *p_moteur_l, Mesure_pos *p_mesure_pos) : m_asservPID_r(1, 0.1, 0, 255, 5),
-                                                                                   m_asservPID_l(1, 0.1, 0, 255, 5), m_asservPID_angle(50, 0, 0, 255, 5)
+/**
+ * @file Asserv.cpp
+ * @brief Asservissement en vitesse et en angle du robot
+ * 
+*/
+Asserv::Asserv(Moteur *p_moteur_r, Moteur *p_moteur_l, Mesure_pos *p_mesure_pos) : m_asservPID_r(1, 0.1, 0, 255, 5), //TODO : regler l'asservissement
+                                                                                   m_asservPID_l(1, 0.1, 0, 255, 5), 
+                                                                                   m_asservPID_angle(50, 0, 0, 255, 5)
 {
     m_p_mesure_pos = p_mesure_pos;
     m_p_moteur_l = p_moteur_l;

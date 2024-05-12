@@ -1,3 +1,8 @@
+/**
+ * @file define_ewan.h
+ * @brief fichier de configuration des pins pour la pami walle ( cramptesque :) ) 
+*/
+
 #ifndef DEFINE_H
 #define DEFINE_H
 
@@ -23,36 +28,6 @@ MOTEURS
 #define IN1_L 15 // IN1 LEFT MOTEUR
 #define IN2_L 14 // IN2 LEFT MOTEUR
 
-/**
- * ZONE DEPART
- */
-
-#define DEPART_JAUNE_X 43
-#define DEPART_JAUNE_Y 1741
-
-#define DEPART_BLEU_X 43
-#define DEPART_BLEU_Y 1300
-
-/**
- * ARRIVEE
- */
-#define ARRIVEE_JAUNE_1_X 1000
-#define ARRIVEE_JAUNE_1_Y 300
-
-#define ARRIVEE_JAUNE_2_X 1775
-#define ARRIVEE_JAUNE_2_Y 2700
-
-#define ARRIVEE_JAUNE_3_X 225
-#define ARRIVEE_JAUNE_3_Y 2700
-
-#define ARRIVEE_BLEU_1_X 1000
-#define ARRIVEE_BLEU_1_Y 2700
-
-#define ARRIVEE_BLEU_2_X 1775
-#define ARRIVEE_BLEU_2_Y 300
-
-#define ARRIVEE_BLEU_3_X 225
-#define ARRIVEE_BLEU_3_Y 300
 
 /*
 SENSORS
