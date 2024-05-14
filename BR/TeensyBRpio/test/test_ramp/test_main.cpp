@@ -47,10 +47,10 @@ void setup()
   // if board doesn't support software reset via Serial.DTR/RTS
   delay(2000);
 
-  Ramp* rampLinear = new Ramp(DEFAULT_LINEAR_ACCEL_PARAM);
+  Ramp* rampLinear = new Ramp();
 
   uint32_t t0 = micros();
-  rampLinear->beginRamp(t0, MAX_LINEAR_GOAL_SPEED);
+  rampLinear->beginRamp(t0, MAX_LINEAR_GOAL_SPEED, DEFAULT_LINEAR_ACCEL_PARAM);
 
 
   UNITY_BEGIN(); // begin unit testing

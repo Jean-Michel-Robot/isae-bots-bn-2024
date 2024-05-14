@@ -26,7 +26,7 @@ public:
     double m_errorPos_y;
 
 
-    Position2D m_errorPosThreshold; // error threshold x,y,tetha (m, m & rad)
+    Position2D<Meter> m_errorPosThreshold; // error threshold x,y,tetha (m, m & rad)
     float m_botSpeed[2];  // v, omega of the center of the bot (m/s and rad/s)
 
     float m_leftWheelSpeed;  // left speed wheel (m/s)
@@ -39,7 +39,7 @@ public:
     void setGains(float Kp, float Ti, float Td);
 
     // update l'erreur en recevant la position du point objectif actuel
-    void updateError(Position2D goalOffsetPos);
+    void updateError(Position2D<Meter> goalOffsetPos);
 
     // update la commande en recevant la consigne en vitesse (linéaire et angulaire)
     void updateCommand(float vd, float omega_d, bool bypassAsserv=0);
@@ -66,7 +66,7 @@ public:
 
 
     //TODO remettre en private
-    Position2D currentRobotPos;
+    Position2D<Meter> currentRobotPos;
 
     float cmd_v, cmd_omega;
 

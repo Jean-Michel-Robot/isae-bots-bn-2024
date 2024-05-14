@@ -15,7 +15,16 @@ float modulo_pi2pi2(float value);//Ramene un angle € [-inf;inf] dans [-PI/2;PI
 float constexpr degToRad(float value) { return value * PI / 180;}
 float constexpr radToDeg(float value) { return value * 180 / PI;}
 
-Position2D toAsservPointFrame(Position2D pos);
+// Helper function to switch to asserv point frame
+template<typename Unit>
+Position2D<Unit> toAsservPointFrame(Position2D<Unit> pos) {
+  return Position2D<Unit>(
+    pos.x + ASSERV_ALPHA*cos(pos.theta),
+    pos.y + ASSERV_ALPHA*sin(pos.theta),
+    pos.theta
+  );
+  //TODO assuming ASSERV_BETA is 0 here, could generalize with ASSERV_BETA as well
+}
 
 inline float timeFloat(){return float(micros())*1e-6;} // retourne le temps micros() sous un format float (en secondes)
 #endif

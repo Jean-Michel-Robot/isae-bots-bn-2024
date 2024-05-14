@@ -14,16 +14,13 @@
 #include "Trajectories/RotationTrajectory.hpp"
 #include "Asserv.hpp"
 #include "BrSM/BrSMWrapper.hpp"
-
+#include "Ramp/RampSM.hpp"
 
 
 ROS* p_ros = NULL;
 OdosPosition* p_odos = NULL;
 BlinkLED* p_blink = NULL;
 // LED* led_instance = NULL;
-
-LinearTrajectory* p_linearTrajectory = NULL;
-RotationTrajectory* p_rotationTrajectory = NULL;
 
 Asserv* p_asserv = NULL;
 BrSMWrapper* p_sm = NULL;
@@ -45,13 +42,6 @@ void setup() {
     p_blink = new BlinkLED();
 
     // led_instance = new LED();
-
-    p_linearTrajectory = new LinearTrajectory(0.25 * MAX_LINEAR_GOAL_SPEED, DEFAULT_LINEAR_ACCEL_PARAM);
-    p_rotationTrajectory = new RotationTrajectory(0.25 * MAX_ROTATION_GOAL_SPEED, DEFAULT_ROTATION_ACCEL_PARAM);
-
-    // p_linearTrajectory->setRobotPos(100, 100, 0);
-    // p_linearTrajectory->setDest(0.0, 0.0);
-    // p_linearTrajectory->beginTrajectory( micros() );
 
     p_asserv = new Asserv(13.2, 0.25, 0.167);  //TODO réglage des gains
 
@@ -78,23 +68,21 @@ void loop() {
 
     p_blink->loop();
 
-
     p_sm->loop();
-
 
     // Log update
     if (millis() - loop_timer > LOG_PERIOD) {
 
-        // if (p_sm->getCurrentState() != BR_IDLE) {
-        //     p_ros->logPrint(INFO, "Speed : "+String(p_sm->getCurrentTargetSpeed()));
+        // if (BrSM::getCurrentState() != BR_IDLE) {
+        //     p_ros->logPrint(INFO, "Speed : "+String(BrSM::getCurrentTargetSpeed()));
         //     // //Serial.println(p_odos->getRobotPosition().toString());
-        //     // //Serial.println("Current BR state : " + p_sm->getCurrentStateStr());
-        //     // //Serial.println("Current ramp state : " + p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentStateStr());
+        //     // //Serial.println("Current BR state : " + BrSM::getCurrentStateStr());
+        //     // //Serial.println("Current ramp state : " + RampSM::getCurrentStateStr());
 
-        //     //Serial.println(p_sm->currentTrajectory->getGoalPoint().toString());
+        //     //Serial.println(BrSM::currentTrajectory->getGoalPoint().toString());
         //     //p_ros->sendDebug();
 
-        //     p_ros->logPrint(INFO, "s : "+String(p_sm->currentTrajectory->s));
+        //     p_ros->logPrint(INFO, "s : "+String(BrSM::currentTrajectory->s));
 
         //     p_ros->logPrint(INFO, "Error : [" + String(p_asserv->error[0]) +
         //                               ", " + String(p_asserv->error[1]) + "]");
@@ -113,28 +101,28 @@ void loop() {
         Logger::setFieldValue(robotPos.y, Logger::robotPosY);
         Logger::setFieldValue(robotPos.theta, Logger::robotPosTheta);
 
-        Position2D goalPos = p_sm->getCurrentGoalPos();
+        Position2D goalPos = BrSM::getCurrentGoalPos();
         Logger::setFieldValue(goalPos.x, Logger::goalPointPosX);
         Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
         Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);
 
-        float *goalSpeed = p_sm->currentTrajectory->getTrajectoryAbsoluteSpeed();
+        float *goalSpeed = BrSM::currentTrajectory->getTrajectoryAbsoluteSpeed();
         Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
         Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
 
-        Logger::setFieldValue(p_sm->currentTrajectory->s, Logger::trajectoryS);
+        Logger::setFieldValue(BrSM::currentTrajectory->s, Logger::trajectoryS);
 
-        if (p_sm->currentTrajectory == NULL) {
+        if (BrSM::currentTrajectory == NULL) {
             Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
             Logger::setFieldValue(0.0, Logger::goalSpeedAngular);            
         }
-        else if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
-            Logger::setFieldValue(p_sm->currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
+        else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
+            Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
             Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
        }
-        else if (p_sm->currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
+        else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
             Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
-            Logger::setFieldValue(p_sm->currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
+            Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
         }
 
         Logger::setFieldValue(p_asserv->error[0], Logger::asservErrorX);
@@ -146,16 +134,16 @@ void loop() {
         Logger::setFieldValue(p_asserv->m_rightWheelSpeed, Logger::commandeMotorR);
         Logger::setFieldValue(p_asserv->m_leftWheelSpeed, Logger::commandeMotorL);
 
-        if (p_sm->currentTrajectory == NULL) {
+        if (BrSM::currentTrajectory == NULL) {
             Logger::setFieldValue(0.0, Logger::rampSpeed);
             Logger::setFieldValue(0.0, Logger::rampState);
         }
         else {
-            Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentSpeed(), Logger::rampSpeed);
-            Logger::setFieldValue(p_sm->currentTrajectory->rampSpeed.rampSM.getCurrentState(), Logger::rampState);
+            Logger::setFieldValue(RampSM::getCurrentSpeed(), Logger::rampSpeed);
+            Logger::setFieldValue(RampSM::getCurrentState(), Logger::rampState);
         }
 
-        Logger::setFieldValue(p_sm->getCurrentState(), Logger::BrState);
+        Logger::setFieldValue(BrSM::getCurrentState(), Logger::BrState);
 
         loop_timer = millis();
     }
@@ -177,7 +165,7 @@ void loop() {
             p_ros->logPrint(INFO, "Received get ready event");
 
             BrGetReadyEvent brGetReadyEvent;
-            p_sm->send_event(brGetReadyEvent);    
+            BrSM::dispatch(brGetReadyEvent);    
         }
 
         else if (c == 'o') {
@@ -189,7 +177,7 @@ void loop() {
             orderEvent.order.theta = 0.0;
             orderEvent.order.goalType = GoalType::TRANS;  // on essaie direct le depl linéaire
 
-            p_sm->send_event(orderEvent);
+            BrSM::dispatch(orderEvent);
 
         }
 
@@ -200,7 +188,7 @@ void loop() {
             GoalSpeedChangeEvent goalSpeedChangeEvent;
             goalSpeedChangeEvent.newSpeed = 0.5;
 
-            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+            RampSM::dispatch(goalSpeedChangeEvent);
         }
         else if (c == 'd') {
             //Serial.println("Send goal speed change event of 0.1");
@@ -208,7 +196,7 @@ void loop() {
             GoalSpeedChangeEvent goalSpeedChangeEvent;
             goalSpeedChangeEvent.newSpeed = 0.1;
 
-            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+            RampSM::dispatch(goalSpeedChangeEvent);
         }
 
         else if (c == 'b') {
@@ -216,7 +204,7 @@ void loop() {
 
             EmergencyBrakeEvent emergencyBrakeEvent;
 
-            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+            RampSM::dispatch(emergencyBrakeEvent);
         }
 
         else if (c == 'e') {
@@ -224,7 +212,7 @@ void loop() {
 
             EndRampEvent endRampEvent;
 
-            p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(endRampEvent);
+            RampSM::dispatch(endRampEvent);
         }
     }
 

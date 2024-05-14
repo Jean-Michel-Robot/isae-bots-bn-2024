@@ -5,6 +5,7 @@
 // #include "a_define.h"
 #include <Position2D.h>
 #include "Ramp/Ramp.hpp"
+#include "defines.hpp"
 
 enum TrajectoryType
 {
@@ -22,7 +23,7 @@ public :
 
     // Méthodes dépendant du type de trajectoire
 
-    virtual void setDest(Position2D orderInfo);
+    virtual void setDest(Position2D<Meter> orderInfo);
 
     virtual void updateTrajectoryState();  // variables x, y, theta, V, omega
 
@@ -33,12 +34,12 @@ public :
 
     void updateTrajectory(uint32_t new_time);
 
-    void setRobotPos(Position2D pos);
+    void setRobotPos(Position2D<Meter> pos);
 
     void setGoalSpeed(float goalSpeed);
 
-    Position2D getGoalPoint();
-    Position2D getGoalOffsetPoint();
+    Position2D<Meter> getGoalPoint();
+    Position2D<Meter> getGoalOffsetPoint();
 
     float getTrajectoryLinearSpeed();
     float getTrajectoryAngularSpeed();

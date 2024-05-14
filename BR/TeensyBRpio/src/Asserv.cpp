@@ -25,7 +25,7 @@ Asserv::Asserv(float Kp, float Ti, float Td) {
 
     m_state = ACTIVE; //TODO idle by default ?
 
-    currentRobotPos = Position2D(0.0, 0.0, 0.0);
+    currentRobotPos = Position2D<Meter>();
     cmd_v = 0.0; cmd_omega = 0.0;
 
     m_outputMax = 10;
@@ -38,7 +38,7 @@ void Asserv::setGains(float Kp, float Ti, float Td) {
     m_Td = Td;
 }
 
-void Asserv::updateError(Position2D goalOffsetPos) {
+void Asserv::updateError(Position2D<Meter> goalOffsetPos) {
 
     //TODO maybe put this elsewhere, should be done at every loop
     currentRobotPos = p_odos->getRobotPosition();
@@ -53,7 +53,7 @@ void Asserv::updateError(Position2D goalOffsetPos) {
     // m_errorPos.y = -sin(angle)*errorPosTableFrame.x + cos(angle)*errorPosTableFrame.y;
     // m_errorPos.theta = errorPosTableFrame.theta;
 
-    Position2D robotOffsetPos = toAsservPointFrame(currentRobotPos);
+    Position2D<Meter> robotOffsetPos = toAsservPointFrame(currentRobotPos);
 
     error[0] = (double) (goalOffsetPos.x - robotOffsetPos.x);
     error[1] = (double) (goalOffsetPos.y - robotOffsetPos.y);

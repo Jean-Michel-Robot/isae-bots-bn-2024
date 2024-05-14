@@ -15,10 +15,10 @@ class OdosPosition
 public :
     OdosPosition();
 
-    void setPosition(Position2D pos);
+    void setPosition(Position2D<Millimeter> pos);
     bool isRobotBlocked(float seuil);
     void setPositionAvecRecalage();
-    Position2D getRobotPosition() const;
+    Position2D<Meter> getRobotPosition() const;
     void sendRobotPosition();
 
     void loop();
@@ -32,7 +32,7 @@ private :
 
     int32_t m_odoLeftCount = 0;
     int32_t m_odoRightCount = 0;
-    Position2D m_robotPosition;
+    Position2D<Millimeter> m_robotPosition;
     double m_positionThetaOffset = 0.0;
     float m_positionThetaOdo = 0.0;
 

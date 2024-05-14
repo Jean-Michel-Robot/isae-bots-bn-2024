@@ -2,7 +2,7 @@
 #include "ODriveArduino.h"
 
 // Print with stream operator
-template<class T> inline Print& operator <<(Print &obj,     T arg) { obj.print(arg);    return obj; }
+template<typename T> inline Print& operator <<(Print &obj,     T arg) { obj.print(arg);    return obj; }
 template<>        inline Print& operator <<(Print &obj, float arg) { obj.print(arg, 4); return obj; }
 
 ODriveArduino::ODriveArduino(Stream& serial)

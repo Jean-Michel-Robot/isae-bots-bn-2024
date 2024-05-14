@@ -7,10 +7,10 @@ class RotationTrajectory : public Trajectory
 {
 public :
 
-    RotationTrajectory(float initialGoalSpeed, float initialAccelParam);
+    RotationTrajectory(float initialGoalSpeed=0.25 * MAX_ROTATION_GOAL_SPEED, float initialAccelParam=DEFAULT_ROTATION_ACCEL_PARAM);
     // TODO destructeur
 
-    void setDest(Position2D orderInfo) override;
+    void setDest(Position2D<Meter> orderInfo) override;
 
 private:
 

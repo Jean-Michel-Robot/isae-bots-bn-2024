@@ -3,18 +3,18 @@
 
 #include "tinyfsm/tinyfsm.hpp"
 #include <Arduino.h>
+#include "Position2D.h"
 
 // ----------------------------------------------------------------------------
 // Event declarations
 //
-typedef struct OrderType
+class OrderType : public Position2D<Meter>
 {
-	//TODO refactor en Position2D + int
-	float x = 0.0;
-	float y = 0.0;
-	float theta = 0.0;
+public:
+	OrderType(): Position2D<Meter>() {};
+	OrderType(float x, float y, float theta, int goalType): Position2D<Meter>(x, y, theta), goalType(goalType) {};
 	int goalType = 0;
-} OrderType;
+};
 
 struct OrderEvent : tinyfsm::Event
 {
@@ -27,11 +27,8 @@ struct GoalReachedEvent : tinyfsm::Event
 };
 
 // Event pour reset la pos des odos
-struct ResetPosEvent : tinyfsm::Event
+class ResetPosEvent : public tinyfsm::Event, public Position2D<Millimeter>
 {
-	float x = 0.0;
-	float y = 0.0;
-	float theta = 0.0;
 };
 
 struct ErrorEvent : tinyfsm::Event

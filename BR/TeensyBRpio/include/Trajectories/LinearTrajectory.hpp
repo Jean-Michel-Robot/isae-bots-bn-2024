@@ -7,10 +7,10 @@ class LinearTrajectory : public Trajectory
 {
 public :
 
-    LinearTrajectory(float initialGoalSpeed, float initialAccelParam);
+    LinearTrajectory(float initialGoalSpeed=0.25 * MAX_LINEAR_GOAL_SPEED, float initialAccelParam=DEFAULT_LINEAR_ACCEL_PARAM);
     // TODO destructeur
 
-    void setDest(Position2D orderInfo) override;
+    void setDest(Position2D<Meter> orderInfo) override;
 
 
 private:

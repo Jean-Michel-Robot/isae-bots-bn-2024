@@ -1,7 +1,6 @@
 
 #include "BrSM/BrSMWrapper.hpp"
 
-#include "BrSM/BrSM.hpp"
 #include "ROS.hpp"
 #include "main_loop.hpp"
 
@@ -10,33 +9,16 @@
 
   // send_event(orderEvent);
 
-BrSMWrapper::BrSMWrapper() {
-
-
-  brSM = BrSM();  // stack memory (instanciation without new keyword)
-
-  // beginRampEvent.t0 = 0.0;
-  // goalSpeedChangeEvent.newSpeed = 0.0;
-  // updateEvent.currentTime = 0.0;
-
-  // brSM.setupTrajectory();
-  brUpdateEvent.currentTime = micros();
-
-  brSM.start();
-
+BrSMWrapper::BrSMWrapper() : timer(millis()) {
+  BrSM::start();
 }
-
-uint32_t timer = millis();
 
 void BrSMWrapper::loop() {
 
-
   if (millis() - timer > 20) {
-
     // update SM
     brUpdateEvent.currentTime = micros();
-    brSM.send_event(brUpdateEvent);
-
+    BrSM::dispatch(brUpdateEvent);
     timer = millis();
   }
 }
