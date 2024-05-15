@@ -32,7 +32,7 @@ void setup() {
     // Serial.begin(9600);
     // delay(500);
     // Serial.println("Setup");
-
+    BrSM::setup();
 
     motors_init();
 
@@ -106,23 +106,28 @@ void loop() {
         Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
         Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);
 
-        float *goalSpeed = BrSM::currentTrajectory->getTrajectoryAbsoluteSpeed();
-        Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
-        Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
+        if (!BrSM::currentTrajectory) {
+            Logger::setFieldValue(0, Logger::goalPointSpeedX);
+            Logger::setFieldValue(0, Logger::goalPointSpeedY);
 
-        Logger::setFieldValue(BrSM::currentTrajectory->s, Logger::trajectoryS);
-
-        if (BrSM::currentTrajectory == NULL) {
             Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
             Logger::setFieldValue(0.0, Logger::goalSpeedAngular);            
-        }
-        else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
-            Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
-            Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
-       }
-        else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
-            Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
-            Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
+        } else {
+            
+            float *goalSpeed = BrSM::currentTrajectory->getTrajectoryAbsoluteSpeed();
+            Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
+            Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
+
+            Logger::setFieldValue(BrSM::currentTrajectory->s, Logger::trajectoryS);
+
+            if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR) {
+                Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
+                Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
+            }
+            else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION) {
+                Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
+                Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
+            }
         }
 
         Logger::setFieldValue(p_asserv->error[0], Logger::asservErrorX);
@@ -134,7 +139,7 @@ void loop() {
         Logger::setFieldValue(p_asserv->m_rightWheelSpeed, Logger::commandeMotorR);
         Logger::setFieldValue(p_asserv->m_leftWheelSpeed, Logger::commandeMotorL);
 
-        if (BrSM::currentTrajectory == NULL) {
+        if (!BrSM::currentTrajectory) {
             Logger::setFieldValue(0.0, Logger::rampSpeed);
             Logger::setFieldValue(0.0, Logger::rampState);
         }

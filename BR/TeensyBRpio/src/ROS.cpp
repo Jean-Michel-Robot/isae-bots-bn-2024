@@ -76,17 +76,14 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     case GoalType::CONTROL:
     {
 
+      Position2D<Millimeter> position(positionMsg.x, positionMsg.y, positionMsg.z);
+      
       OrderEvent orderEvent;
-
-      orderEvent.order.x = positionMsg.x/1000.0;  // conversion en m
-      orderEvent.order.y = positionMsg.y/1000.0;  // conversion en m
-      orderEvent.order.theta = positionMsg.z;
-      orderEvent.order.goalType = positionMsg.w;
+      orderEvent.order = OrderType(convert(position), positionMsg.w);
 
       BrSM::dispatch(orderEvent);
       break;
     }
-
 
     case GoalType::RESET:
     {

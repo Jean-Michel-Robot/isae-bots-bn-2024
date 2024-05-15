@@ -78,7 +78,7 @@ void BrSM::setupTrajectory()
 
     case TRANS:
     case FINAL:
-      thetaDest = atan2(currentOrder.y - robotPos.y, currentOrder.x - robotPos.x);
+      thetaDest = Position2D<Meter>::s_angleBetweenTwoPoints(robotPos, currentOrder);
       break;
     }
     currentTrajectory->setDest(Position2D<Meter>(0.0, 0.0, thetaDest));
@@ -519,7 +519,7 @@ class BR_RecalAsserv
     }
 
     Position2D robot_pos = p_odos->getRobotPosition();
-    float d = sqrt((robot_pos.x - currentOrder.x) * (robot_pos.x - currentOrder.x) + (robot_pos.y - currentOrder.y) * (robot_pos.y - currentOrder.y));
+    float d = (robot_pos - currentOrder).norm();
 
     if (d < RECAL_DISTANCE || // distance to destination is short enough
         m_switches[BR_RIGHT]->isSwitchPressed() ||
@@ -533,7 +533,7 @@ class BR_RecalAsserv
     // else we follow a linear trajectory backwards (theta is towards the rear)
 
     // TODO factoriser le code dans une fct (commun avec le default updateEvent)
-    if (currentTrajectory == NULL)
+    if (!currentTrajectory)
     {
       p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
       return;
@@ -679,7 +679,7 @@ void BrSM::react(BrEmergencyBrakeEvent const &)
 void BrSM::react(BrUpdateEvent const &e)
 {
 
-  if (currentTrajectory == NULL)
+  if (!currentTrajectory)
   {
     p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
     return;

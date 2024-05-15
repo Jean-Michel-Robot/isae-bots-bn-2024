@@ -54,13 +54,28 @@ public:
 };
 
 template<typename Unit>
-Position2D<Unit> operator+(Position2D<Unit> const& posa, Position2D<Unit> const& posb);
+Position2D<Unit> operator+(const Position2D<Unit> &posa, const Position2D<Unit> &posb)
+{
+    return Position2D<Unit>(posa.x+posb.x,posa.y+posb.y,posa.theta+posb.theta);
+}
+
 template<typename Unit>
-Position2D<Unit> operator-(Position2D<Unit> const& posa, Position2D<Unit> const& posb);
+Position2D<Unit> operator-(const Position2D<Unit> &posa, const Position2D<Unit> &posb)
+{
+    return Position2D<Unit>(posa.x-posb.x,posa.y-posb.y,posa.theta-posb.theta);
+}
+
 template<typename Unit>
-Position2D<Unit> operator*(Position2D<Unit> const& pos, float factor); // doesn't modify theta, only a scale operation
+Position2D<Unit> operator*(const Position2D<Unit> &pos, float factor)
+{
+    return Position2D<Unit>(pos.x*factor,pos.y*factor,pos.theta);
+}
+
 template<typename Unit>
-Position2D<Unit> operator/(Position2D<Unit> const& pos, float factor); // idem
+Position2D<Unit> operator/(const Position2D<Unit> &pos, float factor)
+{
+    return Position2D<Unit>(pos.x/factor,pos.y/factor,pos.theta);
+}
 
 #endif
 

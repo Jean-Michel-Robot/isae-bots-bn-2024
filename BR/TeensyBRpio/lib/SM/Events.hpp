@@ -12,6 +12,7 @@ class OrderType : public Position2D<Meter>
 {
 public:
 	OrderType(): Position2D<Meter>() {};
+	OrderType(Position2D<Meter> const& position, int goalType) : Position2D<Meter>(position), goalType(goalType) {};
 	OrderType(float x, float y, float theta, int goalType): Position2D<Meter>(x, y, theta), goalType(goalType) {};
 	int goalType = 0;
 };

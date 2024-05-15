@@ -97,30 +97,6 @@ float Position2D<Unit>::s_dist(Position2D<Unit> const& a, Position2D<Unit> const
 }
 
 template<typename Unit>
-Position2D<Unit> operator+(const Position2D<Unit> &posa, const Position2D<Unit> &posb)
-{
-    return Position2D<Unit>(posa.x+posb.x,posa.y+posb.y,posa.theta+posb.theta);
-}
-
-template<typename Unit>
-Position2D<Unit> operator-(const Position2D<Unit> &posa, const Position2D<Unit> &posb)
-{
-    return Position2D<Unit>(posa.x-posb.x,posa.y-posb.y,posa.theta-posb.theta);
-}
-
-template<typename Unit>
-Position2D<Unit> operator*(const Position2D<Unit> &pos, float factor)
-{
-    return Position2D<Unit>(pos.x*factor,pos.y*factor,pos.theta);
-}
-
-template<typename Unit>
-Position2D<Unit> operator/(const Position2D<Unit> &pos, float factor)
-{
-    return Position2D<Unit>(pos.x/factor,pos.y/factor,pos.theta);
-}
-
-template<typename Unit>
 float Position2D<Unit>::s_angleBetweenTwoPoints(Position2D<Unit> const& a,Position2D<Unit> const& b) // calcul l'angle pour le vecteur AB
 {
     if(s_isStrictEgalityXY(a,b))
