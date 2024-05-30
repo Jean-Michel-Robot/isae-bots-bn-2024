@@ -11,13 +11,14 @@ Readme afin d'aider à debugger les erreurs de compilation et de liens liées à
 
 ### Pré-requis
 
-ESP 32 
-Capteur VL53L5X
+* ESP 32 
+* Capteur VL53L5X
 
 ### Stratégie 
 
-La pami prend en entrée une position de départ (xdep,ydep) et une position d'arrivée (xdep,ydep) et se déplace de manière autonome en ligne droite jusqu'à la position d'arrivée.
-Si un obstacle est détecté, la pami s'arrête et envoie Voir ['machine_etats.cpp'](src/Machine_etat.cpp) pour plus de détails
+La pami prend en entrée une position de départ (posx_init,ypos_y_init) et une position d'arrivée 
+(pos_x_fin,pos_y_fin)et se déplace de manière autonome en ligne droite jusqu'à la position d'arrivée.
+Si un obstacle est détecté, la pami s'arrête Voir ['machine_etats.cpp'](src/Machine_etat.cpp) pour plus de détails
 
 Stratégie d'évitement très simple  a modifier selon besoin dans ['machine_etats.h'](src/Machine_etat.cpp)
 
