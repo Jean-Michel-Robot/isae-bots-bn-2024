@@ -103,27 +103,27 @@ void Irsensor::loop()
 }
 
 
-void Irsensor::loop()
-{
-    // Poll sensor for new data
-    if (myImager.isDataReady() == true)
-    {
-        if (myImager.getRangingData(&measurementData)) // Read distance data into array
-        {
-            // The ST library returns the data transposed from zone mapping shown in datasheet
-            // Pretty-print data with increasing y, decreasing x to reflect reality
+// void Irsensor::loop()
+// {
+//     // Poll sensor for new data
+//     if (myImager.isDataReady() == true)
+//     {
+//         if (myImager.getRangingData(&measurementData)) // Read distance data into array
+//         {
+//             // The ST library returns the data transposed from zone mapping shown in datasheet
+//             // Pretty-print data with increasing y, decreasing x to reflect reality
 
-                        for (int y = 0; y <= imageWidth * (imageWidth - 1); y += imageWidth)
-            {
-                for (int x = imageWidth - 1; x >= 0; x--)
-                {
-                    Serial.print("\t");
-                    Serial.print(measurementData.distance_mm[x + y]);
-                }
-                Serial.println();
-            }
-            Serial.println();
-        }
-    }
-    delay(5); // Small delay between polling// DANGEREUX CAR BLOQUE LE PROGRAMME PENDANT 5ms// A CHANGER si possible 
-}
+//                         for (int y = 0; y <= imageWidth * (imageWidth - 1); y += imageWidth)
+//             {
+//                 for (int x = imageWidth - 1; x >= 0; x--)
+//                 {
+//                     Serial.print("\t");
+//                     Serial.print(measurementData.distance_mm[x + y]);
+//                 }
+//                 Serial.println();
+//             }
+//             Serial.println();
+//         }
+//     }
+//     delay(5); // Small delay between polling// DANGEREUX CAR BLOQUE LE PROGRAMME PENDANT 5ms// A CHANGER si possible 
+// }
