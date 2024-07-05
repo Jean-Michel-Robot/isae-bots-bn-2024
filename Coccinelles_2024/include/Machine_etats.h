@@ -14,7 +14,7 @@
 #define time_global 10000
 #define time_sensor 8000
 
-#define SPEED 25
+#define SPEED 25        // Vitesse en cm/s 25 est la vitesse max des moteurs
 #define DISTANCE_MIN 80 // Distance minimale pour éviter un obstacle en mm
 
 class Machine_etats

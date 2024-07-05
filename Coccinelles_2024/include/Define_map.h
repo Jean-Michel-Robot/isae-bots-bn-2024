@@ -7,7 +7,7 @@
 
  */
 /**
- * ZONE DEPART //TODO : A MODIFIER en fonction de la map , voir HN pour les valeurs et le repère
+ * ZONE DEPART //TODO : A MODIFIER  AVANT LA COUPE en fonction de la map , voir HN pour les valeurs et le repère
  */
 
 #define DEPART_JAUNE_X 43

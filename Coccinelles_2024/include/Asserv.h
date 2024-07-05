@@ -3,6 +3,7 @@
  * @brief Asservissement en vitesse et en angle du robot
  *
  */
+// TODO REGLER TOUS LES GAINS AVANT LA COUPE
 #ifndef ASSERV_H
 #define ASSERV_H
 

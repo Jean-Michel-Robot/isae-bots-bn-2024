@@ -2,7 +2,7 @@
  * @file define_ewan.h
  * @brief fichier de configuration des pins pour la pami de ewan ( cramptesque :) )
  */
-
+// TODO REGLER LES PINS AVANT LA COUPE AVEC L'ELEC
 #ifndef DEFINE_EWAN_H
 #define DEFINE_EWAN_H
 
