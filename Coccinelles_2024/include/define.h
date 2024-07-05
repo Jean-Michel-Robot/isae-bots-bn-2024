@@ -1,7 +1,8 @@
 /**
  * @file define_ewan.h
- * @brief fichier de configuration des pins pour la pami walle ( cramptesque :) ) 
-*/
+ * @brief fichier de configuration des pins pour la pami walle ( cramptesque :) )
+ * Voir avec l'elec pour les pins
+ */
 
 #ifndef DEFINE_H
 #define DEFINE_H
@@ -27,7 +28,6 @@ MOTEURS
 #define EN_L 26  // EN LEFT MOTEUR
 #define IN1_L 15 // IN1 LEFT MOTEUR
 #define IN2_L 14 // IN2 LEFT MOTEUR
-
 
 /*
 SENSORS

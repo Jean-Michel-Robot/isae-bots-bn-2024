@@ -26,7 +26,7 @@ void Machine_etats::loop()
             m_p_asserv->asserv_global(0, 0, 0);
             etat = END;
         }
-        // Lire l'état du bouton
+        // Lire l'état de la tirette
         tirette = digitalRead(34);
         Serial.println(tirette);
         switch (etat)

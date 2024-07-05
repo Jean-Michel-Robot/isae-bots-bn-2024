@@ -16,7 +16,7 @@
 #define DISTANCE_MIN 80 // Distance minimale pour éviter un obstacle en mm
 
 /**
- * ZONE DEPART //TODO : A MODIFIER en fonction de la map , voir HN pour les valeurs et le repère 
+ * ZONE DEPART //TODO : A MODIFIER en fonction de la map , voir HN pour les valeurs et le repère
  */
 
 #define DEPART_JAUNE_X 43
@@ -52,7 +52,7 @@ class Machine_etats
     {
         INIT,
         MVT,
-        AVOID,// Etat pour éviter un obstacle (non implémenté)
+        AVOID, // Etat pour éviter un obstacle (non implémenté)
         STOP,
         END,
 
@@ -68,12 +68,12 @@ public:
     int tirette = 1;
     /**
      * Stratégie de déplacement  , Position de départ et d'arrivée
-    */
-    float pos_finit_x = ARRIVEE_BLEU_3_X; //TODO : A MODIFIER en foction de la stratégie
-    float pos_finit_y = ARRIVEE_BLEU_3_Y; //TODO : A MODIFIER en foction de la stratégie
+     */
+    float pos_finit_x = ARRIVEE_BLEU_3_X; // TODO : A MODIFIER en foction de la stratégie
+    float pos_finit_y = ARRIVEE_BLEU_3_Y; // TODO : A MODIFIER en foction de la stratégie
 
-    float pos_init_x = DEPART_BLEU_X;//TODO : A MODIFIER en foction de la stratégie
-    float pos_init_y = DEPART_BLEU_Y;//TODO : A MODIFIER en foction de la stratégie
+    float pos_init_x = DEPART_BLEU_X; // TODO : A MODIFIER en foction de la stratégie
+    float pos_init_y = DEPART_BLEU_Y; // TODO : A MODIFIER en foction de la stratégie
     // Position actualisé du robot
     float pos_x = 0;
     float pos_y = 0;
