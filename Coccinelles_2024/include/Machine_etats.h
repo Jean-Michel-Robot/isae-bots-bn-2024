@@ -1,11 +1,13 @@
+
+#ifndef MACHINE_ETATS_H
+#define MACHINE_ETATS_H
+
 #include <Arduino.h>
 #include <Mesure_pos.h>
 #include <Moteur.h>
 #include <Irsensor.h>
 #include <Asserv.h>
-
-#ifndef MACHINE_ETATS_H
-#define MACHINE_ETATS_H
+#include <Define_map.h>
 
 #define K 1
 #define dt 10
@@ -14,37 +16,6 @@
 
 #define SPEED 25
 #define DISTANCE_MIN 80 // Distance minimale pour éviter un obstacle en mm
-
-/**
- * ZONE DEPART //TODO : A MODIFIER en fonction de la map , voir HN pour les valeurs et le repère
- */
-
-#define DEPART_JAUNE_X 43
-#define DEPART_JAUNE_Y 1741
-
-#define DEPART_BLEU_X 43
-#define DEPART_BLEU_Y 1300
-
-/**
- * ARRIVEE
- */
-#define ARRIVEE_JAUNE_1_X 1000
-#define ARRIVEE_JAUNE_1_Y 300
-
-#define ARRIVEE_JAUNE_2_X 1775
-#define ARRIVEE_JAUNE_2_Y 2700
-
-#define ARRIVEE_JAUNE_3_X 225
-#define ARRIVEE_JAUNE_3_Y 2700
-
-#define ARRIVEE_BLEU_1_X 1000
-#define ARRIVEE_BLEU_1_Y 2700
-
-#define ARRIVEE_BLEU_2_X 1775
-#define ARRIVEE_BLEU_2_Y 300
-
-#define ARRIVEE_BLEU_3_X 125
-#define ARRIVEE_BLEU_3_Y 300
 
 class Machine_etats
 {
@@ -65,7 +36,7 @@ private:
     long m_time_sensor;
 
 public:
-    int tirette = 1;
+    int tirette = 1; // TODO Etat par défaut de la tirette , CHANGER SI NECESSAIRE
     /**
      * Stratégie de déplacement  , Position de départ et d'arrivée
      */
