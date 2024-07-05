@@ -34,7 +34,7 @@ public:
     Moteur *m_p_moteur_l; // moteur gauche
     Mesure_pos *m_p_mesure_pos;
     void setup(); // Initialisation des asservissements
-    void loop();  // Boucle d'asservissement, ne sert que pour test
+    void loop();  // Boucle d'asservissement, ne sert que pour test l'asserv
     /**
      * @brief Asservissement en vitesse des roues
      */
