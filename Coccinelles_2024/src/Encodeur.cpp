@@ -18,7 +18,7 @@ long Encodeur::mesure(){
 
 void Encodeur::loop(){
     if (millis()-m_time>1000){
-        Serial.println(mesure());
+        Serial.println(mesure()); // affiche la valeur du compteur de l'encodeur
         m_time = millis();
     }
 }

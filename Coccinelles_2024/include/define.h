@@ -1,3 +1,9 @@
+/**
+ * @file define_ewan.h
+ * @brief fichier de configuration des pins pour la pami walle ( cramptesque :) )
+ * Voir avec l'elec pour les pins
+ */
+// TODO REGLER LES PINS AVANT LA COUPE AVEC L'ELEC
 #ifndef DEFINE_H
 #define DEFINE_H
 

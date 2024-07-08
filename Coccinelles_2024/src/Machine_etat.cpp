@@ -11,33 +11,44 @@ Machine_etats::Machine_etats(Asserv *p_asserv, Mesure_pos *p_mesure_pos, Irsenso
 
 void Machine_etats::setup()
 {
+    pinMode(34, INPUT);
     etat = INIT;
     m_time = millis();
+    m_time_global = millis();
 }
 
 void Machine_etats::loop()
 {
-    float angle = 0;
     if (millis() - m_time >= dt)
     {
         if (millis() - m_time_global >= time_global)
         {
-            m_p_asserv->asserv_global(0, 0, angle);
+            m_p_asserv->asserv_global(0, 0, 0);
             etat = END;
         }
+        // Lire l'état de la tirette
+        tirette = digitalRead(34);
+        Serial.println(tirette);
         switch (etat)
         {
         case INIT:
-            // a modifier quand on demare
-            etat = MVT;
+            if (tirette == 0)
+            {
+                m_time_global = millis();
+                etat = MVT;
+            }
+            else
+            {
+                etat = INIT;
+            }
             break;
         case MVT:
-            pos_x = m_p_mesure_pos->position_x;
-            pos_y = m_p_mesure_pos->position_y;
+            pos_x = m_p_mesure_pos->position_x + pos_init_x;
+            pos_y = m_p_mesure_pos->position_y + pos_init_y;
 
-            angle = atan2(pos_finit_y - pos_y, pos_finit_x - pos_x);
+            angle = atan2(pos_y - pos_finit_y, pos_finit_x - pos_x);
             m_p_asserv->asserv_global(SPEED, SPEED, angle);
-            if (abs(pos_finit_x - pos_x) < 0.5 && abs(pos_finit_y - pos_y) < 0.5)
+            if (abs(pos_finit_x - pos_x) < 5 && abs(pos_finit_y - pos_y) < 5)
             {
                 etat = END;
             }

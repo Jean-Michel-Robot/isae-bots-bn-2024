@@ -180,3 +180,15 @@ rosrun isae_robotics_graph GraphNode.py
 rosrun isae_robotics_graph InterfaceNode.py 
 ```
 Ou utiliser export_costa_launcher.sh ou export_titanic_launcher.sh dans le dossier Scripts
+
+## Possible erreurs à detecter **Avant** la coupe 
+
+Tester asserv en idle : --> Topic br/idle 
+Tester asserv en Position --> Topic nextPositionTeensy . Tester tous les angles et les directions puis modifier l'asserv conséquence dans le fichier ['asserv.cpp'](src/main_loop.cpp)
+
+**Refaire le test après avoir redemarré le robot pour vérifier que les variables se sont bien initialisées !** 
+*Il arrive que après un redémarrage de la teensy , certaines variables de trajectoires ne soient pas bien initialisées et donc le robot ne bouge pas ou devient fou (calcul de trajectoire infini)*
+
+## Possible erreurs à detecter **Pendant** la coupe
+
+

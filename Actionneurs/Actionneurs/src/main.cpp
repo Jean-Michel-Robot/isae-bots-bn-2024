@@ -24,9 +24,9 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:0
-  servo.write(0); // move servo to 0 degrees
+  servo.write(40); // move servo to 0 degrees
   delay(1000);
-  servo.write(150);
+  servo.write(5);
   delay(1000); // delay for 1 second
 }
 // put function definitions here:
