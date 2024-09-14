@@ -72,6 +72,7 @@
 
 /* LOG */
 #define LOG_PERIOD 100 // ms
+#define LOG_PERIOD_DEBUG 100 // ms
 
 #endif
 

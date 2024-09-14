@@ -49,6 +49,8 @@ BezierTrajectory::BezierTrajectory(float initialGoalSpeed, float initialAccelPar
             break;
     }
 
+    // myClassBezier2->setBezierCurve(pointsArray);
+
     // std::vector<bezier::Point> pointsArray(nbPoints);
 
     // MyClassBezier myBezier(controlPoints2);

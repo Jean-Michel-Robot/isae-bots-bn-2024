@@ -24,15 +24,15 @@ public:
     }
 
 private:
-    bezier::Bezier<bezier::Vec2::size> bezierCurve;
+    bezier::Bezier<2> bezierCurve;
 };
 
 class MyClassBezier2 {
 public:
     // Constructor that takes an array of control points
     template<size_t N>
-    MyClassBezier2(std::vector<bezier::Point> controlPoints) {
-        m_bezier = bezier::Bezier<N>(controlPoints);
+    MyClassBezier2() {
+        m_bezier = bezier::Bezier<N>();
     }
 
 private:
@@ -67,7 +67,10 @@ private:
     bezier::Bezier<3> m_bezier_3;
     bezier::Bezier<4> m_bezier_4;
 
+    MyClassBezier2 *myClassBezier2;
+
     // std::array<bezier::Vec2, nbPoints> array;
+    std::vector<uint8_t>* bitVector;
 
 
 
