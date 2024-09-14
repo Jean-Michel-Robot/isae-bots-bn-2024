@@ -2,7 +2,7 @@
 #define __H_GLOBAL_VARIABLE
 
 #include "defines.hpp"
-#include <Arduino.h>
+// #include <Arduino.h>
 #include <Position2D.h>
 
 // l'utilisation des fonctions en constexpr permet au compilateur de remplacer textuellement une fonction basique et de l'utiliser pour les constantes constexpr

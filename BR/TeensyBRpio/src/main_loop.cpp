@@ -15,7 +15,7 @@
 #include "Asserv.hpp"
 #include "BrSM/BrSMWrapper.hpp"
 
-
+#define DEBUG_MODE true
 
 ROS* p_ros = NULL;
 OdosPosition* p_odos = NULL;
@@ -32,10 +32,11 @@ Logger* p_logger = NULL;
 
 void setup() {
 
-    // Serial.begin(9600);
-    // delay(500);
-    // Serial.println("Setup");
-
+    if (DEBUG_MODE) {
+        Serial.begin(9600);
+        delay(500);
+        Serial.println("Setup");
+    }
 
     motors_init();
 
@@ -66,6 +67,7 @@ unsigned long timer_old = 0;
 // int32_t odoR;
 
 uint32_t loop_timer = 0.0;
+uint32_t loop_timer_debug = 0.0;
 
 float current_speed;
 
@@ -163,13 +165,11 @@ void loop() {
     p_ros->loop();
 
 
-    return;
-
     // Commands for debugging
-    if (Serial.available()) {
+    if (DEBUG_MODE && millis() - loop_timer_debug > LOG_PERIOD_DEBUG && Serial.available()) {
         char c = Serial.read();
 
-        if (c == 't') {
+        if (c == 't') { 
             Serial.println("Test input");
         }
 
@@ -181,7 +181,7 @@ void loop() {
         }
 
         else if (c == 'o') {
-            //Serial.println("Received order request");
+            Serial.println("Received order request");
 
             OrderEvent orderEvent;
             orderEvent.order.x = 0.5;
@@ -226,6 +226,8 @@ void loop() {
 
             p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(endRampEvent);
         }
+
+        loop_timer_debug = millis();
     }
 
 }
