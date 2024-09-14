@@ -11,6 +11,8 @@
 #include "Trajectories/Trajectory.hpp"
 #include <SwitchFiltered.hpp>
 
+#include <memory>
+
 // #include <ROS.hpp>
 
 
@@ -56,8 +58,6 @@ class BrSM
 	* friend class Fsm;
 	*/
 public:
-	BrSM();
-
 	/* default reaction for unhandled events */
 	void react(tinyfsm::Event const &) { };
 
@@ -78,23 +78,20 @@ public:
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */
 
-	BRState getCurrentState();
-	String getCurrentStateStr();
+	static BRState getCurrentState();
+	static String getCurrentStateStr();
 
-	Position2D getCurrentGoalPos();
+	static Position2D<Meter> getCurrentGoalPos();
 
-	float getCurrentTargetSpeed();
+	static float getCurrentTargetSpeed();
 
-	template<typename E>
-    void send_event(E const & event)
-    {
-        dispatch<E>(event);
-    }
-
-	static Trajectory* currentTrajectory; //TODO remettre en private
+	static void setup();
+	static std::unique_ptr<Trajectory> currentTrajectory; //TODO remettre en private
 
 
 protected:
+
+	BrSM() = default; // prevent direct initialization
 
 	// static constexpr int initial_floor = 0;
 	// static int current_floor;
@@ -108,7 +105,7 @@ protected:
 
 	static BRState currentState;
 	static BRState requestedState;
-	static Position2D currentGoalPos;
+	static Position2D<Meter> currentGoalPos;
 
 	static SwitchFiltered m_switchLeft;
 	static SwitchFiltered m_switchRight;

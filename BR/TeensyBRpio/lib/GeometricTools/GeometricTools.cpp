@@ -23,13 +23,3 @@ float modulo_pipi(float value)
     return modulo_x2(fmod(value,2*PI));
 }
 
-
-// Helper function to switch to asserv point frame
-Position2D toAsservPointFrame(Position2D pos) {
-  return Position2D(
-    pos.x + ASSERV_ALPHA*cos(pos.theta),
-    pos.y + ASSERV_ALPHA*sin(pos.theta),
-    pos.theta
-  );
-  //TODO assuming ASSERV_BETA is 0 here, could generalize with ASSERV_BETA as well
-}

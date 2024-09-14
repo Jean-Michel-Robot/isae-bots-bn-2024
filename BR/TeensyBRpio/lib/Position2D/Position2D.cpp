@@ -3,30 +3,43 @@
 
 #include "Arduino.h"
 
-
-Position2D::Position2D(float x, float y, float theta)
+template<typename Unit>
+Position2D<Unit>::Position2D(float x, float y, float theta)
 {
     this->x = x;
     this->y = y;
     this->theta = theta;
 }
 
-Position2D::Position2D( Position2D const& pos)
+template<typename Unit>
+Position2D<Unit>::Position2D( Position2D<Unit> const& pos)
 {
     x = pos.x;
     y = pos.y;
     theta = pos.theta;
 }
 
-void Position2D::changeReferentiel(Position2D const &ref)
+Position2D<Meter> convert( Position2D<Millimeter> const& pos) {
+    auto converted = pos / 1000.0;
+    return Position2D<Meter>(converted.x, converted.y, converted.theta);
+}
+
+Position2D<Millimeter> convert( Position2D<Meter> const& pos) {
+    auto converted = pos * 1000.0;
+    return Position2D<Millimeter>(converted.x, converted.y, converted.theta);
+}
+
+template<typename Unit>
+void Position2D<Unit>::changeReferentiel(Position2D<Unit> const &ref)
 {
-    Position2D positionInRefWithoutRotation = *this - ref;
+    Position2D<Unit> positionInRefWithoutRotation = *this - ref;
     x = positionInRefWithoutRotation.x * cos(ref.theta) + positionInRefWithoutRotation.y *sin(ref.theta) ;
     y = -positionInRefWithoutRotation.x * sin(ref.theta) + positionInRefWithoutRotation.y * cos(ref.theta) ;
     theta -= ref.theta;
 }
 
-void Position2D::operator=(const Position2D &pos)
+template<typename Unit>
+void Position2D<Unit>::operator=(const Position2D<Unit> &pos)
 {
     x = pos.x;
     y = pos.y;
@@ -34,70 +47,62 @@ void Position2D::operator=(const Position2D &pos)
 }
 
 #if defined(ARDUINO) or defined(__SIMU__)
-String Position2D::toString() const
+template<typename Unit>
+String Position2D<Unit>::toString() const
 {
     return String("(") + String(x) + "," + String(y) + ";" + String(theta) + ")";
 }
 #else
-std::string Position2D::to_string()const
+template<typename Unit>
+std::string Position2D<Unit>::to_string()const
 {
     return "("+ std::to_string(x) + "," + std::to_string(y) + ";" + std::to_string(theta) + ")";
 }
 #endif
 
-void Position2D::operator+=(const Position2D &pos)
+template<typename Unit>
+void Position2D<Unit>::operator+=(const Position2D<Unit> &pos)
 {
     this->x += pos.x;
     this->y += pos.y;
     this->theta += pos.theta;
 }
 
-void Position2D::operator-=(const Position2D &pos)
+template<typename Unit>
+void Position2D<Unit>::operator-=(const Position2D<Unit> &pos)
 {
     this->x -= pos.x;
     this->y -= pos.y;
     this->theta -= pos.theta;
 }
 
-void Position2D::operator*=(float factor)
+template<typename Unit>
+void Position2D<Unit>::operator*=(float factor)
 {
     this->x *= factor;
     this->y *= factor;
 }
 
-void Position2D::operator/=(float factor)
+template<typename Unit>
+void Position2D<Unit>::operator/=(float factor)
 {
     this->x /= factor;
     this->y /= factor;
 }
-float Position2D::s_dist(Position2D const& a, Position2D const& b)
+
+template<typename Unit>
+float Position2D<Unit>::s_dist(Position2D<Unit> const& a, Position2D<Unit> const& b)
 {
     return sqrt((a.x - b.x)*(a.x-b.x) + (a.y - b.y)*(a.y-b.y));
 }
 
-Position2D operator+(const Position2D &posa, const Position2D &posb)
-{
-    return Position2D(posa.x+posb.x,posa.y+posb.y,posa.theta+posb.theta);
-}
-
-Position2D operator-(const Position2D &posa, const Position2D &posb)
-{
-    return Position2D(posa.x-posb.x,posa.y-posb.y,posa.theta-posb.theta);
-}
-
-Position2D operator*(const Position2D &pos, float factor)
-{
-    return Position2D(pos.x*factor,pos.y*factor,pos.theta);
-}
-
-Position2D operator/(const Position2D &pos, float factor)
-{
-    return Position2D(pos.x/factor,pos.y/factor,pos.theta);
-}
-
-float Position2D::s_angleBetweenTwoPoints(Position2D const& a,Position2D const& b) // calcul l'angle pour le vecteur AB
+template<typename Unit>
+float Position2D<Unit>::s_angleBetweenTwoPoints(Position2D<Unit> const& a,Position2D<Unit> const& b) // calcul l'angle pour le vecteur AB
 {
     if(s_isStrictEgalityXY(a,b))
         return 0; // on évite les nan
     return atan2(b.y-a.y,b.x-a.x);
 }
+
+template class Position2D<Meter>;
+template class Position2D<Millimeter>;

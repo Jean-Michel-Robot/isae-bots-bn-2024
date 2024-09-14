@@ -17,6 +17,7 @@
 #include "main_loop.hpp"
 
 #include "BrSM/BrSMWrapper.hpp"
+#include "Ramp/RampSM.hpp"
 #include "Asserv.hpp"
 
 // init ROS object
@@ -75,17 +76,14 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
     case GoalType::CONTROL:
     {
 
+      Position2D<Millimeter> position(positionMsg.x, positionMsg.y, positionMsg.z);
+      
       OrderEvent orderEvent;
+      orderEvent.order = OrderType(convert(position), positionMsg.w);
 
-      orderEvent.order.x = positionMsg.x/1000.0;  // conversion en m
-      orderEvent.order.y = positionMsg.y/1000.0;  // conversion en m
-      orderEvent.order.theta = positionMsg.z;
-      orderEvent.order.goalType = positionMsg.w;
-
-      p_sm->send_event(orderEvent);
+      BrSM::dispatch(orderEvent);
       break;
     }
-
 
     case GoalType::RESET:
     {
@@ -95,7 +93,7 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
       resetPosEvent.y = positionMsg.y;
       resetPosEvent.theta = positionMsg.z;
 
-      p_sm->send_event(resetPosEvent);
+      BrSM::dispatch(resetPosEvent);
       break;
     }
 
@@ -105,7 +103,7 @@ void ROS::s_goToCb(const geometry_msgs::Quaternion& positionMsg)
 
       BrEmergencyBrakeEvent brEmergencyBrakeEvent;
 
-      p_sm->send_event(brEmergencyBrakeEvent);
+      BrSM::dispatch(brEmergencyBrakeEvent);
       break;
     }
 
@@ -139,42 +137,42 @@ void ROS::s_debug(const std_msgs::Int16& debugMsg)
 
   if (res == 0) {
     OrderEvent orderEvent;
-    orderEvent.order = {.x = 2.0, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
+    orderEvent.order = OrderType(2.0, 0, 0.0, GoalType::TRANS);
 
-    p_sm->send_event(orderEvent);
+    BrSM::dispatch(orderEvent);
   }
 
   if (res == 1) {
     OrderEvent orderEvent;
-    orderEvent.order = {.x = 0.0, .y = 0, .theta = 0.0, .goalType = GoalType::TRANS};
+    orderEvent.order = OrderType(0.0, 0, 0.0, GoalType::TRANS);
 
-    p_sm->send_event(orderEvent);
+    BrSM::dispatch(orderEvent);
   }
 
   else if (res == 2) {
     GoalSpeedChangeEvent goalSpeedChangeEvent;
     goalSpeedChangeEvent.newSpeed = 0.5;
 
-    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+    RampSM::dispatch(goalSpeedChangeEvent);
   }
 
   else if (res == 3) {
     GoalSpeedChangeEvent goalSpeedChangeEvent;
     goalSpeedChangeEvent.newSpeed = 0.1;
 
-    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(goalSpeedChangeEvent);
+    RampSM::dispatch(goalSpeedChangeEvent);
   }
 
   else if (res == 4) {
     EmergencyBrakeEvent emergencyBrakeEvent;
 
-    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+    RampSM::dispatch(emergencyBrakeEvent);
   }
 
   else if (res == 5) {
     EndRampEvent endRampEvent;
 
-    p_sm->brSM.currentTrajectory->rampSpeed.rampSM.send_event(endRampEvent);
+    RampSM::dispatch(endRampEvent);
   }
 }
 
@@ -195,15 +193,15 @@ void ROS::s_setSpeed(const std_msgs::Int16& speedMsg)
 {
   float newSpeedFactor = (float) speedMsg.data / 100.0;  // data is a percentage
 
-  switch (p_sm->currentTrajectory->trajectoryType) {
+  switch (BrSM::currentTrajectory->trajectoryType) {
 
     case TRAJ_UNDEF:  //TODO handle differently ?
     case TRAJ_LINEAR:
-      p_sm->currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_LINEAR_GOAL_SPEED);
+      BrSM::currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_LINEAR_GOAL_SPEED);
       break;
 
     case TRAJ_ROTATION:
-      p_sm->currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_ROTATION_GOAL_SPEED);
+      BrSM::currentTrajectory->setGoalSpeed(newSpeedFactor * MAX_ROTATION_GOAL_SPEED);
       break;
 
     default:
@@ -215,7 +213,7 @@ void ROS::s_setSpeed(const std_msgs::Int16& speedMsg)
 
 void ROS::sendDebug() {
 
-  Position2D pos = p_sm->currentTrajectory->getGoalPoint();
+  Position2D<Meter> pos = BrSM::currentTrajectory->getGoalPoint();
 
   m_debugVar.x = pos.x;
   m_debugVar.y = pos.y;
@@ -253,14 +251,14 @@ void ROS::s_idle(const std_msgs::Int16 &msg) {
     p_ros->logPrint(INFO, "Received get ready event");
 
     BrGetReadyEvent brGetReadyEvent;
-    p_sm->send_event(brGetReadyEvent);
+    BrSM::dispatch(brGetReadyEvent);
   }
 
   else if (msg.data == 0) {
     p_ros->logPrint(INFO, "Received set to Idle event");
 
     BrSetToIdleEvent brSetToIdleEvent;
-    p_sm->send_event(brSetToIdleEvent);    
+    BrSM::dispatch(brSetToIdleEvent);    
   }
 }
 
@@ -296,7 +294,7 @@ void ROS::s_idle(const std_msgs::Int16 &msg) {
 //   m_nodeHandle.logerror(details.c_str());
 // }
 
-void ROS::sendCurrentPosition(Position2D position)
+void ROS::sendCurrentPosition(Position2D<Millimeter> position)
 {
     m_feedbackPosition.x = position.x;
     m_feedbackPosition.y = position.y;

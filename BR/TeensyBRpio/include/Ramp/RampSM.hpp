@@ -42,9 +42,6 @@ class RampSM
 	*/
 public:
 
-    RampSM(float accelParam);
-	RampSM() = default;
-
 	/* default reaction for unhandled events */
 	void react(tinyfsm::Event const &) { };
 
@@ -58,21 +55,20 @@ public:
 	virtual void entry(void) { };  /* entry actions in some states */
 	void         exit(void)  { };  /* if no exit actions at all */
 
-	RampState getCurrentState();
-	String getCurrentStateStr();
+	static RampState getCurrentState();
+	static String getCurrentStateStr();
 
-	void setAccelParam(float accelParam);
-    void setGoalSpeed(float goalSpeed);
+	static void setAccelParam(float accelParam);
+    static void setGoalSpeed(float goalSpeed);
     // void setT0(float t0);
-    float getCurrentSpeed();
+    static float getCurrentSpeed();
 
-    template<typename E>
-    void send_event(E const & event)
-    {
-        dispatch<E>(event);
-    }
+    static void reset_and_start();
 
 protected:
+
+	RampSM() = default; // prevent direct initialization
+
 	static uint32_t t0, t_start_slope; // + t_current si on a besoin du dt
 	static float V_start_slope;
 

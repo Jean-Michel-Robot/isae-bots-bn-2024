@@ -37,8 +37,7 @@ void Moteur::set_speed(int vitesse)
     analogWrite(m_EN, m_vitesse);
 }
 
-void Moteur::stop()
-{
+void Moteur::stop(){
     digitalWrite(m_IN1, 0);
     digitalWrite(m_IN2, 0);
     analogWrite(m_EN, 0);
@@ -47,3 +46,4 @@ void Moteur::stop()
 void Moteur::loop()
 {
 }
+

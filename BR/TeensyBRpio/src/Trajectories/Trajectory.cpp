@@ -19,9 +19,6 @@ Trajectory::Trajectory()
     Dtotale = 0.0;
 
     trajectoryType = TrajectoryType::TRAJ_UNDEF;
-
-    rampSpeed = Ramp(accelParam);  //TODO : static object or change it to dynamic ?
-                                   // Or LinearTrajectory is dynamic but this is static ?
 }
 
 Trajectory::~Trajectory() {
@@ -35,7 +32,7 @@ bool Trajectory::isTrajectoryActive() {
 
 // We make sure the trajectory goal point starts exactly on the robot pos
 // so that the error at the start is 0
-void Trajectory::setRobotPos(Position2D pos) {
+void Trajectory::setRobotPos(Position2D<Meter> pos) {
     this->x0 = pos.x;
     this->y0 = pos.y;
     this->theta0 = pos.theta;
@@ -50,7 +47,7 @@ void Trajectory::beginTrajectory(uint32_t t0) {
     currentSpeed = 0.0;  // une trajectoire commence toujours à vitesse nulle
     s = 0;  // on commence au début de la trajectoire
 
-    rampSpeed.beginRamp(t0, goalSpeed);
+    rampSpeed.beginRamp(t0, goalSpeed, accelParam);
 }
 
 
@@ -133,16 +130,16 @@ void Trajectory::setGoalSpeed(float goalSpeed) {
 }
 
 
-Position2D Trajectory::getGoalPoint() {
+Position2D<Meter> Trajectory::getGoalPoint() {
 
     // transform coordinates to the asserv tracking point frame
-    return Position2D(x, y, theta);
+    return Position2D<Meter>(x, y, theta);
 }
 
-Position2D Trajectory::getGoalOffsetPoint() {
+Position2D<Meter> Trajectory::getGoalOffsetPoint() {
 
     // transform coordinates to the asserv tracking point frame
-    return toAsservPointFrame(Position2D(x, y, theta));
+    return toAsservPointFrame(getGoalPoint());
 }
 
 
@@ -166,6 +163,6 @@ void Trajectory::updateTrajectoryState() {
     p_ros->logPrint(ERROR, "Shouldn't use default implementation of updateTrajectoryState");
 }
 
-void Trajectory::setDest(Position2D orderInfo) {
+void Trajectory::setDest(Position2D<Meter> orderInfo) {
     p_ros->logPrint(ERROR, "Shouldn't use default implementation of setDest");
 }

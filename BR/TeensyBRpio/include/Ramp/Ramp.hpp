@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 
-#include "Ramp/RampSM.hpp"
 #include <Events.hpp>
 
 
@@ -20,11 +19,10 @@ car on ne calcule pas tout le profil de vitesse comme avant
 class Ramp
 {
 public :
-    Ramp(float accelParam);
-    Ramp() = default;
+    Ramp();
     // TODO destructeur
 
-    void beginRamp(uint32_t t0, float goalSpeed);
+    void beginRamp(uint32_t t0, float goalSpeed, float accelParam);
 
     float updateRamp(uint32_t t);
 
@@ -35,12 +33,7 @@ public :
     void changeGoalSpeed(float goalSpeed);
     void emergencyBrake();
 
-    RampSM rampSM; //TODO remettre en private
-
 private :
-
-    float accelParam;
-
 
     BeginRampEvent beginRampEvent;
     GoalSpeedChangeEvent goalSpeedChangeEvent;

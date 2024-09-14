@@ -2,7 +2,7 @@
 
 #include "BrSM/BrSM.hpp"
 // #include "fsmlist.hpp"
-
+#include "Ramp/RampSM.hpp"
 #include <Arduino.h>
 #include <GeometricTools.hpp>
 #include "Trajectories/Trajectory.hpp"
@@ -31,9 +31,8 @@ class BR_RecalDetect;
 class BR_EmergencyStop;
 
 // constructor
-BrSM::BrSM()
+void BrSM::setup()
 {
-
   // set timer lengths
   recalAsservTimer.setLength(RECAL_ASSERV_TIMEOUT);
   waitTimer.setLength(BR_WAIT_TIMER);
@@ -79,23 +78,23 @@ void BrSM::setupTrajectory()
 
     case TRANS:
     case FINAL:
-      thetaDest = atan2(currentOrder.y - robotPos.y, currentOrder.x - robotPos.x);
+      thetaDest = Position2D<Meter>::s_angleBetweenTwoPoints(robotPos, currentOrder);
       break;
     }
-    currentTrajectory->setDest(Position2D(0.0, 0.0, thetaDest));
+    currentTrajectory->setDest(Position2D<Meter>(0.0, 0.0, thetaDest));
     break;
   }
 
   case BR_FORWARD:
   case REVERSE:
   {
-    currentTrajectory->setDest(Position2D(currentOrder.x, currentOrder.y, 0.0));
+    currentTrajectory->setDest(Position2D<Meter>(currentOrder.x, currentOrder.y, 0.0));
     break;
   }
 
   case BR_FINALROT:
   {
-    currentTrajectory->setDest(Position2D(0.0, 0.0, currentOrder.theta));
+    currentTrajectory->setDest(Position2D<Meter>(0.0, 0.0, currentOrder.theta));
     break;
   }
 
@@ -270,7 +269,7 @@ class InitRot
     currentState = BR_INITROT;
 
     // Changement de trajectoire en rotation
-    currentTrajectory = p_rotationTrajectory;
+    currentTrajectory = std::make_unique<RotationTrajectory>();
 
     setupTrajectory();
   }
@@ -330,7 +329,7 @@ class Forward
     currentState = BR_FORWARD;
 
     // Changement de trajectoire en linéaire
-    currentTrajectory = p_linearTrajectory;
+    currentTrajectory =  std::make_unique<LinearTrajectory>();
 
     setupTrajectory();
   }
@@ -390,7 +389,7 @@ class FinalRot
     currentState = BR_FINALROT;
 
     // Changement de trajectoire en rotation
-    currentTrajectory = p_rotationTrajectory;
+    currentTrajectory = std::make_unique<RotationTrajectory>();
 
     setupTrajectory();
   }
@@ -489,7 +488,7 @@ class BR_RecalAsserv
     recalAsservTimer.start(millis());
 
     // Changement de trajectoire en linéaire
-    currentTrajectory = p_linearTrajectory;
+    currentTrajectory = std::make_unique<LinearTrajectory>();
 
     // Changement de la vitesse en vitesse de recalage
     currentTrajectory->setGoalSpeed(RECAL_SPEED);
@@ -520,7 +519,7 @@ class BR_RecalAsserv
     }
 
     Position2D robot_pos = p_odos->getRobotPosition();
-    float d = sqrt((robot_pos.x - currentOrder.x) * (robot_pos.x - currentOrder.x) + (robot_pos.y - currentOrder.y) * (robot_pos.y - currentOrder.y));
+    float d = (robot_pos - currentOrder).norm();
 
     if (d < RECAL_DISTANCE || // distance to destination is short enough
         m_switches[BR_RIGHT]->isSwitchPressed() ||
@@ -534,7 +533,7 @@ class BR_RecalAsserv
     // else we follow a linear trajectory backwards (theta is towards the rear)
 
     // TODO factoriser le code dans une fct (commun avec le default updateEvent)
-    if (currentTrajectory == NULL)
+    if (!currentTrajectory)
     {
       p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
       return;
@@ -656,12 +655,10 @@ void BrSM::react(ResetPosEvent const &e)
   p_ros->logPrint(INFO, "Received reset position event to (" + String(e.x) + ", " +
                           String(e.y) + ", " + String(e.theta)+")");
 
-  p_odos->setPosition(Position2D(e.x, e.y, e.theta));
+  p_odos->setPosition((Position2D<Millimeter>) e);
 
   // We also reset the currentGoalPos to make sure the asserv doesnt do madness
-  currentGoalPos.x = e.x / 1000.0;
-  currentGoalPos.y = e.y / 1000.0;
-  currentGoalPos.theta = e.theta;
+  currentGoalPos = convert((Position2D<Millimeter>) e);
 
   // RAZ l'intégrateur ?
   p_asserv->RAZIntegral();
@@ -674,7 +671,7 @@ void BrSM::react(BrEmergencyBrakeEvent const &)
 
   // send signal to rampSM //TODO make it the same signal
   EmergencyBrakeEvent emergencyBrakeEvent;
-  currentTrajectory->rampSpeed.rampSM.send_event(emergencyBrakeEvent);
+  RampSM::dispatch(emergencyBrakeEvent);
 
   transit<BR_EmergencyStop>();
 }
@@ -682,7 +679,7 @@ void BrSM::react(BrEmergencyBrakeEvent const &)
 void BrSM::react(BrUpdateEvent const &e)
 {
 
-  if (currentTrajectory == NULL)
+  if (!currentTrajectory)
   {
     p_ros->logPrint(FATAL, "Pointer to current trajectory is NULL in BR update function");
     return;
@@ -730,7 +727,7 @@ void BrSM::react(BrUpdateEvent const &e)
 
       GoalReachedEvent e;
       e.goalType = currentOrder.goalType;
-      send_event(e);
+      dispatch(e);
     }
 
     // otherwise we let the asserv stabilize close to the end point
@@ -752,7 +749,7 @@ String BrSM::getCurrentStateStr()
   return BrStateStr[currentState];
 }
 
-Position2D BrSM::getCurrentGoalPos()
+Position2D<Meter> BrSM::getCurrentGoalPos()
 {
   return currentGoalPos;
 }
@@ -776,9 +773,9 @@ float BrSM::getCurrentTargetSpeed()
 
 // Variable initializations
 AxisStates BrSM::axisStates = {0};
-OrderType BrSM::currentOrder = {0};
-Position2D BrSM::currentGoalPos = Position2D(0.0, 0.0, 0.0);
-Trajectory *BrSM::currentTrajectory = NULL;
+OrderType BrSM::currentOrder = OrderType();
+Position2D<Meter> BrSM::currentGoalPos = Position2D<Meter>();
+std::unique_ptr<Trajectory> BrSM::currentTrajectory = std::unique_ptr<Trajectory>();
 Timer BrSM::recalAsservTimer = Timer(millis());
 Timer BrSM::waitTimer = Timer(millis());
 SwitchFiltered *BrSM::m_switches[2] = {NULL};

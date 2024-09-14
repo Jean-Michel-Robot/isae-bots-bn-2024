@@ -13,13 +13,10 @@
 // using fsm_handle = tinyfsm::Fsm<BrSM>;  // if we only want one state machine
 // fsm_handle fsm_handle1;
 
-BrSM sm_instance = BrSM();
-
-
 template<typename E>
 void send_event(E const & event)
 {
-  sm_instance.dispatch<E>(event);
+  BrSM::dispatch<E>(event);
 }
 
 // using MotorFSM1 = tinyfsm::Fsm<MotorSM>;

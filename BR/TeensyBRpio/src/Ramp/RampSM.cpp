@@ -16,24 +16,25 @@ static const char *RampStateStr[] = {
 };
 
 // Constructor
-RampSM::RampSM(float accelParam) {
-  this->accelParam = accelParam;
-
+void RampSM::reset_and_start() {
   // init state var
-  this->currentState = RampState::RAMP_IDLE;
+  currentState = RampState::RAMP_IDLE;
 
   // this->t_current = 0.0;
   t_start_slope = 0.0; t0 = 0.0;
   V_start_slope = 0.0;
   currentSpeed = 0.0;
+  accelParam = 0.0;
+
+  start();
 }
 
 void RampSM::setAccelParam(float accelParam) {
-  this->accelParam = accelParam;
+  RampSM::accelParam = accelParam;
 }
 
 void RampSM::setGoalSpeed(float goalSpeed) {
-  this->goalSpeed = goalSpeed;
+  RampSM::goalSpeed = goalSpeed;
 }
 
 

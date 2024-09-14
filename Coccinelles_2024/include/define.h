@@ -1,3 +1,9 @@
+/**
+ * @file define_ewan.h
+ * @brief fichier de configuration des pins pour la pami walle ( cramptesque :) )
+ * Voir avec l'elec pour les pins
+ */
+// TODO REGLER LES PINS AVANT LA COUPE AVEC L'ELEC
 #ifndef DEFINE_H
 #define DEFINE_H
 
@@ -5,11 +11,11 @@
 ENCODEURS
 
 */
-#define CLK_L 16 // CLK RIGHT  ENCODER
-#define DT_L 17  // DT RIGHT Encoder
+#define CLK_L 5 // CLK LEFT  ENCODER
+#define DT_L 18 // DT LEFT Encoder
 
-#define CLK_R 18 // CLK LEFT  ENCODER
-#define DT_R 5   // DT LEFT Encoder
+#define CLK_R 17 // CLK RIGHT ENCODER
+#define DT_R 16  // DT RIGHT Encoder
 
 /*
 MOTEURS

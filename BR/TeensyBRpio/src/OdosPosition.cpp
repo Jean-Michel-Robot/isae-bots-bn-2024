@@ -41,12 +41,9 @@ OdosPosition::OdosPosition()
   m_positionThetaOffset   =   0;
 }
 
-void OdosPosition::setPosition(Position2D pos)
+void OdosPosition::setPosition(Position2D<Millimeter> pos)
 {
-  // On la reçoit déjà en mm
-  Position2D pos2 = Position2D(pos.x, pos.y, pos.theta);
-
-  m_robotPosition = pos2;
+  m_robotPosition = pos;
   m_positionThetaOffset += pos.theta - m_positionThetaOdo;
   m_positionThetaOdo = (double(m_odoRightCount) * L_R_ODOS - double(m_odoLeftCount)) / ECARTS_ODOS + m_positionThetaOffset;
 }
@@ -175,13 +172,9 @@ void OdosPosition::setPositionAvecRecalage()
   return;
 }
 
-Position2D OdosPosition::getRobotPosition() const
+Position2D<Meter> OdosPosition::getRobotPosition() const
 {
-
-  // Conversion en m
-  Position2D pos = Position2D(m_robotPosition.x / 1000.0, m_robotPosition.y / 1000.0, m_robotPosition.theta);
-
-  return pos;
+  return convert(m_robotPosition);
 }
 
 void OdosPosition::sendRobotPosition(){

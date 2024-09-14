@@ -22,7 +22,7 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
 }
 
 // A faire après avoir set la position du robot
-void RotationTrajectory::setDest(Position2D orderInfo) {
+void RotationTrajectory::setDest(Position2D<Meter> orderInfo) {
     //NOTE every trajectory uses different elements of orderInfo,
     // and not necessarily all of them
 

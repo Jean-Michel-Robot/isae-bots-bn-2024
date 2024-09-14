@@ -78,7 +78,7 @@ public :
     ROS();
     void sendCallback(CallbackHN callback);
     void logPrint(LogType logtype, String msg);
-    void sendCurrentPosition(Position2D position);
+    void sendCurrentPosition(Position2D<Millimeter> position);
     void publishFullLogs();
 
     void sendDebug();

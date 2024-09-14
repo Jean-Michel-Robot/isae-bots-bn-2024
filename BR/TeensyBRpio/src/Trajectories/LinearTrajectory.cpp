@@ -21,7 +21,7 @@ LinearTrajectory::LinearTrajectory(float initialGoalSpeed, float initialAccelPar
 }
 
 // A faire après avoir set la position du robot
-void LinearTrajectory::setDest(Position2D orderInfo) {
+void LinearTrajectory::setDest(Position2D<Meter> orderInfo) {
     this->xdest = orderInfo.x;
     this->ydest = orderInfo.y;
 
