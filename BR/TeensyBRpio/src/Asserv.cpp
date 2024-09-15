@@ -1,18 +1,11 @@
 
 #include "Asserv.hpp"
+#include "geometry/GeometricTools.hpp"
+#include "feedback/PositionFeedback.hpp"
 
-#include "OdosPosition.hpp"
-#include <Motors.hpp>
-#include <GeometricTools.hpp>
-
-#include "ROS.hpp"
-#include "main_loop.hpp"
-
-#include <Arduino.h>
+#include "motors.hpp"
 #include <cmath>
-
-
-
+#include <stdlib.h>
 
 Asserv::Asserv(float Kp, float Ti, float Td) {
     m_Kp = Kp;
@@ -41,7 +34,7 @@ void Asserv::setGains(float Kp, float Ti, float Td) {
 void Asserv::updateError(Position2D<Meter> goalOffsetPos) {
 
     //TODO maybe put this elsewhere, should be done at every loop
-    currentRobotPos = p_odos->getRobotPosition();
+    currentRobotPos = PositionFeedback::instance().getRobotPosition();
 
     // Position2D currentBotPosition = p_odos->getRobotPosition();
 
@@ -81,21 +74,8 @@ void Asserv::updateCommand(float vd, float omega_d, bool bypassAsserv) {
 
     if(m_state == ACTIVE) {
 
-        // /* En utilisant la formule qu'on sait pas d'où elle sort*/
-        // if(cos(m_errorPos.theta) == 0){
-        //     // Protection div par 0 (ça peut servir)
-        //     p_ros->logPrint(ERROR, "Division by 0 in asserv");
-        //     m_botSpeed[0] = 0;
-        //     m_botSpeed[1] = 0;
-        // }
-        // else {   
-        //     m_botSpeed[0] = (vd - m_k1*abs(vd)*(m_errorPos.x + m_errorPos.y*tan(m_errorPos.theta)))/cos(m_errorPos.theta);
-        //     m_botSpeed[1] = omega_d - (m_k2*vd*m_errorPos.y  + m_k3*abs(vd)*tan(m_errorPos.theta))*pow(cos(m_errorPos.theta),2);
-        // }
-
         m_leftWheelSpeed = m_botSpeed[0] + m_botSpeed[1]*WHEEL_DISTANCE/2; 
         m_rightWheelSpeed = m_botSpeed[0] - m_botSpeed[1]*WHEEL_DISTANCE/2;
-
 
     }
 
@@ -163,7 +143,7 @@ void Asserv::loop() {
     */
 
 
-    currentRobotPos = p_odos->getRobotPosition(); // avant le reste
+    currentRobotPos = PositionFeedback::instance().getRobotPosition(); // avant le reste
 
     //il faut que la trajectoire sopit update
 
@@ -275,4 +255,27 @@ void Asserv::calculateSpeeds() {
            /ASSERV_ALPHA;
 
     cmd_omega = (-sin(theta)*cmd_coordspoint[0] + cos(theta)*cmd_coordspoint[1])/ASSERV_ALPHA;
+}
+
+Asserv &Asserv::instance() {
+    #ifdef DEFAULT_KP
+    float Kp = DEFAULT_KP;
+    #else
+    float Kp = 0;
+    #endif
+
+    #ifdef DEFAULT_TI
+    float Ti = DEFAULT_TI;
+    #else
+    float Ti = 0;
+    #endif
+
+    #ifdef DEFAULT_TD
+    float Td = DEFAULT_TD;
+    #else
+    float Td = 0;
+    #endif
+
+    static Asserv instance(Kp, Ti, Td);
+    return instance;
 }

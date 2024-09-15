@@ -1,7 +1,7 @@
 #ifndef ASSERV_H
 #define ASSERV_H
 
-#include <Position2D.h>
+#include "geometry/Position2D.h"
 
 #include "defines.hpp"
 
@@ -34,8 +34,6 @@ public:
 
     AsservState m_state;
 
-    Asserv(float Kp, float Ti, float Td);
-
     void setGains(float Kp, float Ti, float Td);
 
     // update l'erreur en recevant la position du point objectif actuel
@@ -64,6 +62,8 @@ public:
 
     void calculateSpeeds();
 
+    static Asserv &instance();
+
 
     //TODO remettre en private
     Position2D<Meter> currentRobotPos;
@@ -85,7 +85,7 @@ public:
 
 private:
 
-
+    Asserv(float Kp, float Ti, float Td);
 
     float m_N = 5.0;
     float m_Rsb[2][2];  // matrice de passage du repère monde vers le repère robot
