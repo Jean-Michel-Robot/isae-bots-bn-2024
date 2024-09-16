@@ -2,6 +2,7 @@
 #include "Asserv.hpp"
 #include "geometry/GeometricTools.hpp"
 #include "feedback/PositionFeedback.hpp"
+#include "utils/clock.h"
 
 #include "motors.hpp"
 #include <cmath>
@@ -168,8 +169,6 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
     // so that it just follows the trajectory in open loop
     // (revient à mettre les gains de l'asserv à 0 mais on peut faire plus propre)
 
-
-
     if (m_state == ACTIVE || true) {
 
         // il faut que la trajectoire et l'erreur soient update avant
@@ -177,7 +176,6 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
 
         computeOutput(micros(), ppoint_d);
         calculateSpeeds();
-
 
         // conversion en vitesse des roues
         m_rightWheelSpeed = cmd_v + cmd_omega*WHEEL_DISTANCE/2;
@@ -198,7 +196,6 @@ void Asserv::updateCommand_2(float* ppoint_d, bool bypassAsserv) {
         m_rightWheelSpeed = 0.0;
         m_leftWheelSpeed = 0.0;
     }
-
     // send the commands to the motors
     sendMotorCommand(BR_LEFT, m_leftWheelSpeed);
     sendMotorCommand(BR_RIGHT, m_rightWheelSpeed);
@@ -228,9 +225,9 @@ void Asserv::computeOutput(unsigned long t_micro, float* ppoint_d) {
         } else {
             m_sumIntegral[k] = 0.0;
         }
-        if (m_Kp != 0.0 && m_Td != 0.0)
+        if (m_Kp != 0.0 && m_Td != 0.0) {
             m_cmdDerivee[k] = constrain(m_Kp * m_Td * (error[k] - m_lastMesuredError[k] + (m_cmdDerivee[k] / (m_N * m_Kp))) / (deltaT + m_Td / m_N) , -m_outputMax, m_outputMax);
-        else{
+        } else {
             m_cmdDerivee[k] = 0.0;
         }
         float commande = ppoint_d[k] + m_Kp * error[k] + float (m_sumIntegral[k]) + m_cmdDerivee[k];
@@ -238,7 +235,9 @@ void Asserv::computeOutput(unsigned long t_micro, float* ppoint_d) {
 
         cmd_coordspoint[k] = constrain(commande, -m_outputMax, m_outputMax);
 
+
     }
+    
 }
 
 

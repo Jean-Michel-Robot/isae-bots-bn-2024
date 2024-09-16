@@ -1,6 +1,7 @@
 
 #include "ros/ROS.hpp"
 #include "logging.h"
+#include "utils/clock.h"
 
 #include "trajectories/Trajectory.hpp"
 #include "state_machine/BrSMWrapper.hpp"
@@ -124,12 +125,18 @@ void ROS::s_debug(const std_msgs::Int16 *debugMsg)
 
 void ROS::s_changeGains(const std_msgs::Float32MultiArray *gains)
 {
-  Asserv::instance().setGains(gains->data.data[0], gains->data.data[1], gains->data.data[2]);
+  const float *gains_ = multi_array_get_raw_data(gains);
+  Asserv::instance().setGains(gains_[0], gains_[1], gains_[2]);
   //TODO RAZ de l'asserv ?
 }
 
 void ROS::s_setSpeed(const std_msgs::Int16 *speedMsg)
 {
+  if (!BrSM::currentTrajectory)
+  {
+    return;
+  }
+
   float newSpeedFactor = (float)speedMsg->data / 100.0; // data is a percentage
 
   switch (BrSM::currentTrajectory->trajectoryType)
@@ -160,7 +167,7 @@ void ROS::sendDebug()
   m_debugVar.z = pos.theta;
   m_debugVar.w = 0;
 
-  m_debugPub.publish(&m_debugVar);
+  m_debugPub.publish(m_debugVar);
 }
 
 // void ROS::s_changeGainsMotor(const std_msgs::Float32MultiArray& gainsM)
@@ -173,14 +180,15 @@ void ROS::sendDebug()
 //   }
 // }
 
-void sendCallback(AsservCallback callback) {
+void sendCallback(AsservCallback callback)
+{
   ROS::instance().sendCallback(callback);
 }
 
 void ROS::sendCallback(AsservCallback callback)
 {
   m_callbackHN.data = callback;
-  m_pubHN.publish(&m_callbackHN);
+  m_pubHN.publish(m_callbackHN);
 }
 
 void ROS::s_idle(const std_msgs::Int16 *msg)
@@ -208,17 +216,14 @@ void ROS::sendCurrentPosition(Position2D<Millimeter> position)
   m_feedbackPosition.x = position.x;
   m_feedbackPosition.y = position.y;
   m_feedbackPosition.theta = position.theta;
-  m_positionFeedback.publish(&m_feedbackPosition);
+  m_positionFeedback.publish(m_feedbackPosition);
 }
 
 void ROS::sendOdosCounts(int32_t left, int32_t right)
 {
   int32_t ticks[2] = {left, right};
-  m_odosTicks.data.data = ticks;
-  m_odosTicks.data.size = 2;
-  m_odosTicks.data.capacity = 2;
-
-  m_odosTicksPub.publish(&m_odosTicks);
+  multi_array_set_data(m_odosTicks, ticks, 2);
+  m_odosTicksPub.publish(m_odosTicks);
 }
 
 void ROS::publishFullLogs()
@@ -230,14 +235,13 @@ void ROS::publishFullLogs()
   if (time - lastTime > LOG_PERIOD)
   {
     float *tab = Logger::getArrayOfValues();
-    m_logTotalArray.data.data = tab;
-    m_logTotalArray.data.size = Logger::NbOfFields;
-    m_logTotalArray.data.capacity = Logger::NbOfFields;
-    m_logTotale.publish(&m_logTotalArray);
+    multi_array_set_data(m_logTotalArray, tab, Logger::NbOfFields);
+    m_logTotale.publish(m_logTotalArray);
     lastTime = time;
   }
 }
 
-void log(const LogType type, string_t message) {
-    ROS::instance().logPrint(type, message);
+void log(const LogType type, string_t message)
+{
+  ROS::instance().logPrint(type, message);
 }

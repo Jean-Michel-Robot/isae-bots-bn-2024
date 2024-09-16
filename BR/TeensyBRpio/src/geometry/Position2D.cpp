@@ -49,11 +49,7 @@ void Position2D<Unit>::operator=(const Position2D<Unit> &pos)
 template <typename Unit>
 string_t Position2D<Unit>::to_string() const
 {
-#if defined(ARDUINO)
-    return String("(") + String(x) + "," + String(y) + ";" + String(theta) + ")";
-#else
-    return "(" + std::to_string(x) + "," + std::to_string(y) + ";" + std::to_string(theta) + ")";
-#endif
+    return "(" + ToString(x) + "," + ToString(y) + ";" + ToString(theta) + ")";
 }
 
 template <typename Unit>

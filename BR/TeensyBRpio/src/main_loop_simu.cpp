@@ -10,18 +10,22 @@
 #include "motors.hpp"
 #include "feedback/PositionFeedback.hpp"
 
-#include "logging.h"
 #include "ros/Logger.hpp"
 #include "ros/ROS.hpp"
 
-#include "trajectories/LinearTrajectory.hpp"
-#include "trajectories/RotationTrajectory.hpp"
 #include "Asserv.hpp"
 #include "state_machine/BrSMWrapper.hpp"
+#include "state_machine/BrSM.hpp"
+#include "state_machine/Events.hpp"
 
 std::atomic<bool> quit(false);  
 
-int main(int argv, char **argv)
+void got_signal(int)
+{
+    quit.store(true);
+}
+
+int main(int argc, char **argv)
 {
     struct sigaction sa;
     memset( &sa, 0, sizeof(sa) );
@@ -33,20 +37,20 @@ int main(int argv, char **argv)
 
     motors_init();
 
+    // Simulation should start in READY state.
+    BrSMWrapper::instance(); // Initialize BrSM // TODO refactor
+    BrGetReadyEvent brGetReadyEvent;
+    BrSM::dispatch(brGetReadyEvent);
+
     while (!quit.load())
     {
-        PositionFeedback::loop();
+        PositionFeedback::instance().loop();
         BrSMWrapper::instance().loop();
         Logger::loop();
         ROS::instance().loop();
     }
 
     rclcpp::shutdown();
-}
-
-void got_signal(int)
-{
-    quit.store(true);
 }
 
 #endif

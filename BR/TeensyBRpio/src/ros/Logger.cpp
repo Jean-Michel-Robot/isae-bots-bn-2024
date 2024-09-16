@@ -46,26 +46,33 @@ void Logger::loop()
     Logger::setFieldValue(goalPos.y, Logger::goalPointPosY);
     Logger::setFieldValue(goalPos.theta, Logger::goalPointPosTheta);
 
-    float *goalSpeed = BrSM::currentTrajectory->getTrajectoryAbsoluteSpeed();
-    Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
-    Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
-
-    Logger::setFieldValue(BrSM::currentTrajectory->s, Logger::trajectoryS);
-
-    if (BrSM::currentTrajectory == NULL)
+    if (!BrSM::currentTrajectory)
     {
+      Logger::setFieldValue(0, Logger::goalPointSpeedX);
+      Logger::setFieldValue(0, Logger::goalPointSpeedY);
+
       Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
       Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
     }
-    else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR)
+    else
     {
-      Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
-      Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
-    }
-    else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION)
-    {
-      Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
-      Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
+
+      float *goalSpeed = BrSM::currentTrajectory->getTrajectoryAbsoluteSpeed();
+      Logger::setFieldValue(goalSpeed[0], Logger::goalPointSpeedX);
+      Logger::setFieldValue(goalSpeed[1], Logger::goalPointSpeedY);
+
+      Logger::setFieldValue(BrSM::currentTrajectory->s, Logger::trajectoryS);
+
+      if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_LINEAR)
+      {
+        Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedLinear);
+        Logger::setFieldValue(0.0, Logger::goalSpeedAngular);
+      }
+      else if (BrSM::currentTrajectory->trajectoryType == TrajectoryType::TRAJ_ROTATION)
+      {
+        Logger::setFieldValue(0.0, Logger::goalSpeedLinear);
+        Logger::setFieldValue(BrSM::currentTrajectory->goalSpeed, Logger::goalSpeedAngular);
+      }
     }
 
     Logger::setFieldValue(Asserv::instance().error[0], Logger::asservErrorX);
@@ -77,7 +84,7 @@ void Logger::loop()
     Logger::setFieldValue(Asserv::instance().m_rightWheelSpeed, Logger::commandeMotorR);
     Logger::setFieldValue(Asserv::instance().m_leftWheelSpeed, Logger::commandeMotorL);
 
-    if (BrSM::currentTrajectory == NULL)
+    if (!BrSM::currentTrajectory)
     {
       Logger::setFieldValue(0.0, Logger::rampSpeed);
       Logger::setFieldValue(0.0, Logger::rampState);
@@ -89,7 +96,6 @@ void Logger::loop()
     }
 
     Logger::setFieldValue(BrSM::getCurrentState(), Logger::BrState);
-
     loop_timer = millis();
   }
 }

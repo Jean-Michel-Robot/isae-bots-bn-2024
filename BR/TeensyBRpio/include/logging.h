@@ -1,6 +1,8 @@
 #ifndef _H_LOGGING
 #define _H_LOGGING
 
+#include "utils/string.h"
+
 enum LogType
 {
     INFO = 0,
@@ -10,11 +12,6 @@ enum LogType
     DEBUG = 4,
 };
 
-#ifdef ARDUINO
-using string_t = String;
-#else
-using string_t = const char*;
-#endif
 
 // The caller does not have to know how the message is actually logged.
 // This will (but does not have to) delegate logging to ROS2

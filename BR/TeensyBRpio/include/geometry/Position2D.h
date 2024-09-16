@@ -1,13 +1,7 @@
 #ifndef __H_POSITION2D
 #define __H_POSITION2D
 
-#ifdef ARDUINO
-    #include <Arduino.h>
-    typedef String string_t;   
-#else
-    #include <string>
-    typedef std::string string_t;
-#endif
+#include "utils/string.h"
 
 class Meter;
 class Millimeter;

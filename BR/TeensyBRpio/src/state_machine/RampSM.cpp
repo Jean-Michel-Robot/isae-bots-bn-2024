@@ -1,6 +1,7 @@
 
 #include "state_machine/RampSM.hpp"
 #include "state_machine/Ramp.hpp"
+#include "utils/clock.h"
 #include "defines.hpp"
 #include "logging.h"
 
@@ -40,7 +41,7 @@ RampState RampSM::getCurrentState() {
   return currentState;
 }
 
-String RampSM::getCurrentStateStr() {
+string_t RampSM::getCurrentStateStr() {
   return RampStateStr[currentState];
 }
 

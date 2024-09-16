@@ -1,20 +1,26 @@
 cmake_minimum_required(VERSION 3.5)
-
 project (br_simu)
 
 add_compile_definitions(__SIMU__)
 
+find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
 include_directories(include lib)
 
-file(GLOB all_SRCS
-    "${PROJECT_SOURCE_DIR}/platform/linux/*.cpp"
+file(GLOB_RECURSE all_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
-^ Just add whatever is in those folders.
+add_executable(simulation_br ${all_SRCS})
+target_link_libraries(simulation_br m)
+ament_target_dependencies(simulation_br rclcpp std_msgs geometry_msgs)
 
-add_executable(MyTarget ${all_SRCS})
+install(TARGETS
+  simulation_br
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()

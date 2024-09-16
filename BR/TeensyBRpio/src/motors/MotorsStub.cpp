@@ -2,9 +2,9 @@
 
 #include <algorithm>
 #include "motors.hpp"
+#include "defines.hpp"
 
 #include "feedback/StateSimulator.hpp"
-
 
 int leftMotorState = AxisState::AXIS_STATE_IDLE;
 int rightMotorState = AxisState::AXIS_STATE_IDLE;
@@ -16,7 +16,6 @@ void motors_init() {
 
 void sendMotorCommand(int motor_number, float velCmd)
 {
-    velCmd = std::clamp(velCmd, -MAX_MOTOR_SPEED, MAX_MOTOR_SPEED);
     if (motor_number == BR_LEFT)
     {
         StateSimulator::instance().setLeftMotorSpeed(velCmd);

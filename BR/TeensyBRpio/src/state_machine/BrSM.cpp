@@ -54,7 +54,6 @@ void BrSM::setup()
 // Helper function to setup a trajectory
 void BrSM::setupTrajectory()
 {
-
   // TODO RAZ des variables
 
   // Set robot position
@@ -105,7 +104,7 @@ void BrSM::setupTrajectory()
     break;
   }
   }
-
+  
   // si Dtotale vaut 0 (ou est proche de 0) c'est que l'ordre peut être ignoré
   // (pas besoin de se déplacer pour une trajectoire super courte)
   // On ignore alors l'étape et on passe à la suite en envoyant un GoalReachedEvent
@@ -212,9 +211,9 @@ class Ready
 
     // store order
     currentOrder = e.order;
-    log(INFO, "Order received : (" + String(currentOrder.x) + ", " +
-                              String(currentOrder.y) + ", " + String(currentOrder.theta) +
-                              ") with goalType " + String(currentOrder.goalType));
+    log(INFO, "Order received : (" + ToString(currentOrder.x) + ", " +
+                              ToString(currentOrder.y) + ", " + ToString(currentOrder.theta) +
+                              ") with goalType " + ToString(currentOrder.goalType));
 
     // Transition depending on the order goal type
     switch (currentOrder.goalType)
@@ -433,7 +432,7 @@ class BR_Idle
   void entry() override
   {
 
-    log(INFO, "Entered BR_IDLE from state" + String(getCurrentStateStr()));
+    log(INFO, "Entered BR_IDLE from state" + getCurrentStateStr());
     sendCallback(OK_IDLE);
 
     currentState = BR_IDLE;
@@ -653,8 +652,8 @@ void BrSM::react(BrSetToIdleEvent const &)
 // We always take the reset position event
 void BrSM::react(ResetPosEvent const &e)
 {
-  log(INFO, "Received reset position event to (" + String(e.x) + ", " +
-                          String(e.y) + ", " + String(e.theta)+")");
+  log(INFO, "Received reset position event to (" + ToString(e.x) + ", " +
+                          ToString(e.y) + ", " + ToString(e.theta)+")");
 
   PositionFeedback::instance().resetPosition((Position2D<Millimeter>) e);
 
@@ -745,7 +744,7 @@ BRState BrSM::getCurrentState()
   return currentState;
 }
 
-String BrSM::getCurrentStateStr()
+string_t BrSM::getCurrentStateStr()
 {
   return BrStateStr[currentState];
 }

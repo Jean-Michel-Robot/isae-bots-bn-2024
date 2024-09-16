@@ -4,6 +4,7 @@
 #include "geometry/Position2D.h"
 #include "state_machine/Ramp.hpp"
 #include "defines.hpp"
+#include "utils/int.h"
 
 enum TrajectoryType
 {

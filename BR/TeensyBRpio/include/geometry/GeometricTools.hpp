@@ -3,6 +3,8 @@
 
 #include "defines.hpp"
 #include "geometry/Position2D.h"
+#include "utils/math.h"
+#include "utils/clock.h"
 
 // l'utilisation des fonctions en constexpr permet au compilateur de remplacer textuellement une fonction basique et de l'utiliser pour les constantes constexpr
 // avec le mot clef constexpr, le calcul est effectué directement à la compilation et pas à l'execution

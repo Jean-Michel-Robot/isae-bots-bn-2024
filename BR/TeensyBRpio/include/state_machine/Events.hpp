@@ -3,6 +3,7 @@
 
 #include "tinyfsm.hpp"
 #include "geometry/Position2D.h"
+#include "utils/int.h"
 
 // ----------------------------------------------------------------------------
 // Event declarations

@@ -2,45 +2,58 @@
 
 #include "ros/ROS_linux.hpp"
 
-void ROS::spin() override {
+class ROSImpl : public ROS
+{
+public:
+    static std::shared_ptr<ROSImpl> instance_shared();
+
+private:
+    ROSImpl() : ROS() {}
+};
+
+void ROS::spin()
+{
     rclcpp::spin_some(ROSImpl::instance_shared());
 }
 
-void ROSImpl::logPrint(LogType logtype, const char *msg) override
+void ROS::logPrint(LogType logtype, string_t msg)
 {
+    const char *msgRaw = msg.c_str();
     if (logtype == INFO)
     {
-        RCLCPP_INFO(m_nodeHandle->get_logger(), msg);
+        RCLCPP_INFO(get_logger(), msgRaw);
     }
     else if (logtype == WARN)
     {
-        RCLCPP_WARN(m_nodeHandle->get_logger(), msg);
+        RCLCPP_WARN(get_logger(), msgRaw);
     }
     else if (logtype == ERROR)
     {
-        RCLCPP_ERROR(m_nodeHandle->get_logger(), msg);
+        RCLCPP_ERROR(get_logger(), msgRaw);
     }
     else if (logtype == FATAL)
     {
-        RCLCPP_FATAL(m_nodeHandle->get_logger(), msg);
+        RCLCPP_FATAL(get_logger(), msgRaw);
     }
     else if (logtype == DEBUG)
     {
-        RCLCPP_DEBUG(m_nodeHandle->get_logger(), msg);
+        RCLCPP_DEBUG(get_logger(), msgRaw);
     }
     else
     {
-        RCLCPP_ERROR(m_nodeHandle->get_logger(), "Unknown log type: %d; defaulting to INFO", logType);
-        logPrint(INFO, msg);
+        RCLCPP_ERROR(get_logger(), "Unknown log type: %d; defaulting to INFO", logtype);
+        logPrint(INFO, msgRaw);
     }
 }
 
-std::shared_ptr<ROSImpl> ROSImpl::instance_shared() {
-    static std::shared_ptr<ROSImpl> instance = std::make_shared();
+std::shared_ptr<ROSImpl> ROSImpl::instance_shared()
+{
+    static std::shared_ptr<ROSImpl> instance(new ROSImpl());
     return instance;
 }
 
-ROS &ROS::instance() {
+ROS &ROS::instance()
+{
     return *ROSImpl::instance_shared();
 }
 

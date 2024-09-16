@@ -3,7 +3,8 @@
 
 #include "tinyfsm.hpp"
 #include "state_machine/Events.hpp"
-
+#include "utils/string.h"
+#include "utils/int.h"
 
 // enum RampState
 // {
@@ -56,7 +57,7 @@ public:
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	static RampState getCurrentState();
-	static String getCurrentStateStr();
+	static string_t getCurrentStateStr();
 
 	static void setAccelParam(float accelParam);
     static void setGoalSpeed(float goalSpeed);

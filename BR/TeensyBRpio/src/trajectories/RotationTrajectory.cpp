@@ -21,6 +21,9 @@ RotationTrajectory::RotationTrajectory(float initialGoalSpeed, float initialAcce
 void RotationTrajectory::setDest(Position2D<Meter> orderInfo) {
     //NOTE every trajectory uses different elements of orderInfo,
     // and not necessarily all of them
+    
+    x = x0;
+    y = y0;
 
     this->thetaDest = orderInfo.theta;
 
@@ -30,7 +33,6 @@ void RotationTrajectory::setDest(Position2D<Meter> orderInfo) {
 
 
 void RotationTrajectory::updateTrajectoryState() {
-
     x = x0;
     y = y0;
     // theta = theta0 + s*(thetaDest - theta0); //TODO pb du passage par -pi;pi

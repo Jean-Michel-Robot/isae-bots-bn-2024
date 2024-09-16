@@ -6,14 +6,13 @@
 #include "state_machine/Callback.hpp"
 #include "logging.h"
 
-
 #ifdef ARDUINO
 #include "ROS_arduino.hpp"
 #else
 #include "ROS_linux.hpp"
 #endif
 
-class ROS: protected Node_t
+class ROS: public Node_t
 {
 
 public:

@@ -2,6 +2,8 @@
 #define _ROS_ARDUINO_IMPL_H
 
 #include <memory>
+#include <vector>
+
 #include <micro_ros_platformio.h>
 
 #include <rcl/rcl.h>
@@ -28,6 +30,13 @@
         }                                                                             \
     }
 
+// TODO make more object-oriented
+#define multi_array_get_raw_data(msg) (msg)->data.data
+#define multi_array_set_data(msg, raw, len) \
+    (msg).data.data = raw;               \
+    (msg).data.size = len;               \
+    (msg).data.capacity = len;
+
 namespace std_msgs
 {
     using Int16 = std_msgs__msg__Int16;
@@ -42,13 +51,13 @@ namespace geometry_msgs
 
 class Node;
 
-template <class T>
+template <typename T>
 class Publisher
 {
 public:
-    void publish(const T *msg)
+    void publish(const T &msg)
     {
-        RCCHECK_HARD(rcl_publish(publisher.get(), msg, NULL));
+        RCCHECK_HARD(rcl_publish(publisher.get(), &msg, NULL));
     }
 
 private:
@@ -63,9 +72,8 @@ class Node
 {
 
 public:
-    Node(String name)
+    Node(String name) : allocator(new rcl_allocator_t(rcl_get_default_allocator()))
     {
-        allocator = std::unique_ptr<rcl_allocator_t>(new rcl_allocator_t(rcl_get_default_allocator()));
         RCCHECK_HARD(rclc_support_init(support.get(), 0, NULL, allocator.get()));
         RCCHECK_HARD(rclc_node_init_default(node.get(), name.c_str(), "", support.get()));
         RCCHECK_HARD(rclc_executor_init(executor.get(), &support->context, 5, allocator.get()));
@@ -79,19 +87,19 @@ public:
 
 protected:
     template <typename MsgT>
-    std::unique_ptr<rcl_subscription_t> create_subscription(String topic, void (*callback)(const MsgT*), const rosidl_message_type_support_t *support)
+    std::unique_ptr<rcl_subscription_t> create_subscription(String topic, void (*callback)(const MsgT *), const rosidl_message_type_support_t *support)
     {
         MsgT *msg = new MsgT();
 
         std::unique_ptr<rcl_subscription_t> subscriber = std::make_unique<rcl_subscription_t>();
         RCCHECK_HARD(rclc_subscription_init_default(subscriber.get(), node.get(), support, topic.c_str()));
         RCCHECK_HARD(rclc_executor_add_subscription(
-            executor.get(), subscriber.get(), msg, (rclc_subscription_callback_t) callback, ON_NEW_DATA));
+            executor.get(), subscriber.get(), msg, (rclc_subscription_callback_t)callback, ON_NEW_DATA));
 
         return subscriber;
     }
 
-    template <class MsgT>
+    template <typename MsgT>
     Publisher<MsgT> create_publisher(String topic, const rosidl_message_type_support_t *support)
     {
         std::unique_ptr<rcl_publisher_t> publisher = std::make_unique<rcl_publisher_t>();
@@ -100,7 +108,7 @@ protected:
     }
 
     // Not sure if boxing is necessary
-    std::unique_ptr<rcl_allocator_t> allocator = std::make_unique<rcl_allocator_t>();
+    std::unique_ptr<rcl_allocator_t> allocator;
     std::unique_ptr<rclc_support_t> support = std::make_unique<rclc_support_t>();
     std::unique_ptr<rclc_executor_t> executor = std::make_unique<rclc_executor_t>();
     std::unique_ptr<rcl_node_t> node = std::make_unique<rcl_node_t>();
@@ -148,10 +156,10 @@ inline Publisher<std_msgs::Int32MultiArray> Node::create_publisher<std_msgs::Int
     return create_publisher<std_msgs::Int32MultiArray>(topic, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32MultiArray));
 }
 
-template <class T>
+template <typename T>
 using Subscriber_t = std::unique_ptr<rcl_subscription_t>;
 
-template <class T>
+template <typename T>
 using Publisher_t = Publisher<T>;
 
 using Node_t = Node;

@@ -2,8 +2,6 @@
 #include "geometry/Position2D.h"
 #include "geometry/GeometricTools.hpp"
 
-#include <cmath>
-
 //Ramene un angle € [-2*PI;2*PI] dans [-PI;PI]
 float modulo_x2(float value)
 {

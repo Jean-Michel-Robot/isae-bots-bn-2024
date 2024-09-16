@@ -7,6 +7,7 @@
 
 #include "utils/Timer.hpp"
 #include "utils/SwitchFiltered.hpp"
+#include "utils/string.h"
 
 #include <memory>
 
@@ -74,7 +75,7 @@ public:
 	void         exit(void)  { };  /* if no exit actions at all */
 
 	static BRState getCurrentState();
-	static String getCurrentStateStr();
+	static string_t getCurrentStateStr();
 
 	static Position2D<Meter> getCurrentGoalPos();
 

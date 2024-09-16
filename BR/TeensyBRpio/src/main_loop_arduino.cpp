@@ -14,8 +14,6 @@
 #include "ros/Logger.hpp"
 #include "ros/ROS.hpp"
 
-#include "trajectories/LinearTrajectory.hpp"
-#include "trajectories/RotationTrajectory.hpp"
 #include "Asserv.hpp"
 #include "state_machine/BrSMWrapper.hpp"
 #include "state_machine/BrSM.hpp"

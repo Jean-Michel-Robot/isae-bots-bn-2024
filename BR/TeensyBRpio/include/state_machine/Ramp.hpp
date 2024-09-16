@@ -2,6 +2,7 @@
 #define __H_RAMP
 
 #include "state_machine/Events.hpp"
+#include "utils/int.h"
 
 #define ACCEL_BRAKE 2.0  // m/s^-2
 #define RAMP_EPSILON 0.001  // epsilon for values to be considered the same

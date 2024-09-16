@@ -3,7 +3,7 @@ Allows for the creation of a first order low-pass filter object
 */
 
 #include "utils/FilterLowPass.h"
-#include <math.h>
+#include "utils/math.h"
 
 // constructor of FilterLowPass class
 FilterLowPass::FilterLowPass(float tau) {
