@@ -29,6 +29,7 @@ void setup()
     set_microros_serial_transports(Serial);
 
     motors_init();
+    RampSM::start();
 
     p_blink = new BlinkLED();
 }

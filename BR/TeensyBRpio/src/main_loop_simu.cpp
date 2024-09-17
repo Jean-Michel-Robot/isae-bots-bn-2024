@@ -17,6 +17,7 @@
 #include "state_machine/BrSMWrapper.hpp"
 #include "state_machine/BrSM.hpp"
 #include "state_machine/Events.hpp"
+#include "state_machine/RampSM.hpp"
 
 std::atomic<bool> quit(false);  
 
@@ -36,6 +37,7 @@ int main(int argc, char **argv)
     rclcpp::init(argc, argv);
 
     motors_init();
+    RampSM::start();
 
     // Simulation should start in READY state.
     BrSMWrapper::instance(); // Initialize BrSM // TODO refactor

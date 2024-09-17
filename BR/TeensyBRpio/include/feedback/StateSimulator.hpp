@@ -21,6 +21,10 @@ private:
     float m_leftMotorSpeed = 0;
     float m_rightMotorSpeed = 0;
     unsigned long m_lastTick = 0;
+
+    double x = 0;
+    double y = 0;
+    double theta = 0;
 };
 
 #endif

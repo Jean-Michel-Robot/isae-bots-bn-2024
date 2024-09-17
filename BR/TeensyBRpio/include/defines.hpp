@@ -9,7 +9,12 @@
 
 #define ODOS_METHOD 1
 #define ODO_HARD
+
+#ifdef __SIMU__
+#define ODO_SEND_POSITION_TIMER 10
+#else
 #define ODO_SEND_POSITION_TIMER 100 //ms
+#endif
 
 /* ASSERV */
 
