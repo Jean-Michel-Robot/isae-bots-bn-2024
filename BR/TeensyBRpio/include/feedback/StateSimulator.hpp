@@ -9,7 +9,9 @@ class StateSimulator: public PositionFeedback
 public:
     void setLeftMotorSpeed(float speed);
     void setRightMotorSpeed(float speed);
-
+    
+    void resetPosition(Position2D<Millimeter> pos) override;
+    
     static StateSimulator &instance();
 
 protected:

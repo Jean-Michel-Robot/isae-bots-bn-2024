@@ -43,6 +43,14 @@ void StateSimulator::update()
     m_position = Position2D<Meter>((float)x, (float)y, (float)theta);
 }
 
+void StateSimulator::resetPosition(Position2D<Millimeter> pos)
+{
+    PositionFeedback::resetPosition(pos);
+    x = m_position.x;
+    y = m_position.y;
+    theta = m_position.theta;
+}
+
 #ifdef __SIMU__
 
 PositionFeedback &PositionFeedback::instance()
