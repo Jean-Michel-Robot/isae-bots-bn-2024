@@ -1,20 +1,34 @@
-#Code asserv Base Roulante
-Code de l'asservissement en position du gros robot, code utilisé pendant la coupe 2019
+# Code asserv Base Roulante
+Code de l'asservissement en position du gros robot avec un noeud ROS2 Jazzy.
+L'asservissement est un PID avec filtre passe-bas sur la dérivée. L'accélération maximale du robot est contrôlée par des rampes.
+Les gains du PID sont définies avec une valeur par défaut dans le code, on peut les modifier avec les topics appropriés (la modification n'est valable que jusqu'au redémarrage de la Teensy).
 
-##Compilation 
-Avec l'IDE arduino, pour une Teensy 3.2 avec les libs rosserial installées pour la version de ROS correspondant au robot.
-Attention la convention de code est en c++11 et ne compilera pas en Arduino pur, qui est en c++9x de base (en plus des Décodeurs HW)
+Le fichier br_controller/include/configuration.hpp contient la plupart des paramètres de l'asservissement, s'il y a besoin de les modifier de manière permanente.
 
-## Utilisation 
+## Compilation 
 
-Tout d'abord lancer 
+Attention : la racine du projet Platform.IO est dans le dossier br_controller, et il y a un lien symbolique vers br_messages dans br_controller/extra_packages.
+Cela était nécessaire pour que le code soit compatible à la fois avec colcon et Platform.IO.
+
+### Compiler la simulation
+Se placer à la racine du projet, dans un environnement où RO2 Jazzy est installé (par exemple le Docker du HN), puis lancer:
 ```
-roscore
-rosrun rosserial_arduino serial_node.py /dev/ttyBR _baud:=115200
+colcon build
 ```
-Les gains et rampes sont set par défaut dans le code, on peut les modifier avec les topics appropriés
+L'exécutable est à l'emplacement ./install/br_simu/lib/br_simu/simulation_br, mais il faut sourcer "install/setup.bash" ou "install/local_setup.bash" avant de lancer la simulation, ce qui implique
+de distribuer tout le dossier install avec l'exécutable.
+
+### Compiler pour la BR (Arduino Teensy)
+Compiler avec Platform.IO.
+Attention la convention de code est en c++20 et ne compilera pas en Arduino pur, qui est en c++9x de base (en plus des Décodeurs HW)
+
+## Utilisation (sur le robot)
+TODO
+rosserial a été remplacé par micro_ros, mais on n'a pas encore eu l'occasion de tester sur le robot.
 
 ## Les entrees sur l'asserv
+
+Tous les topics sont exactement les mêmes entre la simulation et le vrai robot, sauf pour le topic "odos_count".
 
 ### Le topic nextPositionTeensy
 
@@ -29,72 +43,44 @@ Les consignes sont définies telles quelles :
 
 ```
 0 : point final (marche avant)
-1 : point transitoire (pas d'orientation finale)
+1 : point transitoire (pas d'orientation finale, theta est ignoré)
 2 : stop (progressif si le robot est en train de se déplacer, cf doc)
-3 : reset de la position, bascule le robot en stop
-4 : control, permet de controler directement les moteurs
-5 : recalage avant : le robot s'oriente selon theta = w, puis avance en marche avant jusqu'au contact d'un mur et reset sa position (x ou y)
-6 : recalage arriere : le robot s'oriente selon theta = w, puis recule en marche arriere jusqu'au contact
-7 : light_final_avant : point final marche avant, mais avec une dynamique assouplie
-8 : light_final_arriere : idem mais en marche arriere
-9 : orientation pure vers l'angle theta = w
-10 : fake_recal_avant : le robot se plaque au mur mais sans reset sa position
-11 : fake_recal_arriere : idem
+3 : reset de la position, bascule le robot en stop et réinitalise le PID
+4 : [SUPPRIME] permet de controler directement les moteurs
+5 : [PAS ENCORE IMPLEMENTE] recalage avant : le robot s'oriente selon theta = z, puis avance en marche avant jusqu'au contact d'un mur et reset sa position (x ou y)
+6 : [PAS ENCORE IMPLEMENTE] recalage arriere : le robot s'oriente selon theta = z, puis recule en marche arriere jusqu'au contact
+7 : [SUPPRIME] point final marche avant, mais avec une dynamique assouplie
+8 : [SUPPRIME] idem mais en marche arriere
+9 : orientation pure vers l'angle theta = z (x et y sont ignorés)
+10 : [SUPPRIME] fake_recal_avant : le robot se plaque au mur mais sans reset sa position
+11 : [SUPPRIME] fake_recal_arriere : idem
 ```
-Pour contourner les bugs de terminaux, je conseille d'utiliser le script InputTeensyAsserv qui les évite (cf la partie scripts)
+Les consignes marquées [SUPPRIME] ne seront pas réimplémentées sauf si elles sont vraiment nécessaires.
 
-### Le topic speedTeensyObjective
-
-Ce topic renseigne les vitesses max que le robot peut atteindre. Pour l'editer il faut la syntaxe suivante : 
+### Le topic obstacle_seen
+Ce topic réduit temporairement la vitesse du robot (par exemple à l'approche d'un obstacle).
+La valeur à donner est un entier entre 1 et 100 qui correspond à la nouvelle vitesse limite du robot, exprimée en pourcentage de la vitesse maximale globale.
+La limitation est appliquée uniquement au déplacement en cours. Si aucun déplacement n'est en cours, le topic n'a aucun effet.
 ```
-rostopic pub  /speedTeensyObjective std_msgs/Float32MultiArray "{layout: {dim : [size: 2]} ,data: [700.0,100.0]}" 
-```
-où 700 est la vitesse lineaire en mm.s-1 et 100 la vitesse angulaire en rad.s-1
-
-Ce topic est concu pour supporter une modification à tout moment à la volée, la dynamique du robot s'adapte (dans la limite du raisonnable physiquement parlant)
-
-### Le topic dynamicParameters
-
-Ce topic set les dynamiques demandées aux rampes. 
-```
-rostopic pub  /dynamicParameters2 std_msgs/Float32MultiArray "{layout: {dim : [size: 8]} ,data: [0,1,2,3,4,5,6,7,8]}" -1
-
-Avec dans l'ordre :
-- acceleration, deceleration brutale, deceleration nominale des rampes lineaires rapides
-- acceleration, deceleration brutale, deceleration nominale des rampes lineaires smooth
-- acceleration,deceleation des rampes en rotation rapides
+ros2 topic pub /teensy/obstacle_seen std_messages/Int16 "{data: <percentage>}"
 ```
 
-L'ancien topic est gardé par compatibilité :
-
-```
-rostopic pub  /dynamicParameters std_msgs/Float32MultiArray "{layout: {dim : [size: 5]} ,data: [0,1,2,3,4,5]}" -1
-
-Avec dans l'ordre :
-- acceleration, deceleration brutale, deceleration nominale des rampes lineaires rapides
-- acceleration,deceleation des rampes en rotation rapides
-```
-### Le topic gainsMotor 
-
-Ce topic regle les gains de l'asserv Moteur
-```
-rostopic pub  /gainsMotor std_msgs/Float32MultiArray "{layout: {dim : [size: 4]} ,data: [Kf,Kp,Ti,Td]}" -1
-
-```
+NOTE: Il faudrait changer le nom de ce topic, mais l'ancien nom a été conservé pour le moment, pour des raisons de compatibilité avec le HN.
 
 ### Le topic gains
-Ce topic regle les gains des asserv avance et rotation :
+Ce topic regle les gains du PID:
 ```
-rostopic pub  /gains std_msgs/Float32MultiArray "{layout: {dim : [size: 6]} ,data: [Kp_pos,Ti_pos,Td_pos,Kp_angle,Ti_angle,Td_angle]}" -1
-
+ros2 topic pub /gains br_messages/GainsPid "{kp: <value>
+ti: <value>
+td: <value>}"
 ```
-
+Publier sur ce topic réinitialise la valeur de l'intégrale et de la dérivée de l'erreur dans le PID.
 
 ## Les feedbacks 
 
 ### Le topic current_position
 
-Ce topic retourne la position actuelle du robot toutes les 50ms 
+Ce topic retourne la position actuelle du robot toutes les 100ms (ou toutes les 10ms pour la simulation)
 
 ### Le topic okPosition
 
@@ -102,26 +88,48 @@ Ce topic effectue le feedback des étapes de l'asservissement. Le message est un
 ```
 1 : okPos, le robot a fini son avance lineaire
 2 : okTurn, le robot a fini de tourner 
-3 : le robot va en marche arriere (a supprimer)
-4 : le robot va en marche avant (a supprimer)
-0 : erreur dans l'asserv (timeout, derapage, divergence etc...) donc erreur qui peut reussir apres un deuxieme essai
--1 : erreur bloquante (gains non sets ou non valides, erreurs internes etc...)
+3 : le robot a fini une marche arrière (ce code est toujours immédiatement suivi de okPos)
+0 : [jamais envoyé actuellement] erreur dans l'asserv (timeout, derapage, divergence etc...) donc erreur qui peut reussir apres un deuxieme essai
+-1 : [jamais envoyé actuellement] erreur bloquante (gains non sets ou non valides, erreurs internes etc...)
 ```
-Dans le cas des erreurs, le topic /logDebug donne plus de details
 
 ### Le topic logTotaleArray 
 
+NB: L'asserv publie sur ce topic uniquement si la constante `_DEBUG` est définie lors de la compilation (elle est définie par défaut, voir br_controller/CMakeLists.txt et br_controller/platformio.ini pour la désactiver).
+
 Ce topic effectue un log global des variables internes de l'asserv. Pour l'exploiter :
 ```
-rostopic echo -p /logTotaleArray > fichierdelog.log
+ros2 topic echo -p /logTotaleArray > fichierdelog.log
 python GraphPos.py fichierdelog.log
 
 Si la teensy est connectée a la pi, un scp pi@ip:fichierdelog.log . permet de le recuperer
 @Yoann a concu un affichage a la volée de ces log
 ```
 
+## Possible erreurs à detecter **Avant** la coupe 
 
+- Tester asserv en idle : --> Topic br/idle 
+- Tester asserv en Position --> Topic nextPositionTeensy. Tester tous les angles et les directions puis adapter si besoin les paramètres dans le fichier ['configuration.hpp'](br_controller/include/configuration.hpp).
+
+- Si le robot va trop vite ou a une trop forte accélération, il y a un risque de glissement et de dérive de la position estimée par les odomètres. Penser à vérifier que les vitesses et accélérations sont adaptées (cela inclut l'accélération du freinage d'urgence). Si la position estimée n'est pas suffisamment précise, la stratégie du haut niveau ne fonctionnera pas.
+
+### IMPORTANT
+**Refaire le test après avoir redemarré le robot pour vérifier que les variables se sont bien initialisées !**
+*Il est arrivé dans les versions précédentes du code que après un redémarrage de la teensy , certaines variables de trajectoires ne soient pas bien initialisées et donc le robot ne bouge pas ou devient fou (calcul de trajectoire infini)*
+
+L'interface graphique (dans le code du haut niveau) permet d'envoyer un ordre de déplacement de type "0 : point final (marche avant)" au topic nextPositionTeensy et de visualiser le retour de position sur le topic okPosition.
+Il suffit de faire un clic droit à l'emplacement où on veut faire aller le robot, puis de déplacer la souris dans la direction que l'on veut pour l'orientation finale avant de relacher le clic.
+
+Sur le Docker HN :
+```
+source /app/install/setup.bash
+ros2 run uix interface_node
+```
+(Penser à faire `xhost +` si besoin avant d'aller dans le Docker)
+
+## [TOUT CE QUI SUIT EST POTENTIELLEMENT OBSOLETE, TODO à vérifier]
 ## Les scripts 
+[Où sont les scripts ?]
 
 Pour se simplifier la tache, plusieurs scripts sont disponibles dans le dossier Script
 
@@ -180,15 +188,4 @@ rosrun isae_robotics_graph GraphNode.py
 rosrun isae_robotics_graph InterfaceNode.py 
 ```
 Ou utiliser export_costa_launcher.sh ou export_titanic_launcher.sh dans le dossier Scripts
-
-## Possible erreurs à detecter **Avant** la coupe 
-
-Tester asserv en idle : --> Topic br/idle 
-Tester asserv en Position --> Topic nextPositionTeensy . Tester tous les angles et les directions puis modifier l'asserv conséquence dans le fichier ['asserv.cpp'](src/main_loop.cpp)
-
-**Refaire le test après avoir redemarré le robot pour vérifier que les variables se sont bien initialisées !** 
-*Il arrive que après un redémarrage de la teensy , certaines variables de trajectoires ne soient pas bien initialisées et donc le robot ne bouge pas ou devient fou (calcul de trajectoire infini)*
-
-## Possible erreurs à detecter **Pendant** la coupe
-
 

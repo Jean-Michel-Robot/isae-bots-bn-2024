@@ -1,0 +1,11 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+---
+Language: Cpp
+ColumnLimit: 150
+BreakBeforeBraces: Attach
+AlwaysBreakTemplateDeclarations: true
+IndentCaseLabels: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortCompoundRequirementOnASingleLine: true
