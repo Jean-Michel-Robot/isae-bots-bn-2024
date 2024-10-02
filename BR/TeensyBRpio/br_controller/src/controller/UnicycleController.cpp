@@ -77,13 +77,21 @@ Speeds UnicycleController<TConverter>::updateCommand(double_t interval, Position
         result);
 
     // Apply tracking offset
-    Vector2D<Meter> trackingPoint = applyOffset(m_setpoint);
-    Vector2D<Meter> actualPosition = applyOffset(robotPosition);
+    Vector2D<Meter> goalPoint = getGoalPoint();
+    m_goalPointSpeed.update(goalPoint, interval);
 
-    m_goalPointSpeed.update(trackingPoint, interval);
+    // The robot has a preference for going forward due to the tracking point being in front of it.
+    // This forces the robot to prefer going backward when requested to reverse (otherwise the robot tends to turn around in the middle of
+    // the reverse gear to continue forward)
+    bool inverted = m_setpoint.makeRelative(m_goalPointSpeed).x < 0;
+
+    if (inverted) {
+        goalPoint = applyOffset(m_setpoint, true);
+    }
+    Vector2D<Meter> trackingPoint = applyOffset(robotPosition, inverted);
 
     // Compute error
-    m_converter.update(trackingPoint - actualPosition, interval);
+    m_converter.update(goalPoint - trackingPoint, interval);
     Vector2D<Meter> convertedError = m_goalPointSpeed.value() + m_converter.value();
 
     // Compute command from error
@@ -95,6 +103,10 @@ Speeds UnicycleController<TConverter>::updateCommand(double_t interval, Position
                       (alpha * std::sin(theta) + beta * std::cos(theta)) * convertedError.y) /
                      alpha;
     double_t cmd_omega = (-std::sin(theta) * convertedError.x + std::cos(theta) * convertedError.y) / alpha;
+
+    if (inverted) {
+        cmd_omega = -cmd_omega;
+    }
 
 #ifdef _DEBUG
     m_lastCmd = Speeds(cmd_v, cmd_omega);
@@ -244,8 +256,12 @@ void UnicycleController<TConverter>::setMaxAccelerations(Accelerations accelerat
 
 // Private
 template <ErrorConverter TConverter>
-Vector2D<Meter> UnicycleController<TConverter>::applyOffset(Position2D<Meter> position) const {
-    return position.relativeOffset(m_offset.x, m_offset.y);
+Vector2D<Meter> UnicycleController<TConverter>::applyOffset(Position2D<Meter> position, bool inverted) const {
+    if (inverted) {
+        return position.relativeOffset(-m_offset.x, -m_offset.y);
+    } else {
+        return position.relativeOffset(m_offset.x, m_offset.y);
+    }
 }
 
 #ifdef _DEBUG

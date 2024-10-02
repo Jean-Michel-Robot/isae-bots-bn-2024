@@ -165,7 +165,7 @@ class UnicycleController : private fsm::StateMachine<ControllerState> {
     void startTrajectory(std::unique_ptr<Trajectory> trajectory, DisplacementKind kind, std::optional<Angle> finalOrientation);
     /// Transit in state StandStill.
     void makeStill(Position2D<Meter> robotPosition);
-    Vector2D<Meter> applyOffset(Position2D<Meter> position) const;
+    Vector2D<Meter> applyOffset(Position2D<Meter> position, bool inverted = false) const;
 
     Vector2D<Meter> m_offset;
     Accelerations m_brakeAccelerations;
