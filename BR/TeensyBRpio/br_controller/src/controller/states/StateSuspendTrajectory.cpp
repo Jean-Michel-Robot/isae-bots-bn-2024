@@ -5,9 +5,9 @@
 
 namespace controller {
 
-StateSuspendTrajectory::StateSuspendTrajectory(std::shared_ptr<const Speeds> robotSpeed, Accelerations brakingDecelerations,
+StateSuspendTrajectory::StateSuspendTrajectory(Speeds robotSpeed, Accelerations brakingDecelerations,
                                                TrajectoryContainer suspendedTrajectory)
-    : StateBraking(std::move(robotSpeed), brakingDecelerations), m_suspendedTrajectory(std::move(suspendedTrajectory)) {}
+    : StateBraking(robotSpeed, brakingDecelerations), m_suspendedTrajectory(std::move(suspendedTrajectory)) {}
 
 ControllerStatus StateSuspendTrajectory::getStatus() const {
     return SuspendingTrajectory;

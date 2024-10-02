@@ -175,13 +175,13 @@ class UnicycleController : private fsm::StateMachine<ControllerState> {
     Derivative<Vector2D<Meter>> m_goalPointSpeed;
     /// Estimated speed of the robot
     Derivative<Position2D<Meter>> m_actualSpeed;
-    std::shared_ptr<Speeds> m_estimatedRelSpeed;
+    Speeds m_estimatedRelSpeed;
 
     TConverter m_converter;
     UpdateResultCode m_event;
 
 #ifdef _DEBUG
-    Speeds m_lastCmd;
+    Speeds m_lastCmd = Speeds();
 #endif
 };
 } // namespace controller

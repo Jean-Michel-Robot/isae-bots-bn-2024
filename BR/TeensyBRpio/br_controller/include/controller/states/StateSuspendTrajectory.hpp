@@ -9,7 +9,7 @@ namespace controller {
 class StateSuspendTrajectory : public StateBraking {
   public:
     /// @param robotSpeed must not be null
-    StateSuspendTrajectory(std::shared_ptr<const Speeds> robotSpeed, Accelerations brakingDeceleration, TrajectoryContainer suspendedTrajectory);
+    StateSuspendTrajectory(Speeds robotSpeed, Accelerations brakingDeceleration, TrajectoryContainer suspendedTrajectory);
     ControllerStatus getStatus() const override;
     /// It is undefined behaviour to call this function after it has returned BrakingComplete
     StateUpdateResult update(double_t interval, Position2D<Meter> &setpoint, Position2D<Meter> actualRobotPosition) override;

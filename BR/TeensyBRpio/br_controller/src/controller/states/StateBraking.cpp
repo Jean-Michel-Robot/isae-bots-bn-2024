@@ -3,9 +3,8 @@
 
 namespace controller {
 
-StateBraking::StateBraking(std::shared_ptr<const Speeds> robotSpeed, Accelerations brakingDecelerations)
-    : m_speed(std::move(robotSpeed)), m_linear_ramp(0, brakingDecelerations.linear, m_speed->linear),
-      m_angular_ramp(0, brakingDecelerations.angular, m_speed->angular) {
+StateBraking::StateBraking(Speeds robotSpeed, Accelerations brakingDecelerations)
+    : m_linear_ramp(0, brakingDecelerations.linear, robotSpeed.linear), m_angular_ramp(0, brakingDecelerations.angular, robotSpeed.angular) {
     log(INFO, "Entering controller state: Braking to stop");
 }
 
@@ -17,7 +16,7 @@ StateUpdateResult StateBraking::update(double_t interval, Position2D<Meter> &set
     m_linear_ramp.update(interval);
     m_angular_ramp.update(interval);
 
-    setpoint = setpoint.relativeOffset(m_linear_ramp.getCurrentSpeed() * interval, 0);
+    setpoint = setpoint.relativeOffset(m_linear_ramp.getCurrentSpeed() * interval);
     setpoint.theta += m_angular_ramp.getCurrentSpeed() * interval;
 
     if (m_linear_ramp.getCurrentSpeed() == 0 && m_angular_ramp.getCurrentSpeed() == 0) {
