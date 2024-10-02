@@ -13,7 +13,13 @@ class MaxSpeedsChanged {
     Speeds newSpeeds;
 };
 
-using ControllerEvent = std::variant<MaxSpeedsChanged>;
+class ManualSpeedCommand {
+  public:
+    ManualSpeedCommand(Speeds speeds) : speeds(speeds) {}
+    Speeds speeds;
+};
+
+using ControllerEvent = std::variant<MaxSpeedsChanged, ManualSpeedCommand>;
 
 } // namespace controller
 

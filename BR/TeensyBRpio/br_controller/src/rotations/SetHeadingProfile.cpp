@@ -1,6 +1,5 @@
 #include "rotations/SetHeadingProfile.hpp"
 #include "defines/math.hpp"
-#include <cmath>
 
 SetHeadingProfile::SetHeadingProfile(Angle initialHeading, Angle targetHeading) : m_currentHeading(initialHeading), m_targetHeading(targetHeading) {}
 

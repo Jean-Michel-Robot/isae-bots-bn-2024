@@ -1,4 +1,5 @@
 #include "controller/states/StateTrajectoryWithRamp.hpp"
+#include "defines/func.hpp"
 #include "logging.hpp"
 
 namespace controller {
@@ -48,7 +49,7 @@ StateUpdateResult StateTrajectoryWithRamp::update(double_t interval, Position2D<
 }
 
 void StateTrajectoryWithRamp::notify(ControllerEvent event) {
-    std::visit([&](const MaxSpeedsChanged &event) { m_maxSpeed = event.newSpeeds.linear; }, event);
+    std::visit(overload{[&](const MaxSpeedsChanged &event) { m_maxSpeed = event.newSpeeds.linear; }, [](auto) {}}, event);
 }
 
 } // namespace controller

@@ -46,7 +46,7 @@ Les consignes sont définies telles quelles :
 1 : point transitoire (pas d'orientation finale, theta est ignoré)
 2 : stop (progressif si le robot est en train de se déplacer, cf doc)
 3 : reset de la position, bascule le robot en stop et réinitalise le PID
-4 : [SUPPRIME] permet de controler directement les moteurs
+4 : contrôle manuel de la vitesse cible (x = vitesse linéaire (m/s), y = vitesse angulaire (rad/s), theta est ignoré)
 5 : [PAS ENCORE IMPLEMENTE] recalage avant : le robot s'oriente selon theta = z, puis avance en marche avant jusqu'au contact d'un mur et reset sa position (x ou y)
 6 : [PAS ENCORE IMPLEMENTE] recalage arriere : le robot s'oriente selon theta = z, puis recule en marche arriere jusqu'au contact
 7 : [SUPPRIME] point final marche avant, mais avec une dynamique assouplie

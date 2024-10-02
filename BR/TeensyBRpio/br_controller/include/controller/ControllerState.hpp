@@ -33,6 +33,8 @@ enum ControllerStatus : uint32_t {
     Reversing = 0b100110,
     /// The robot is rotating in the final requested direction (the final rotation is not considered to be part of the trajectory)
     FinalRotation = 0b1000,
+
+    ManualControl = 0b101100
 };
 
 /**

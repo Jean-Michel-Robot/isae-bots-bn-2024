@@ -2,20 +2,17 @@
 #include "controller/states/StateBraking.hpp"
 #include "controller/states/StateFinalRotation.hpp"
 #include "controller/states/StateInitialRotation.hpp"
+#include "controller/states/StateManualControl.hpp"
 #include "controller/states/StateStandStill.hpp"
 #include "controller/states/StateSuspendTrajectory.hpp"
 #include "controller/states/StateTrajectoryWithRamp.hpp"
 #include "controller/states/StateUninitialized.hpp"
 
+#include "defines/func.hpp"
+#include "defines/math.hpp"
 #include "logging.hpp"
 #include "rotations/SetHeadingProfile.hpp"
-#include <cmath>
 #include <numbers>
-
-template <class... Ts>
-struct overload : Ts... {
-    using Ts::operator()...;
-};
 
 namespace controller {
 
@@ -111,6 +108,19 @@ Speeds UnicycleController<TConverter>::updateCommand(double_t interval, Position
 template <ErrorConverter TConverter>
 void UnicycleController<TConverter>::setSetpoint(Position2D<Meter> setpoint) {
     m_setpoint = setpoint;
+}
+
+template <ErrorConverter TConverter>
+void UnicycleController<TConverter>::setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds) {
+    if (getStatus() != ManualControl) {
+        setCurrentState<StateManualControl>();
+    }
+    if (enforceMaxSpeeds) {
+        speeds.linear = clamp(speeds.linear, -m_maxSpeeds.linear, m_maxSpeeds.linear);
+        speeds.angular = clamp(speeds.angular, -m_maxSpeeds.angular, m_maxSpeeds.angular);
+    }
+
+    getCurrentState().notify(ManualSpeedCommand(speeds));
 }
 
 template <ErrorConverter TConverter>

@@ -14,6 +14,10 @@ class MessageWrapper : public Messages<T>::type {
   public:
     MessageWrapper(std::function<void(const T &)> callback) : Messages<T>::type(), m_callback(callback) {}
 
+    /**
+     * @param msg Must point to a valid, allocated and properly initialized `const MessageWrapper<T>` object.
+     * Calling this method with an argument that does not satisfy those requirements is undefined behaviour.
+     */
     /* unsafe */ static void dispatch(const void *msg) {
         const MessageWrapper<T> *msgCast = static_cast<const MessageWrapper<T> *>(msg);
         const typename Messages<T>::type *rawMsg = static_cast<const typename Messages<T>::type *>(msgCast);

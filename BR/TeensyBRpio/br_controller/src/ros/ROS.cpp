@@ -76,8 +76,7 @@ typename _ROS::subscription_t<int16_t> _ROS::createSubSpeed() {
     return this->template createSubscription<int16_t>("teensy/obstacle_seen", [manager_weak = std::weak_ptr(m_manager)](const int16_t &percentage) {
         if (auto lock = manager_weak.lock()) {
             Speeds maxSpeeds = lock->getController().getMaxSpeeds();
-            lock->getController().setMaxSpeeds(maxSpeeds * std::clamp((double_t)percentage, (double_t)1., (double_t)100.) / 100.,
-                                               /* persist = */ false);
+            lock->getController().setMaxSpeeds(maxSpeeds * std::clamp((double_t)percentage, 1., 100.) / 100., /* persist = */ false);
         }
     });
 }

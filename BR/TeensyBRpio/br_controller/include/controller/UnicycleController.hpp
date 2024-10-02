@@ -24,14 +24,6 @@ class OrientationProfile;
 
 namespace controller {
 
-class StateUninitialized;
-class StateStandStill;
-class StateInitialRotation;
-class StateTrajectoryWithRamp;
-class StateFinalRotation;
-class StateSuspendTrajectory;
-class StateBraking;
-
 /**
  * A controller for a unicycle, nonholonomic robot. A robot is said to be unicycle if its displacement can be described only by its linear and angular
  * speeds. Such robots are usually driven by two differential wheels, but this controller makes no assumption as to the actuators of the robot.
@@ -90,6 +82,15 @@ class UnicycleController : private fsm::StateMachine<ControllerState> {
      * - To request the robot to rotate or follow a trajectory, use startRotation() or startTrajectory() instead.
      */
     void setSetpoint(Position2D<Meter> setpoint);
+
+    /**
+     * Manually sets the linear and angular speeds of the setpoint. The setpoint is not actually moved until updateCommand() is called.
+     * This bypasses the maximal accelerations.
+     * If there is an ongoing rotation or trajectory when this function is called, it is cancelled.
+     *
+     * @param enforceMaxSpeeds Whether or not the speeds should be clamped if they exceed the maximal speeds. The default value is true.
+     */
+    void setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds = true);
 
     /**
      * Puts the controller in braking state. The robot will decelerate from its current estimated speed until it stops.

@@ -5,3 +5,6 @@ __pycache__
 **/software/
 
 BR/code_asserv_cytron_paul
+build/
+install/
+log/

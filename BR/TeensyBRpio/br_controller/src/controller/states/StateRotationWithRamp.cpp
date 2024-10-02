@@ -1,4 +1,5 @@
 #include "controller/states/StateRotationWithRamp.hpp"
+#include "defines/func.hpp"
 #include "rotations/OrientationProfile.hpp"
 
 namespace controller {
@@ -29,7 +30,7 @@ StateUpdateResult StateRotationWithRamp::update(double_t interval, Position2D<Me
 }
 
 void StateRotationWithRamp::notify(ControllerEvent event) {
-    std::visit([&](const MaxSpeedsChanged &event) { m_maxSpeed = event.newSpeeds.angular; }, event);
+    std::visit(overload{[&](const MaxSpeedsChanged &event) { m_maxSpeed = event.newSpeeds.angular; }, [](auto) {}}, event);
 }
 
 } // namespace controller

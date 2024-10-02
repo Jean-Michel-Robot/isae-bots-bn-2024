@@ -13,6 +13,7 @@ DisplacementOrder::DisplacementOrder(int type, Position2D<Millimeter> goalPositi
         case LINEAR_REVERSE:
         case STOP:
         case RESET:
+        case CONTROL:
             this->type = (GoalType)type;
             break;
         default:
@@ -35,7 +36,7 @@ void DisplacementOrder::operator()(manager_t<TActuators, TFeedback, TClock> &man
             break;
         case ORIENTATION:
             manager.sendOrder([&](controller_t &controller, Position2D<Meter> robotPosition) {
-                controller.startRotation<SetHeadingProfile>(robotPosition.theta, position.theta);
+                controller.template startRotation<SetHeadingProfile>(robotPosition.theta, position.theta);
             });
             break;
         case STOP:
@@ -44,6 +45,14 @@ void DisplacementOrder::operator()(manager_t<TActuators, TFeedback, TClock> &man
         case RESET:
             manager.resetPosition(position);
             break;
+        case CONTROL: {
+            Vector2D<Millimeter> speedFactor = position / CONTROL_MAX_SPEED;
+            manager.sendOrder([&](controller_t &controller, Position2D<Meter> robotPosition) {
+                controller.setSetpointSpeed({speedFactor.x * controller.getMaxSpeeds().linear, speedFactor.y * controller.getMaxSpeeds().angular})
+                    /*, enforceMaxSpeeds = true */;
+            });
+            break;
+        }
         default:
             break;
     }

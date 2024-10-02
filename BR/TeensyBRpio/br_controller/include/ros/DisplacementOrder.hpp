@@ -23,7 +23,10 @@ enum GoalType {
     /// Emergency braking
     STOP = 2,
     /// Resets the estimated position
-    RESET = 3
+    RESET = 3,
+
+    /// Direct control of the setpoint's speed.
+    CONTROL = 4,
 };
 
 class DisplacementOrder {
@@ -42,6 +45,8 @@ class DisplacementOrder {
     Position2D<Millimeter> position;
 
   private:
+    static constexpr int CONTROL_MAX_SPEED = 255;
+
     /// Sends the order to the manager or the controller depending on the goal type.
     template <Actuators TActuators, PositionFeedback TFeedback, Clock TClock>
     static void goTo(manager_t<TActuators, TFeedback, TClock> &manager, DisplacementKind kind, Vector2D<Millimeter> goalPosition,
