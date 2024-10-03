@@ -11,6 +11,9 @@ class Node;
 template <typename T>
 class Publisher {
   public:
+    Publisher(Publisher<T> &&publisher)
+        : m_node(std::move(publisher.m_node)), m_publisher(std::move(publisher.m_publisher)), m_msg(publisher.m_msg) {}
+
     void publish(const T &msg) {
         Messages<T>::copy(m_msg, msg);
         RCCHECK_HARD(rcl_publish(m_publisher.get(), &m_msg, NULL));

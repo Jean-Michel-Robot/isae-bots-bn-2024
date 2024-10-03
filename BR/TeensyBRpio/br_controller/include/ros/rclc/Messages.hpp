@@ -8,6 +8,8 @@
 #include <std_msgs/msg/int16.h>
 #include <std_msgs/msg/int32_multi_array.h>
 
+#include <rcl_interfaces/msg/log.h>
+
 #include "br_messages/msg/gains_pid.h"
 #include "br_messages/msg/log_entry.h"
 
@@ -119,6 +121,16 @@ class Messages<br_messages__msg__LogEntry> {
 
     static void copy(type &msg, const type &data) { msg = data; }
     static type extract(const type &msg) { return msg; }
+};
+
+template <>
+class Messages<rcl_interfaces__msg__Log> {
+  public:
+    using type = rcl_interfaces__msg__Log;
+    static support_t getTypeSupport() { return ROSIDL_GET_MSG_TYPE_SUPPORT(rcl_interfaces, msg, Log); }
+
+    static void copy(type &msg, rcl_interfaces__msg__Log data) { msg = data; }
+    static rcl_interfaces__msg__Log extract(const type &msg) { return msg; }
 };
 
 } // namespace ros_rclc
