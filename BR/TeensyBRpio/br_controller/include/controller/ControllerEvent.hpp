@@ -15,8 +15,9 @@ class MaxSpeedsChanged {
 
 class ManualSpeedCommand {
   public:
-    ManualSpeedCommand(Speeds speeds) : speeds(speeds) {}
+    ManualSpeedCommand(Speeds speeds, bool enforceMaxAcceleration = true) : speeds(speeds), enforceMaxAcceleration(enforceMaxAcceleration) {}
     Speeds speeds;
+    bool enforceMaxAcceleration;
 };
 
 using ControllerEvent = std::variant<MaxSpeedsChanged, ManualSpeedCommand>;

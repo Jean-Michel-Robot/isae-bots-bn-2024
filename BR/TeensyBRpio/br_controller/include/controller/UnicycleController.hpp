@@ -89,8 +89,9 @@ class UnicycleController : private fsm::StateMachine<ControllerState> {
      * If there is an ongoing rotation or trajectory when this function is called, it is cancelled.
      *
      * @param enforceMaxSpeeds Whether or not the speeds should be clamped if they exceed the maximal speeds. The default value is true.
+     * @param enforceMaxAccelerations false to bypass the maximal accelerations used for trajectories and rotations. The default value is true.
      */
-    void setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds = true);
+    void setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds = true, bool enforceMaxAccelerations = true);
 
     /**
      * Puts the controller in braking state. The robot will decelerate from its current estimated speed until it stops.

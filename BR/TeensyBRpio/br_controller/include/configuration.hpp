@@ -23,7 +23,7 @@
 #define ASSERV_BETA 0.0 // m
 
 // TODO: measure the acceptable tick rate on Arduino.
-#define UPDATE_INTERVAL 200 // µS (NOT milliseconds)
+#define UPDATE_INTERVAL 5000 // µS (NOT milliseconds)
 
 /* TRAJECTORIES */
 // TODO check the speeds and accelerations on the real robot

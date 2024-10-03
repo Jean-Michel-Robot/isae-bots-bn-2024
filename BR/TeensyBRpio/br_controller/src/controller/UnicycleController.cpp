@@ -123,16 +123,16 @@ void UnicycleController<TConverter>::setSetpoint(Position2D<Meter> setpoint) {
 }
 
 template <ErrorConverter TConverter>
-void UnicycleController<TConverter>::setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds) {
+void UnicycleController<TConverter>::setSetpointSpeed(Speeds speeds, bool enforceMaxSpeeds, bool enforceMaxAccelerations) {
     if (getStatus() != ManualControl) {
-        setCurrentState<StateManualControl>();
+        setCurrentState<StateManualControl>(m_maxAccelerations);
     }
     if (enforceMaxSpeeds) {
         speeds.linear = clamp(speeds.linear, -m_maxSpeeds.linear, m_maxSpeeds.linear);
         speeds.angular = clamp(speeds.angular, -m_maxSpeeds.angular, m_maxSpeeds.angular);
     }
 
-    getCurrentState().notify(ManualSpeedCommand(speeds));
+    getCurrentState().notify(ManualSpeedCommand(speeds, enforceMaxAccelerations));
 }
 
 template <ErrorConverter TConverter>
