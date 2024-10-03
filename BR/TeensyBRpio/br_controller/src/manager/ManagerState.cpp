@@ -1,6 +1,5 @@
 #include "manager/ManagerState.hpp"
 #include "geometry/Position2D.hpp"
-#include "logging.hpp"
 
 namespace manager {
 

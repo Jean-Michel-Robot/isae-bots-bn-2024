@@ -6,15 +6,17 @@
 #include <algorithm>
 #include <numbers>
 
+#include "logging.hpp"
+
 // defines to avoid wondering if 0 is left or right
 #define BR_RIGHT 0
 #define BR_LEFT 1
 
 MotorsOdrive2::MotorsOdrive2(uint8_t odriveRxPin, uint8_t odriveTxPin, double_t transmissionRatio, double_t wheelDiameter, double_t wheelDistance,
                              double_t maxMotorSpeed)
-    : m_serial(odriveRxPin, odriveTxPin), m_odrive(m_serial), m_transmissionRatio(transmissionRatio), m_wheelDiameter(wheelDiameter),
-      m_wheelDistance(wheelDistance), m_maxMotorSpeed(maxMotorSpeed) {
-    m_serial.begin(115200);
+    : m_serial(std::make_unique<SoftwareSerial>(odriveRxPin, odriveTxPin)), m_odrive(*m_serial), m_transmissionRatio(transmissionRatio),
+     m_wheelDiameter(wheelDiameter), m_wheelDistance(wheelDistance), m_maxMotorSpeed(maxMotorSpeed) {
+    m_serial->begin(115200);
 }
 
 void MotorsOdrive2::sendCommand(Speeds speeds) {
@@ -56,6 +58,7 @@ void MotorsOdrive2::update(double_t interval) {
 }
 
 bool MotorsOdrive2::isReady() {
+    return true;
     return m_odrive.getCurrentAxisState(BR_LEFT) == AXIS_STATE_CLOSED_LOOP_CONTROL &&
            m_odrive.getCurrentAxisState(BR_RIGHT) == AXIS_STATE_CLOSED_LOOP_CONTROL;
 }

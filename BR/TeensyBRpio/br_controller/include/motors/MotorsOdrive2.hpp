@@ -3,10 +3,11 @@
 
 #include "configuration.hpp"
 #include "defines/constraint.hpp"
-
 #include "geometry/Speeds.hpp"
+
 #include <ODriveArduino.h>
 #include <SoftwareSerial.h>
+#include <memory>
 
 /**
  * Interface with two differential Odrive motors. Arduino only.
@@ -41,7 +42,7 @@ class MotorsOdrive2 {
     double_t m_lastRightSpeed;
 #endif
 
-    SoftwareSerial m_serial;
+    std::unique_ptr<SoftwareSerial> m_serial;
     ODriveArduino m_odrive;
 
     double_t m_transmissionRatio;

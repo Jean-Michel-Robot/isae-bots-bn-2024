@@ -1,7 +1,7 @@
 #ifndef _SPEC_ACTUATORS_HPP_
 #define _SPEC_ACTUATORS_HPP_
 
-#if _SIMULATION
+#ifdef _SIMULATION
 
 #include "motors/MotorStub2.hpp"
 

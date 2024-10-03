@@ -1,7 +1,7 @@
 #ifndef _SPEC_FEEDBACK_HPP_
 #define _SPEC_FEEDBACK_HPP_
 
-#if _SIMULATION
+#ifdef _SIMULATION
 
 #include "feedback/UnicycleStateSimulator.hpp"
 

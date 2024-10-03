@@ -74,7 +74,6 @@ void MANAGER::loop(std::optional<std::function<void()>> tickCallback) {
     }
 
     duration_t intervalMicros = getDurationMicros(*m_lastUpdate, nowMicros);
-
     while (intervalMicros >= m_minUpdateInterval) {
         duration_t tickInterval = std::min(m_maxUpdateInterval, intervalMicros);
         intervalMicros -= tickInterval;
