@@ -1,13 +1,17 @@
 #ifndef _ROS_IMPL_RCLC_HPP_
 #define _ROS_IMPL_RCLC_HPP_
 
+#define TEENSY_RESTART SCB_AIRCR = 0x05FA0004
+
 #define RCCHECK_HARD(fn)                                                                                                                             \
     {                                                                                                                                                \
         rcl_ret_t temp_rc = fn;                                                                                                                      \
         if ((temp_rc != RCL_RET_OK)) {                                                                                                               \
-            exit(1);                                                                                                                                 \
+            delay(2000);                                                                                                                             \
+            TEENSY_RESTART;                                                                                                                          \
         }                                                                                                                                            \
     }
+
 #define RCCHECK_SOFT(fn)                                                                                                                             \
     { std::ignore = fn; }
 
@@ -36,7 +40,7 @@ class Node {
         m_logger.emplace(createPublisher<rcl_interfaces__msg__Log>("rosout"));
     }
 
-    void spin_once() { rclc_executor_spin_some(m_executor.get(), 0); }
+    void spin_once() { RCCHECK_HARD(rclc_executor_spin_some(m_executor.get(), 0)); }
 
     template <typename T>
     Subscription<T> createSubscription(string_t topic, std::function<void(const T &)> callback) {
