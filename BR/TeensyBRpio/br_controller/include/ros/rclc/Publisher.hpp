@@ -27,7 +27,7 @@ class Publisher {
     friend class Node;
 
     Publisher(std::shared_ptr<rcl_node_t> node, string_t topic) : m_node(std::move(node)), m_publisher(std::make_unique<rcl_publisher_t>()), m_msg() {
-        RCCHECK_HARD(rclc_publisher_init_default(m_publisher.get(), m_node.get(), Messages<T>::getTypeSupport(), topic.c_str()));
+        RCCHECK_HARD(rclc_publisher_init_best_effort(m_publisher.get(), m_node.get(), Messages<T>::getTypeSupport(), topic.c_str()));
     }
 
     std::shared_ptr<rcl_node_t> m_node;
