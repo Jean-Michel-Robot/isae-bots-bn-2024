@@ -137,7 +137,7 @@ void UnicycleController<TConverter>::setSetpointSpeed(Speeds speeds, bool enforc
 
 template <ErrorConverter TConverter>
 void UnicycleController<TConverter>::brakeToStop() {
-    if ((getStatus() & 0b1110) != 0) {
+    if ((getStatus() & (ROTATING | MOVING | TRAJECTORY)) != 0) {
         setCurrentState<StateBraking>(m_estimatedRelSpeed, m_brakeAccelerations);
     }
 }

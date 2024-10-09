@@ -8,33 +8,40 @@
 
 namespace controller {
 
-/**
- * Bit-flag:
- * - ControllerStatus & 0b00001  = Is stopping (not set when already stopped)?
- * - ControllerStatus & 0b00010  = Is a trajectory ongoing or pending?
- * - ControllerStatus & 0b00100  = Is moving straight (not set when braking)?
- * - ControllerStatus & 0b01000  = Is rotating (not set when braking)?
- * - ControllerStatus & 0b10000  = Reserved for future use?
- */
+enum StatusFlag : uint32_t {
+    /// Is stopping (not set when already stopped)?
+    STOPPING = 0b00001,
+    /// Is a trajectory ongoing or pending?
+    TRAJECTORY = 0b00010,
+    /// Is moving straight (not set when braking)?
+    MOVING = 0b00100,
+    /// Is rotating (not set when braking)?
+    ROTATING = 0b01000,
+    /// Speed control instead of position control. This flag may alter how the controller computes the command.
+    SPEED_CONTROL = 0b10000,
+
+    /// No special meaning. Used to distinguish states with the same meaningful flags.
+    EXTRA_1 = 0b100000
+};
+
 enum ControllerStatus : uint32_t {
-    Invalid = 0b111100000,
+    Invalid = ~(SPEED_CONTROL | ROTATING | MOVING | TRAJECTORY | STOPPING),
     /// The robot is standing still close to its rest point
     Still = 0,
     /// The robot is braking to stop
-    Braking = 1,
+    Braking = SPEED_CONTROL | STOPPING,
     /// Suspending trajectory due to a bad orientation. The robot is braking and then will go back in state InitialRotation.
-    SuspendingTrajectory = 0b11,
+    SuspendingTrajectory = SPEED_CONTROL | TRAJECTORY | STOPPING,
 
     /// The robot is rotating in the direction of the trajectory it has to follow (required due to being unicycle)
-    InitialRotation = 0b1010,
+    InitialRotation = ROTATING | TRAJECTORY,
     /// The robot is following a trajectory
-    Forward = 0b110,
+    Forward = MOVING | TRAJECTORY,
     /// The robot is following a reverse trajectory
-    Reversing = 0b100110,
+    Reversing = EXTRA_1 | MOVING | TRAJECTORY,
     /// The robot is rotating in the final requested direction (the final rotation is not considered to be part of the trajectory)
-    FinalRotation = 0b1000,
-
-    ManualControl = 0b101100
+    FinalRotation = ROTATING,
+    ManualControl = SPEED_CONTROL | ROTATING | MOVING
 };
 
 /**
