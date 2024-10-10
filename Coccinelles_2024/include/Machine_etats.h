@@ -10,7 +10,7 @@
 #include <Define_map.h>
 
 #define K 1
-#define dt 10
+#define TIME_PAMI_WORK 200 // Temps de travail de la pami en secondes
 #define time_global 10000
 #define time_sensor 8000
 

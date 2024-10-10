@@ -19,7 +19,7 @@ void Machine_etats::setup()
 
 void Machine_etats::loop()
 {
-    if (millis() - m_time >= dt)
+    if (millis() - m_time >= TIME_PAMI_WORK)
     {
         if (millis() - m_time_global >= time_global)
         {
@@ -28,7 +28,7 @@ void Machine_etats::loop()
         }
         // Lire l'état de la tirette
         tirette = digitalRead(34);
-        Serial.println(tirette);
+        // Serial.println(tirette);
         switch (etat)
         {
         case INIT:
@@ -57,6 +57,7 @@ void Machine_etats::loop()
                 etat = STOP;
             }
             break;
+        // AVOID n'est pas implémenté, donc pas utilsié pour le moment
         case AVOID:
             // Faites tourner le robot dans une direction spécifique
             // (par exemple, en ajustant l'angle)
